@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      { "command": "bash .claude/hooks/secret-guard.sh" },
+      { "command": "bash .claude/hooks/destructive-guard.sh" }
+    ],
+    "afterFileEdit": [{ "command": "bash .claude/hooks/lint.sh" }],
+    "stop": [{ "command": "bash .claude/hooks/quality-check.sh" }]
+  }
+}

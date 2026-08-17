@@ -1,0 +1,9 @@
+﻿---
+description: Seguranca — sempre ativo, inclusive ao criar arquivo novo
+alwaysApply: true
+---
+
+Regra canonica: @.claude/rules/security.md
+
+Sempre ativa de proposito. Regra com escopo por caminho so carrega em leitura, e
+as regras de seguranca deste produto valem no momento em que o arquivo e criado.

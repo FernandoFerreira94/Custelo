@@ -1,0 +1,11 @@
+﻿---
+description: Componentes, telas e design system
+globs: src/components/**,src/app/**/*.tsx,src/app/globals.css
+alwaysApply: false
+---
+
+Regra canonica deste topico: @.claude/rules/ui.md
+
+O conteudo vive naquele arquivo de proposito. Claude Code e Cursor leem a MESMA
+regra — nao existe versao "do Cursor". Se precisar mudar a regra, edite
+`.claude/rules/ui.md`; este arquivo so declara quando ela se aplica.

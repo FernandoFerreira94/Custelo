@@ -1,0 +1,11 @@
+﻿---
+description: PWA operacional — offline, camera, sync
+globs: src/app/(ops)/**,src/components/ops/**,src/lib/offline/**
+alwaysApply: false
+---
+
+Regra canonica deste topico: @.claude/rules/ops-pwa.md
+
+O conteudo vive naquele arquivo de proposito. Claude Code e Cursor leem a MESMA
+regra — nao existe versao "do Cursor". Se precisar mudar a regra, edite
+`.claude/rules/ops-pwa.md`; este arquivo so declara quando ela se aplica.

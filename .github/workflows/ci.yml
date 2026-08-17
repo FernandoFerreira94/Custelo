@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Sem segredo real no CI de verificacao estatica.
+  SKIP_ENV_VALIDATION: "true"
+
+jobs:
+  verify:
+    name: Lint · Types · Format · Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm test --project unit --project ui
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  tenant-isolation:
+    # O gate mais importante do projeto (ADR-004 / Implementation Roadmap I2).
+    # Postgres real, nunca mock.
+    name: Tenant isolation (RLS)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports: ["5432:5432"]
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Migrations
+        run: pnpm db:migrate
+        continue-on-error: true # sem migrations ate a fase I2
+      - name: Testes negativos cross-tenant
+        run: pnpm test:rls
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Dependencias (high/critical)
+        run: pnpm audit --prod --audit-level high
+      - name: Segredo no diff
+        run: |
+          if git log --format=%H -1 >/dev/null 2>&1; then
+            if git diff origin/${{ github.base_ref || 'main' }}...HEAD -U0 2>/dev/null \
+              | grep -Eq '^\+.*(SERVICE_ROLE_KEY *= *.+|sk_live_|-----BEGIN [A-Z ]*PRIVATE KEY)'; then
+              echo "::error::Possivel segredo no diff"
+              exit 1
+            fi
+          fi
+      - name: .env nunca commitado
+        run: |
+          if git ls-files | grep -E '^\.env($|\.)' | grep -v '\.env\.example'; then
+            echo "::error::arquivo .env versionado"
+            exit 1
+          fi

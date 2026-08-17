@@ -1,0 +1,11 @@
+﻿---
+description: Camada de dominio e aplicacao — pura, sem framework nem SDK
+globs: src/domain/**,src/application/**
+alwaysApply: false
+---
+
+Regra canonica deste topico: @.claude/rules/domain.md
+
+O conteudo vive naquele arquivo de proposito. Claude Code e Cursor leem a MESMA
+regra — nao existe versao "do Cursor". Se precisar mudar a regra, edite
+`.claude/rules/domain.md`; este arquivo so declara quando ela se aplica.

@@ -1,0 +1,70 @@
+---
+description: Contrato do projeto Custelo — memoria, arquitetura e invariantes
+alwaysApply: true
+---
+
+# Custelo — contrato do projeto (Cursor / Grok / Composer)
+
+Este arquivo nao e a fonte da verdade. Ele aponta o Cursor para **o mesmo**
+ecossistema que o Claude Code usa. Nao existe versao "do Cursor" de nada.
+
+## Leia nesta ordem, sempre
+
+1. @AGENTS.md — contrato unico de agentes: precedencia, memoria, regras de trabalho
+2. @CLAUDE.md — comandos, arquitetura LOCKED e as 12 invariantes do produto
+3. @.claude/memory.md — decisoes ativas (bloco `## Summary`)
+
+Sob demanda, conforme a tarefa: `.claude/scope.md` (contexto de negocio),
+`.claude/gotchas.md` (erros ja diagnosticados), `docs/`.
+
+## Regras por tipo de arquivo
+
+Carregam sozinhas. Cada `.cursor/rules/<topico>.mdc` declara o `globs` e
+referencia o arquivo canonico em `.claude/rules/<topico>.md`, que e o mesmo que o
+Claude Code le. Editar a regra = editar `.claude/rules/`.
+
+`domain` · `drizzle-rls` · `api-actions` · `zod` · `ui` · `ops-pwa` · `ports` ·
+`testing` · `security` (este sempre ativo).
+
+## Contexto de modulo
+
+O produto tem 12 bounded contexts. Antes de mexer num modulo, leia
+`.claude/skills/<modulo>/SKILL.md` — e onde estao as regras de negocio e as
+invariantes daquele contexto. O Claude Code carrega isso como skill; no Cursor,
+abra o arquivo.
+
+Modulos: `tenancy` `auth-rbac` `estrutura-fisica` `pessoas-vinculos`
+`recebimento` `ocr-matching` `custodia-eventos` `correcoes` `whatsapp`
+`offline-sync` `retirada` `devolucao` `auditoria` `importacao`
+`billing-entitlements` `retencao-lgpd` `observabilidade` `ui-ops-pwa`.
+
+## Comandos equivalentes
+
+`.cursor/commands/` espelha `.claude/commands/`: `/verify`, `/security-review`,
+`/performance-review`, `/tela <ID>`. Mesma checagem, mesmo criterio de "pronto".
+
+## Verificacao — identica em qualquer ferramenta
+
+```bash
+pnpm verify      # typecheck + lint + format + test
+pnpm test:rls    # negativo cross-tenant, se tocou banco/tenancy/auth
+pnpm test:e2e    # se tocou UI
+```
+
+Nao declare pronto sem colar a saida real. Se o diff tocou rota, auth, query,
+schema, upload ou dependencia, rode `/security-review` antes.
+
+## Nao negociavel
+
+- Portugues do Brasil.
+- Stack congelada no Architecture Freeze — nao proponha alternativa; escreva ADR.
+- `src/domain` e `src/application` nao importam Next, React nem SDK de fornecedor.
+- Evidencia operacional nunca tem hard delete. `custody_events` e append-only.
+- Tenant vem do contexto autenticado, nunca de parametro do cliente.
+- Sem `blur` / `backdrop-filter` / superficie translucida — revogado em 15/08/2026.
+
+## Registro de decisao
+
+Decisao arquitetural, padrao novo ou workaround com motivo vai para
+`.claude/memory.md`, formato `[YYYY-MM-DD] contexto — decisao`. Se for critica,
+atualize o bloco `## Summary`. Nao crie arquivo de memoria proprio do Cursor.
