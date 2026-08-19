@@ -72,7 +72,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Migrations
         run: pnpm db:migrate
-        continue-on-error: true # sem migrations ate a fase I2
       - name: Testes negativos cross-tenant
         run: pnpm test:rls
 

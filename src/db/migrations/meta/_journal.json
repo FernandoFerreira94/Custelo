@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1755566400000,
+      "tag": "0000_tenancy_i2",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755566500000,
+      "tag": "0001_auth_claims",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755566600000,
+      "tag": "0002_custom_access_token_hook",
+      "breakpoints": true
+    }
+  ]
+}

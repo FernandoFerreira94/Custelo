@@ -8,6 +8,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // O contrato de agentes e AGENTS.md deste repo. Next 16 tenta anexar
+  // um bloco proprio a cada `next dev` — isso suja o git e compete com
+  // o contrato do Custelo.
+  agentRules: false,
 
   typescript: {
     // Erro de tipo quebra o build. Sem excecao.

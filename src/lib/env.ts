@@ -20,6 +20,7 @@ export const env = createEnv({
 
     // Supabase (ADR-005 / ADR-008)
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
+    SUPABASE_AUTH_HOOK_SECRET: z.string().min(1).optional(),
 
     // Jobs duraveis (ADR-009)
     INNGEST_EVENT_KEY: z.string().min(1).optional(),
@@ -51,6 +52,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    SUPABASE_AUTH_HOOK_SECRET: process.env.SUPABASE_AUTH_HOOK_SECRET,
     INNGEST_EVENT_KEY: process.env.INNGEST_EVENT_KEY,
     INNGEST_SIGNING_KEY: process.env.INNGEST_SIGNING_KEY,
     WHATSAPP_APP_SECRET: process.env.WHATSAPP_APP_SECRET,

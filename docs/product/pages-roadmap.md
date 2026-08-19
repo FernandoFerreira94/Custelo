@@ -30,7 +30,7 @@ Nunca resolva em silencio.
 
 ## Resumo de progresso
 
-Atualizado: **18/08/2026**
+Atualizado: **19/08/2026**
 
 | Metrica                  | Feito | Total | Pendente |
 | ------------------------ | ----- | ----- | -------- |
@@ -40,8 +40,9 @@ Atualizado: **18/08/2026**
 | Backend (API/modulo)     | 0     | 83    | 83       |
 | Testes (unit/ui/e2e/rls) | 0     | 83    | 83       |
 
-**Fase atual:** I1 (fundacao tecnica). Nenhuma tela entra em dev antes de I2 + design
-`APPROVED` + fase habilitadora entregue.
+**Fase atual:** I1 (fundacao tecnica). AUTH-001 tem superficie desktop em
+`IN_PROGRESS` (UI + validacao, sem sessao). Backend de auth continua bloqueado
+ate I2.
 
 ## Regra obrigatoria — ao finalizar uma pagina
 
@@ -68,15 +69,15 @@ Colunas abreviadas nas tabelas: **D** = Design · **F** = Frontend · **B** = Ba
 
 ## Wave 01 — AUTH · Fase I2
 
-| ID       | Pagina              | Rota                 | D           | F           | B           | T           | Conteudo previsto                                                               |
-| -------- | ------------------- | -------------------- | ----------- | ----------- | ----------- | ----------- | ------------------------------------------------------------------------------- |
-| AUTH-001 | Entrar              | `/(auth)/entrar`     | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Form email/senha; link recuperar; estados validation/network; redirect AUTH-005 |
-| AUTH-002 | Convite / 1o acesso | `/(auth)/convite`    | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Token de convite; aceite; redirect definir senha ou entrar                      |
-| AUTH-003 | Recuperar senha     | `/(auth)/recuperar`  | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Email; fluxo reset; confirmacao envio; sem vazar se email existe                |
-| AUTH-004 | Definir senha       | `/(auth)/senha`      | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Nova senha + confirmacao; politica de senha; redirect AUTH-001                  |
-| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB                 |
-| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Sessao invalida ou sem escopo; acao sair/contato admin                          |
-| AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                                       |
+| ID       | Pagina              | Rota                 | D           | F           | B           | T           | Conteudo previsto                                                        |
+| -------- | ------------------- | -------------------- | ----------- | ----------- | ----------- | ----------- | ------------------------------------------------------------------------ |
+| AUTH-001 | Entrar              | `/(auth)/entrar`     | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Form email/senha; recuperar no mesmo card (translate); sessao real na I2 |
+| AUTH-002 | Convite / 1o acesso | `/(auth)/convite`    | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar (preview); nome; senha; papel do convite; API na I2      |
+| AUTH-003 | Recuperar senha     | `/(auth)/recuperar`  | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar com translate; e-mail; sem vazar se existe; API na I2    |
+| AUTH-004 | Definir senha       | `/(auth)/senha`      | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Preview apos enviar link; nova senha + confirmacao; API na I2            |
+| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB          |
+| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Sessao invalida ou sem escopo; acao sair/contato admin                   |
+| AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                                |
 
 ## Wave 02 — OPS Recebimento · Fases I5/I6
 

@@ -10,12 +10,90 @@
 - Design: glass effect REVOGADO em 15/08/2026 — profundidade por tom solido + 3 sombras
 - Fase: I1 em codigo (Clock, JobScheduler, health, Inngest, Sentry). Sem tabela
   de dominio. Tres ambientes de nuvem ainda dependem de contas (Supabase/GitHub).
+- AUTH `/entrar` (preview no mesmo card, **sem rotas** `/recuperar` `/senha`
+  `/convite`): `AuthCardStage` troca **entrar | recuperar | senha | convite**
+  com translate GSAP. AUTH-001 login (Eye, Esqueci). AUTH-003 recuperar;
+  **Enviar link** abre AUTH-004 Definir nova senha (min 10 + confirmacao).
+  Botao **Aceitar convite** abre AUTH-002 (nome, senha, papel/escopo do
+  convite — copy Penpot, dados mock). Stubs; nao vazam se e-mail existe.
+  Bola `primary` **atras** do card. API real e rotas proprias ficam na I2.
+- I2.1 entregue: schema tenancy (5 tabelas), RLS + GUC `app.current_*`, migration
+  `0000_tenancy_i2.sql`, testes cross-tenant verdes (`pnpm test:rls`).
+- I2.2 entregue: clientes Supabase SSR, middleware refresh,
+  `app.resolve_auth_claims()` + `public.custom_access_token_hook` (Postgres),
+  `requestSession()` real. Hook **Postgres ativo no dashboard** (Fernando, 19/08).
+  Rota HTTP `/api/auth/hook` existe mas **nao e usada** — sem segredo HTTP.
+- **Proximo passo — front AUTH:** AUTH-005 selecionar contexto (`/contexto`).
+  Login real ja redireciona pra la; a tela ainda nao existe (404 esperado).
+- **Proximo passo — I2:** seed usuario teste (`auth.users` + `usuarios` +
+  `escopos_usuario` + org/empreendimento) → validar login E2E → I2.3 casos
+  de uso (convite/reset reais, nao so preview).
 - Roadmap de paginas: `docs/product/pages-roadmap.md` + CSV; atualizar ao
   concluir cada tela (regra `.cursor/rules/pages-roadmap.mdc`).
 
 ---
 
 ## Entradas
+
+[2026-08-19] AUTH palco `/entrar` — quatro cards no `AuthCardStage` (translate
+so do card, hero igual): Entrar, Recuperar acesso, Definir nova senha,
+Aceitar convite. Preview de visualizacao: enviar recuperacao → senha;
+botao no login → convite (Fernanda Alves / Porteiro / Vila Verde · Colinas
+II). Sem pagina nova. `AuthPasswordField` compartilhado. Politica nova senha
+= 10 caracteres. Frontend IN_PROGRESS; API/token NOT_STARTED.
+
+[2026-08-19] AUTH — **proximo passo de tela:** AUTH-005 `/contexto` (lista
+org/empreendimento; hoje o login real ja aponta pra essa rota). Depois:
+tirar botoes/atalhos de preview quando o e-mail/token real existir.
+
+[2026-08-19] I2.2 hook Postgres — Fernando habilitou Custom Access Token no
+dashboard Supabase com funcao **`public.custom_access_token_hook`** (migration
+`0002_custom_access_token_hook.sql`). Claims vêm de `app.resolve_auth_claims()`.
+Nao usa HTTP hook nem `SUPABASE_AUTH_HOOK_SECRET`. Menu: Authentication → Auth
+Hooks (link direto `/auth/hooks`).
+
+[2026-08-19] I2 — **proximo passo operacional:** (1) seed org + empreendimento +
+usuario Auth + linhas `usuarios`/`escopos_usuario`; (2) testar login em
+`/entrar` (redirect `/contexto` — tela ainda inexistente ate o front AUTH-005);
+(3) I2.3 application/auth-rbac (convite, papel, escopo, revogacao reais).
+Front AUTH-001..004 ja esta em preview no card de `/entrar`.
+
+[2026-08-19] AUTH-001 — bola `primary` do canto do card fica **atras**
+(`-z-10` + `isolate`); o card (`z-10`) cobre a parte sobreposta. Troca
+entrar/recuperar continua so o translate do `AuthCardStage`.
+
+[2026-08-19] AUTH-003 — `RecoverAccessForm` no mesmo card de `/entrar`.
+`AuthCardStage` troca entrar/recuperar com translate GSAP (reduced-motion
+pula). Sem pagina nova. `requestRecovery` sempre devolve `RECOVERY_ACCEPTED`.
+
+[2026-08-19] AUTH-001 — senha usa `InputGroup` + icone Eye/EyeOff
+(`Mostrar senha` / `Ocultar senha`). "Esqueci minha senha" e botao, nao
+link para outra rota.
+
+[2026-08-18] AUTH-001 — intro GSAP monta uma caixa isometrica com QR
+decorativo (nao e locator; invariante 8). Depois o wordmark e o veu.
+
+[2026-08-18] AUTH-001 — form no Card shadcn (`Field`, `Alert`, `Spinner`).
+Tipografia do card e **Inter** (`font-sans`); Bodoni fica so no hero e na
+wordmark. Superficie solida (`bg-muted` no footer, sem `/50`).
+
+[2026-08-18] AUTH-001 — foto `img02` + overlay primary de volta. Divisor
+ondulado fica **sutil e estatico** (sem GSAP no meio, sem traco dourado,
+borda `black/40` 1px). Sombra fixa: card elevation-3, input elevation-1,
+botao elevation-2. Sem hover magnetico no CTA.
+
+[2026-08-18] AUTH-001 — foto de fundo revogada. Wordmark e titulos da tela
+Entrar passam a texto em **Bodoni Moda** (`--font-heading` ← `--font-display`),
+aproximacao da didone da logo ate a fonte original e a licenca serem
+confirmadas. Card do form sobe para `--shadow-elevation-3`.
+
+[2026-08-18] AUTH-001 desktop — superficie de login em `/(auth)/entrar` com
+split (foto `Imagen/Penot-referencia/img02.png` + overlay `primary`), divisor
+**ondulado** (desvio consciente do Penpot reto, pedido do PO) e intro GSAP.
+GSAP + `@gsap/react` ficam restritos a essa tela: o design system continua
+sem biblioteca de motion no OPS. Sem `blur` / Lenis. `prefers-reduced-motion`
+pula a intro. Logos de `Imagen/logo` foram recortados (fundo branco opaco) para
+`public/brand`. Form valida no cliente; `requestSession` e stub ate I2.
 
 [2026-08-18] Roadmap de paginas — `docs/product/pages-roadmap.md` como controle
 versionado no repo (conteudo + status das 83 telas), alinhado ao Notion _Roadmap
@@ -71,6 +149,13 @@ com README, skill `relatorios`, Dependabot, placeholders de teste do scaffold,
 mapa de paginas Notion. MCP Notion nesta sessao nao autenticado — atualizacao
 do cabecalho G3 e import do CSV ficam manuais. ADR-001 preservado: sem
 `apps/web|api|mobile`.
+
+[2026-08-18] I2.2 auth + claims — Supabase SSR (`infrastructure/auth`), middleware
+de refresh, funcao `app.resolve_auth_claims()` (`0001_auth_claims.sql`),
+`public.custom_access_token_hook()` (`0002`), `requestSession()` com
+`signInWithPassword` e redirect `/contexto`. Rota HTTP `/api/auth/hook` legada
+(Bearer) — substituida por hook Postgres no dashboard. Multi-empreendimento
+deixa `empreendimento_id`/`papel_codigo` nulos no JWT ate AUTH-005.
 
 [2026-08-16] Cores de estado operacional: a fundacao de marca define a **direcao**
 (azul, ambar, violeta, vermelho, laranja-vermelho, teal, verde, slate,

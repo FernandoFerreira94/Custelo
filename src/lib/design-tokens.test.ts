@@ -78,6 +78,10 @@ describe("design tokens", () => {
     expect(css).toContain("prefers-reduced-motion: reduce");
   });
 
+  it("liga a serifada de marca em --font-heading", () => {
+    expect(css).toContain("--font-heading: var(--font-display)");
+  });
+
   it("tem dark mode que nao e inversao do light", () => {
     // Fundo dark deve ser mais escuro que o Deep Blue, nao o Deep Blue puro.
     expect(css).toMatch(/\.dark\s*\{[\s\S]*--background:\s*#0e1533/);

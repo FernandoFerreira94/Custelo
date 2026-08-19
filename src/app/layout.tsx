@@ -1,16 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 
 import "./globals.css";
 
 /**
  * Tipografia de produto — Inter (Brand & UI Foundation §8).
- * O wordmark "Custelo" usa a direcao serifada da marca e e tratado como arte,
- * nunca como texto de interface.
+ * Bodoni Moda cobre a direcao didone da wordmark ate a fonte original e a
+ * licenca serem confirmadas pelo cliente.
  */
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const bodoniModa = Bodoni_Moda({
+  subsets: ["latin"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -39,7 +45,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${bodoniModa.variable} antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -30,3 +30,7 @@ CUS-002). Conferir icone apos qualquer override.
 [GOTCHA] Cursor — MCP Notion (`https://mcp.notion.com/mcp`) esta no
 `.cursor/mcp.json` mas so aparece depois do OAuth em Settings → MCP → Connect.
 Sem isso o agente nao atualiza o tracker; use `docs/product/screen-tracker.csv`.
+
+[GOTCHA] Next 16 — `next dev` anexa um bloco `nextjs-agent-rules` em
+`AGENTS.md`. Desligar com `agentRules: false` no `next.config.ts`; o contrato
+do Custelo vive neste arquivo e nao pode ser reescrito pelo framework.
