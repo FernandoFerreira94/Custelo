@@ -3,7 +3,7 @@
 SaaS B2B multi-tenant de recebimento e **cadeia de custodia** para portarias e
 operacoes prediais. Produto proprio da Webcodeff. Brasil, LGPD.
 
-**Estado em 16/08/2026: preparacao concluida, implementacao NAO comecou.**
+**Estado em 18/08/2026: preparacao concluida, implementacao NAO comecou.**
 Nao existe codigo de dominio, migration, rota real nem componente de produto.
 
 ## Arquitetura (LOCKED — Architecture Freeze 13/08/2026, 20 ADRs)
@@ -53,7 +53,8 @@ Vercel · Vitest + Playwright.
 | 83 telas (indice)                | `docs/product/screen-map.md`                   |
 | ordem de construcao              | `docs/product/implementation-roadmap.md`       |
 | regras por stack                 | `.claude/rules/*.md`                           |
-| regra de negocio por modulo      | `.claude/skills/<modulo>/SKILL.md` (18 skills) |
+| regra de negocio por modulo      | `.claude/skills/<modulo>/SKILL.md` (19 skills) |
+| tracker de telas                 | `docs/product/screen-tracker.md`               |
 | design system                    | `.design-system/` + `src/app/globals.css`      |
 
 ## Verificacao

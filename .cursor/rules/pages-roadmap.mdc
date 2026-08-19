@@ -1,0 +1,17 @@
+---
+description: Atualizar roadmap de paginas ao concluir implementacao de tela
+globs: src/app/**/*
+alwaysApply: false
+---
+
+Regra canonica: @docs/product/pages-roadmap.md
+
+Ao **concluir** uma tela ou sheet (frontend + backend + testes, com `pnpm verify` verde):
+
+1. Atualize `docs/product/screen-tracker.csv` — `Frontend Status`, `API Status`, `Test Status`.
+2. Atualize a mesma linha em `docs/product/pages-roadmap.md` (colunas F, B, T).
+3. Se OPS, atualize tambem `Mobile Status` no CSV quando aplicavel.
+4. Nao marque `DONE` sem evidencia de teste. Estados validos: ver legenda no roadmap.
+5. Decisao duradoura → `.claude/memory.md`. Sync Notion quando MCP autenticado.
+
+Antes de comecar uma tela: `/tela <ID>` — checar design `APPROVED` e fase habilitadora.

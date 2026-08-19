@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      next:
+        patterns: ["next", "eslint-config-next", "@next/*"]
+      testing:
+        patterns:
+          - "vitest"
+          - "@playwright/*"
+          - "@axe-core/*"
+          - "@testing-library/*"
+      supabase:
+        patterns: ["@supabase/*", "postgres", "drizzle-orm", "drizzle-kit"]
+    # Gate 3: nunca `audit fix --force`. Dependabot abre PR; humano revisa.
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

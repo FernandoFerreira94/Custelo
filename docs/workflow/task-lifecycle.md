@@ -47,8 +47,10 @@ pnpm test:e2e   # se tocou UI
 3. Confira o Gate 7 (dominio) em `quality-gates.md` — e o que este produto exige
    alem do padrao.
 4. Commit em Conventional Commits, um contexto por commit.
-5. Atualize o status da tela no tracker do Notion (_Roadmap Mestre de Telas_).
-6. Atualize `.claude/memory.md` se houve decisao duradoura.
+5. Atualize `docs/product/screen-tracker.csv` e `docs/product/pages-roadmap.md`
+   (colunas Frontend, Backend/API, Testes). Regra: `.cursor/rules/pages-roadmap.mdc`.
+6. Sincronize o Notion (_Roadmap Mestre_) quando o MCP estiver autenticado.
+7. Atualize `.claude/memory.md` se houve decisao duradoura.
 
 ## O que nunca fazer
 

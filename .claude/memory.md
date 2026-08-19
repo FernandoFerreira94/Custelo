@@ -8,11 +8,19 @@
 - Jobs: Inngest (porta `JobScheduler`); WhatsApp Cloud API direta (porta `MessagingProvider`)
 - Offline: PWA (Serwist + Dexie), sync por append, UUIDv7, sem last-write-wins
 - Design: glass effect REVOGADO em 15/08/2026 — profundidade por tom solido + 3 sombras
-- Fase: preparacao concluida em 16/08/2026; implementacao comeca em I1
+- Fase: I1 em codigo (Clock, JobScheduler, health, Inngest, Sentry). Sem tabela
+  de dominio. Tres ambientes de nuvem ainda dependem de contas (Supabase/GitHub).
+- Roadmap de paginas: `docs/product/pages-roadmap.md` + CSV; atualizar ao
+  concluir cada tela (regra `.cursor/rules/pages-roadmap.mdc`).
 
 ---
 
 ## Entradas
+
+[2026-08-18] Roadmap de paginas — `docs/product/pages-roadmap.md` como controle
+versionado no repo (conteudo + status das 83 telas), alinhado ao Notion _Roadmap
+Mestre_. Ao finalizar tela: atualizar CSV + pages-roadmap; sync Notion quando MCP
+autenticado.
 
 [2026-08-13] Architecture Freeze — 20 ADRs congelados. Vercel + Supabase confirmados
 como adequados, com duas ressalvas que viraram decisao propria: jobs duraveis nao
@@ -53,6 +61,16 @@ virou componente, e a tela com sheet e instancia da base + instancia do sheet.
 [2026-08-16] Preparacao do repositorio executada. Boot Protocol aplicado: rules,
 skills, commands, agents, hooks, settings, quality gates, design tokens, docs.
 Nenhuma funcionalidade implementada — por instrucao explicita.
+
+[2026-08-18] I1 — portas Clock e JobScheduler, health publico, serve Inngest,
+Sentry so com DSN, schema Drizzle ainda vazio. DATABASE_URL/Supabase opcionais
+ate I2. Tres ambientes de nuvem documentados; criacao das contas e humana.
+
+[2026-08-18] Fechamento do Boot Protocol no Cursor: docs de tracker/CSV, camadas
+com README, skill `relatorios`, Dependabot, placeholders de teste do scaffold,
+mapa de paginas Notion. MCP Notion nesta sessao nao autenticado — atualizacao
+do cabecalho G3 e import do CSV ficam manuais. ADR-001 preservado: sem
+`apps/web|api|mobile`.
 
 [2026-08-16] Cores de estado operacional: a fundacao de marca define a **direcao**
 (azul, ambar, violeta, vermelho, laranja-vermelho, teal, verde, slate,

@@ -1,4 +1,5 @@
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -34,4 +35,13 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withBundleAnalyzer(nextConfig);
+const analyzed = withBundleAnalyzer(nextConfig);
+
+/** Sem DSN o SDK nao envia. Sem AUTH_TOKEN o upload de sourcemap fica desligado. */
+export default withSentryConfig(analyzed, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: true,
+  sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+});

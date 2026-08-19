@@ -36,7 +36,8 @@ abra o arquivo.
 Modulos: `tenancy` `auth-rbac` `estrutura-fisica` `pessoas-vinculos`
 `recebimento` `ocr-matching` `custodia-eventos` `correcoes` `whatsapp`
 `offline-sync` `retirada` `devolucao` `auditoria` `importacao`
-`billing-entitlements` `retencao-lgpd` `observabilidade` `ui-ops-pwa`.
+`billing-entitlements` `retencao-lgpd` `observabilidade` `ui-ops-pwa`
+`relatorios`.
 
 ## Comandos equivalentes
 

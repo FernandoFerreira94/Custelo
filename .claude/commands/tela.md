@@ -6,9 +6,9 @@ Trabalhe na tela `$ARGUMENTS` (ID do Roadmap Mestre de Telas).
 
 Antes de escrever qualquer codigo:
 
-1. Localize a tela em `docs/product/screen-map.md` — superficie, modulo, rota,
-   objetivo, usuario, dados, componentes, acoes, permissoes, estados e telas de
-   origem/destino.
+1. Localize a tela em `docs/product/pages-roadmap.md` (conteudo, status, rota,
+   fase) e `docs/product/screen-tracker.csv`. Spec completa no Notion
+   (`docs/workflow/notion-pages.md`). `docs/product/screen-map.md` e so o indice.
 2. Confirme o **status de design**. Nenhuma tela entra em desenvolvimento antes
    de `APPROVED` no design. Se estiver `NOT_STARTED` ou `IN_PROGRESS`, pare e
    avise.
@@ -28,5 +28,7 @@ Ao implementar:
 - estado e variante, nao rota nova
 - use tokens semanticos, nunca hex literal
 
-Ao terminar: `/verify` e, se aplicavel, `/security-review`. Depois registre o
-avanco no tracker do Notion (Roadmap Mestre de Telas).
+Ao terminar: `/verify` e, se aplicavel, `/security-review`. Depois atualize
+**obrigatoriamente** `docs/product/screen-tracker.csv` e
+`docs/product/pages-roadmap.md`. Sincronize o Notion (_Roadmap Mestre_) quando
+o MCP estiver autenticado.

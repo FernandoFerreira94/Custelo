@@ -1,95 +1,82 @@
 # Boot Protocol — Status
 
-Sessao de preparacao: **16/08/2026**. Nenhuma funcionalidade implementada, por
-instrucao explicita.
+Sessao original: **16/08/2026**. Revisao de fechamento: **18/08/2026**.
+Nenhuma funcionalidade de produto implementada — por instrucao explicita.
 
-## Pre-condicao verificada
+## Pre-condicao
 
-A pagina do projeto no Notion diz "nao iniciar Boot Protocol antes do
-Architecture Freeze" e mostra G3 como `PENDING`. **Esse cabecalho esta
-desatualizado**: a subpagina _Architecture Freeze — ADRs e Technology Stack_
-registra `ARCHITECTURE FREEZE CONCLUIDO — 13/08/2026` e encerra com "nenhuma
-dessas questoes bloqueia o inicio da implementacao". O bloqueio esta liberado.
+Architecture Freeze **CONCLUIDO em 13/08/2026** (20 ADRs). O cabecalho da pagina
+principal no Notion ainda diz "AGUARDANDO ARCHITECTURE FREEZE" / G3 `PENDING` —
+esta desatualizado. Nao tratar como bloqueio. Correcao: `docs/workflow/notion-pages.md`.
 
-Pendente de correcao no Notion: G3 e o cabecalho da pagina principal.
-
-## Feito
+## Aplicado
 
 ### Fundacao tecnica
 
-- Repositorio git inicializado (`main`).
-- Next.js 16.3.1 · React 19.2.8 · TypeScript strict · Tailwind v4 · pnpm 10.33.
-- shadcn/ui inicializado (base radix, preset nova, CSS variables).
-- Dependencias da stack congelada instaladas: Drizzle, Supabase (`ssr` +
-  `supabase-js`), Inngest, TanStack Query/Table, React Hook Form + Zod, Dexie,
-  Serwist, Recharts, signature_pad, zxing, uuidv7, Sentry, PostHog.
-- Estrutura de diretorios conforme **ADR-001** — uma app, route groups
-  `(ops)` `(web)` `(saas)` `(auth)`, camadas `domain` / `application` /
-  `infrastructure` / `ports`.
+- Git em `main`; Next.js 16.3.1 · React 19.2.8 · TypeScript strict · Tailwind v4 ·
+  pnpm 10.33 · shadcn/ui (radix, preset nova).
+- Stack congelada instalada: Drizzle, Supabase ssr+js, Inngest, TanStack Query/Table,
+  RHF + Zod, Dexie, Serwist, Recharts, signature_pad, zxing, uuidv7, Sentry, PostHog.
+- Estrutura **ADR-001**: uma app, route groups `(ops)` `(web)` `(saas)` `(auth)`,
+  camadas `domain` / `application` / `infrastructure` / `ports` / `components`
+  (READMEs de fronteira; sem codigo de produto).
+- **Nao** ha `apps/web|api|mobile`. Isso violaria o freeze.
 
-### Configuracao e qualidade
+### Qualidade
 
-- `src/lib/env.ts` — validacao de ambiente com `@t3-oss/env-nextjs` + Zod.
-- `.env.example` — nomes e formato, sem valores.
-- ESLint com regra que **bloqueia import de framework/SDK** em `src/domain` e
-  `src/application` (a fronteira que o ADR-001 aponta como principal risco).
-- Prettier + `prettier-plugin-tailwindcss`.
-- Vitest com tres projetos: `unit`, `ui`, `rls` (Postgres real).
-- Playwright com tres projetos: `web`, `ops` (viewport de celular), `a11y`.
-- `drizzle.config.ts`; `src/db/schema/index.ts` vazio por decisao.
-- commitlint com escopos = modulos do Module Map.
-- Cabecalhos de seguranca em `next.config.ts`.
+- `src/lib/env.ts` + `.env.example`
+- ESLint bloqueando framework/SDK em `domain` e `application`
+- Prettier + plugin Tailwind · Vitest (`unit` `ui` `rls`) · Playwright (`web` `ops` `a11y`)
+- commitlint (escopos = modulos) · Husky pre-commit + commit-msg · lint-staged
+- CI: verify, build, tenant-isolation (Postgres 16), security (audit + segredo)
+- Dependabot semanal (npm + actions)
+- Cabecalhos de seguranca em `next.config.ts`
+- Placeholder RLS + fumaca e2e/a11y do scaffold (nao sao telas de produto)
 
 ### Design System
 
-- Tokens LOCKED materializados em `src/app/globals.css`: paleta de marca, light
-  e dark mode, 9 estados operacionais, escala de elevacao de 3 niveis, raio
-  fechado, espacamento base 4, alvos de toque, motion.
-- Inter carregada via `next/font` em `layout.tsx`.
-- `.design-system/` com 9 documentos (README, colors, typography, layouts,
-  components, icons, animations, responsive, accessibility, examples).
+Tokens LOCKED em `src/app/globals.css`. `.design-system/` com 9 docs.
+Glass effect revogado. Inter via `next/font`. 53 componentes-mestre no Penpot,
+zero em codigo.
 
-### Camada de agentes
+### Agentes
 
-- `CLAUDE.md` enxuto, com apontadores — arquitetura nao duplicada.
-- `AGENTS.md` — contrato unico para qualquer ferramenta.
-- `.claude/memory.md` com bloco `## Summary`, `.claude/scope.md`,
-  `.claude/gotchas.md`.
-- `.claude/rules/` — 9 regras path-scoped (`security.md` sempre ativa).
-- `.claude/skills/` — **18 skills de modulo**, materializadas do catalogo do
-  Notion.
-- `.claude/commands/` — `/verify`, `/security-review`, `/performance-review`,
-  `/tela <ID>`.
-- `.claude/agents/` — 5 agentes: `domain-backend`, `frontend-ui`, `ops-pwa`,
-  `security-reviewer`, `test-engineer`.
-- `.claude/hooks/` — 5 hooks: `boot-check`, `secret-guard`, `destructive-guard`,
-  `lint`, `quality-check`.
-- `.claude/settings.json` — deny/ask/allow + os 5 hooks.
+- `CLAUDE.md` enxuto · `AGENTS.md` contrato unico
+- `.claude/memory.md` `scope.md` `gotchas.md`
+- 9 rules path-scoped (`security.md` sempre ativa)
+- **19 skills de modulo** (18 originais + `relatorios`)
+- commands `/verify` `/security-review` `/performance-review` `/tela`
+- 5 agentes: `domain-backend` `frontend-ui` `ops-pwa` `security-reviewer`
+  `test-engineer` (+ Reality Checker global)
+- 5 hooks: boot-check, secret-guard, destructive-guard, lint, quality-check
+- Paridade Cursor: `.cursor/rules` `.cursor/commands` `.cursor/hooks.json`
 
-### Paridade Cursor ↔ Claude Code
+### Documentacao de produto e workflow
 
-- `.cursor/rules/` — 10 arquivos `.mdc` com `globs` equivalentes, **referenciando
-  os mesmos** `.claude/rules/*.md`. Sem duplicacao de conteudo, sem divergencia.
-- `.cursor/commands/` — os 4 comandos espelhados.
-- `.cursor/hooks.json` — reusa **os mesmos scripts** de `.claude/hooks/`.
-- Mesma verificacao (`pnpm verify`), mesma memoria (`.claude/memory.md`), mesmo
-  contrato (`AGENTS.md`).
+- `docs/architecture/` ADR index + module map
+- `docs/product/` invariantes, screen-map, tracker+CSV, fluxos, roadmaps
+  I1–I13, backend, mobile, riscos
+- `docs/workflow/` quality gates, task lifecycle, agent workflow, tooling,
+  dev environment, paginas Notion
+- `docs/adr/` processo para ADR-021+
+- Graphify indexado localmente (`graphify-out/` gitignored)
 
-## Falta nesta sessao de preparacao
+## Skills / MCP / plugins — resumo
 
-- [ ] `docs/architecture/` — indice de ADRs e module map
-- [ ] `docs/product/` — invariantes, screen map, fluxos, roadmaps backend/mobile
-- [ ] `docs/workflow/` — quality gates, ciclo de tarefa, registro de skills/MCPs/plugins
-- [ ] `docs/adr/` — processo de ADR
-- [ ] CI (GitHub Actions) com os gates de merge
-- [ ] git hooks (husky: pre-commit, commit-msg)
-- [ ] `.gitignore` revisado
-- [ ] indice Graphify
-- [ ] `pnpm verify` verde
-- [ ] commit inicial
-- [ ] atualizacao das paginas do Notion
+Ver tabelas canônicas em `docs/workflow/agent-workflow.md`.
+Avaliadas nesta revisao e **nao adotadas**: Graphiti (Graphify cobre),
+ui-ux-pro-max, Emotion, GapSkill (nao encontrado), Figma MCP, Turborepo,
+Storybook, OTel, feature flags, MSW. Serena fica para I1.
+
+## Falta (nao bloqueia comecar I1 no codigo)
+
+- [ ] Autenticar MCP Notion no Cursor e corrigir o cabecalho G3
+- [ ] Importar `docs/product/screen-tracker.csv` na database do Roadmap Mestre
+- [ ] Logo SVG + favicon/app icon (cliente) — bloqueia PWA install, nao I1
+- [ ] Validar HEX dos estados contra o board Penpot "00 — Foundations"
+- [ ] Contas Vercel / Supabase / Inngest / Sentry — trabalho de **I1**
 
 ## Nao feito de proposito
 
 Nenhuma pagina funcional, API real, regra de negocio, migration de dominio,
-autenticacao, OCR ou integracao WhatsApp. A implementacao comeca na fase **I1**.
+autenticacao, OCR ou WhatsApp. Proxima sessao: **I1 — Fundacao tecnica**.

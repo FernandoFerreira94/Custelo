@@ -11,6 +11,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.1.1
         version: 5.9.0(@standard-schema/spec@1.1.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.85.0(react@19.2.8))(zod@4.4.3)
+      '@sentry/nextjs':
+        specifier: ^10.19.0
+        version: 10.70.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.221.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.10.0(@opentelemetry/api@1.9.1))(next@16.3.1(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(webpack@5.109.2(lightningcss@1.32.0))
       '@supabase/ssr':
         specifier: ^0.7.0
         version: 0.7.0(@supabase/supabase-js@2.112.3(@opentelemetry/api@1.9.1))
@@ -42,8 +45,8 @@ importers:
         specifier: ^4.2.0
         version: 4.4.5
       drizzle-orm:
-        specifier: ^0.44.6
-        version: 0.44.7(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(postgres@3.4.9)
+        specifier: ^0.45.2
+        version: 0.45.2(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(postgres@3.4.9)
       inngest:
         specifier: ^3.44.2
         version: 3.54.2(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(express@5.2.1)(hono@4.13.2)(next@16.3.1(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(typescript@5.9.3)(zod@4.4.3)
@@ -108,9 +111,6 @@ importers:
       '@playwright/test':
         specifier: ^1.56.0
         version: 1.62.1
-      '@sentry/nextjs':
-        specifier: ^10.19.0
-        version: 10.70.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.221.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.10.0(@opentelemetry/api@1.9.1))(next@16.3.1(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(webpack@5.109.2(lightningcss@1.32.0))
       '@serwist/next':
         specifier: ^9.2.1
         version: 9.5.12(next@16.3.1(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(typescript@5.9.3)(webpack@5.109.2(lightningcss@1.32.0))
@@ -164,7 +164,7 @@ importers:
         version: 0.6.14(prettier@3.9.6)
       serwist:
         specifier: ^9.2.1
-        version: 9.5.12(browserslist@4.28.6)(typescript@5.9.3)
+        version: 9.5.12(browserslist@4.28.8)(typescript@5.9.3)
       tailwindcss:
         specifier: ^4
         version: 4.3.3
@@ -4329,8 +4329,8 @@ packages:
     resolution: {integrity: sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw==}
     hasBin: true
 
-  drizzle-orm@0.44.7:
-    resolution: {integrity: sha512-quIpnYznjU9lHshEOAYLoZ9s3jweleHlZIAWR/jX9gAWNg/JhQ1wj0KGRf7/Zm+obRrYd9GjPVJg790QY9N5AQ==}
+  drizzle-orm@0.45.2:
+    resolution: {integrity: sha512-kY0BSaTNYWnoDMVoyY8uxmyHjpJW1geOmBMdSSicKo9CIIWkSxMIj2rkeSR51b8KAPB7m+qysjuHme5nKP+E5Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -10049,6 +10049,10 @@ snapshots:
     optionalDependencies:
       browserslist: 4.28.6
 
+  '@serwist/utils@9.5.12(browserslist@4.28.8)':
+    optionalDependencies:
+      browserslist: 4.28.8
+
   '@serwist/webpack-plugin@9.5.12(browserslist@4.28.6)(typescript@5.9.3)(webpack@5.109.2(lightningcss@1.32.0))':
     dependencies:
       '@serwist/build': 9.5.12(browserslist@4.28.6)(typescript@5.9.3)
@@ -11318,7 +11322,7 @@ snapshots:
       esbuild: 0.25.12
       tsx: 4.23.12
 
-  drizzle-orm@0.44.7(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(postgres@3.4.9):
+  drizzle-orm@0.45.2(@opentelemetry/api@1.9.1)(@types/pg@8.15.6)(postgres@3.4.9):
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
       '@types/pg': 8.15.6
@@ -13532,6 +13536,15 @@ snapshots:
   serwist@9.5.12(browserslist@4.28.6)(typescript@5.9.3):
     dependencies:
       '@serwist/utils': 9.5.12(browserslist@4.28.6)
+      idb: 8.0.3
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - browserslist
+
+  serwist@9.5.12(browserslist@4.28.8)(typescript@5.9.3):
+    dependencies:
+      '@serwist/utils': 9.5.12(browserslist@4.28.8)
       idb: 8.0.3
     optionalDependencies:
       typescript: 5.9.3

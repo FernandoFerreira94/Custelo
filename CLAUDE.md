@@ -75,17 +75,17 @@ Lista completa com origem: `docs/product/invariantes.md`.
 
 ## Onde esta cada coisa
 
-| Preciso de                       | Leia                                     |
-| -------------------------------- | ---------------------------------------- |
-| decisao arquitetural e por que   | `docs/architecture/adr-index.md`         |
-| modulos, dependencias, ordem     | `docs/architecture/module-map.md`        |
-| tokens, componentes, estados     | `docs/design-system/`                    |
-| telas, IDs, rotas, prioridade    | `docs/product/screen-map.md`             |
-| contexto de negocio              | `.claude/scope.md` (comando `scope`)     |
-| decisoes que evoluem             | `.claude/memory.md`                      |
-| erro recorrente ja diagnosticado | `.claude/gotchas.md` (comando `gotchas`) |
-| como comecar/encerrar tarefa     | `docs/workflow/task-lifecycle.md`        |
-| skills, MCPs, plugins, agentes   | `docs/workflow/agent-workflow.md`        |
+| Preciso de                       | Leia                                               |
+| -------------------------------- | -------------------------------------------------- |
+| decisao arquitetural e por que   | `docs/architecture/adr-index.md`                   |
+| modulos, dependencias, ordem     | `docs/architecture/module-map.md`                  |
+| telas, IDs, rotas, prioridade    | `docs/product/screen-map.md` + `screen-tracker.md` |
+| tokens, componentes, estados     | `.design-system/` + `src/app/globals.css`          |
+| contexto de negocio              | `.claude/scope.md` (comando `scope`)               |
+| decisoes que evoluem             | `.claude/memory.md`                                |
+| erro recorrente ja diagnosticado | `.claude/gotchas.md` (comando `gotchas`)           |
+| como comecar/encerrar tarefa     | `docs/workflow/task-lifecycle.md`                  |
+| skills, MCPs, plugins, agentes   | `docs/workflow/agent-workflow.md`                  |
 
 Regras tecnicas por stack carregam sozinhas via `.claude/rules/` quando um
 arquivo do tipo entra em contexto. Nao as leia manualmente.

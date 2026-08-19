@@ -15,10 +15,11 @@ export const env = createEnv({
       .default("development"),
 
     // Banco (ADR-003 / ADR-006) — conexao direta, nao PostgREST.
-    DATABASE_URL: z.url(),
+    // Opcional em I1 (ainda sem projeto Supabase). I2 torna obrigatorio.
+    DATABASE_URL: z.url().optional(),
 
     // Supabase (ADR-005 / ADR-008)
-    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
 
     // Jobs duraveis (ADR-009)
     INNGEST_EVENT_KEY: z.string().min(1).optional(),
@@ -33,11 +34,13 @@ export const env = createEnv({
 
     // Observabilidade (ADR-016)
     SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
+    SENTRY_ORG: z.string().min(1).optional(),
+    SENTRY_PROJECT: z.string().min(1).optional(),
   },
 
   client: {
-    NEXT_PUBLIC_SUPABASE_URL: z.url(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
+    NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
     NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
     // ADR-017: analytics sem PII, separado do audit log.
     NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
@@ -54,6 +57,8 @@ export const env = createEnv({
     WHATSAPP_WEBHOOK_VERIFY_TOKEN: process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN,
     LABEL_EXTRACTOR_API_KEY: process.env.LABEL_EXTRACTOR_API_KEY,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    SENTRY_ORG: process.env.SENTRY_ORG,
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -62,5 +67,7 @@ export const env = createEnv({
   },
 
   emptyStringAsUndefined: true,
-  skipValidation: process.env.SKIP_ENV_VALIDATION === "true",
+  skipValidation:
+    process.env.SKIP_ENV_VALIDATION === "true" ||
+    process.env.NODE_ENV === "test",
 });

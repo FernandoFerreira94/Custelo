@@ -41,7 +41,7 @@ Portaria opera pelo celular; gestao resolve excecao pelo desktop.
 | 08  | Retirada                    | OPS · WEB        | 07         | sim          | `retirada`                                    |
 | 09  | Devolucao                   | OPS · WEB        | 07         | sim          | `devolucao`                                   |
 | 10  | Auditoria                   | WEB              | todos      | sim          | `auditoria`, `retencao-lgpd`                  |
-| 11  | Relatorios & Operacao       | WEB              | 07, 08, 09 | sim          | `relatorios` (sem skill propria)              |
+| 11  | Relatorios & Operacao       | WEB              | 07, 08, 09 | sim          | `relatorios`                                  |
 | 12  | Administracao SaaS & Planos | SAAS             | 01         | sim (minimo) | `billing-entitlements`                        |
 
 Transversais sem numero de modulo: `observabilidade`, `ui-ops-pwa`.

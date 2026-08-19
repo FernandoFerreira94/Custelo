@@ -72,7 +72,7 @@ declarar qualquer coisa "pronta".
 | `shadcn`          | adicionar e compor componentes shadcn/ui                                                                                       |
 | `ponytail`        | antidoto a over-engineering. Util neste projeto porque o dominio e complexo e a tentacao de abstrair cedo e alta.              |
 
-### De modulo (deste projeto — 18)
+### De modulo (deste projeto — 19)
 
 Materializadas do catalogo do Notion em `.claude/skills/`. Cada uma carrega o que
 o modulo faz, a regra de negocio e **a invariante que o agente nao pode violar**.
@@ -80,21 +80,26 @@ o modulo faz, a regra de negocio e **a invariante que o agente nao pode violar**
 `tenancy` · `auth-rbac` · `estrutura-fisica` · `pessoas-vinculos` ·
 `recebimento` · `ocr-matching` · `custodia-eventos` · `correcoes` · `whatsapp` ·
 `offline-sync` · `retirada` · `devolucao` · `auditoria` · `importacao` ·
-`billing-entitlements` · `retencao-lgpd` · `observabilidade` · `ui-ops-pwa`
+`billing-entitlements` · `retencao-lgpd` · `observabilidade` · `ui-ops-pwa` ·
+`relatorios`
 
 > `tenancy`, `auth-rbac` e `custodia-eventos` sao pre-requisito de qualquer
 > outra.
 
 ### Avaliadas e nao adotadas
 
-| Skill               | Decisao              | Motivo                                                                                                                                                                                                                        |
-| ------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `caveman`           | **nao ativar**       | comprime a saida em 65–75%, mas em estilo telegrafico. Conflita com a exigencia de comunicacao clara em PT-BR e com a rastreabilidade que este produto exige. A economia real vem de contexto enxuto, nao de saida abreviada. |
-| `ui-ux-pro-max`     | **nao ativar**       | sobrepoe `frontend-design` e traz direcao visual generica. O design system daqui e LOCKED — direcao externa e ruido.                                                                                                          |
-| `impeccable`        | **nao ativar**       | mesmo motivo. Identidade visual ja definida e aprovada.                                                                                                                                                                       |
-| `gsap-skills`       | nao aplicavel        | sem GSAP; motion e curto e o alvo e Android de baixo custo                                                                                                                                                                    |
-| `core-web-vitals`   | nao aplicavel no MVP | produto e app autenticado, nao site publico                                                                                                                                                                                   |
-| `code-review-graph` | **avaliar em I5**    | blast radius de mudanca fica util quando houver codigo real. Instalar cedo e custo sem retorno.                                                                                                                               |
+| Skill                      | Decisao              | Motivo                                                                                                                                                                                                                        |
+| -------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `caveman`                  | **nao ativar**       | comprime a saida em 65–75%, mas em estilo telegrafico. Conflita com a exigencia de comunicacao clara em PT-BR e com a rastreabilidade que este produto exige. A economia real vem de contexto enxuto, nao de saida abreviada. |
+| `ui-ux-pro-max`            | **nao ativar**       | sobrepoe `frontend-design` e traz direcao visual generica. O design system daqui e LOCKED — direcao externa e ruido.                                                                                                          |
+| `impeccable`               | **nao ativar**       | mesmo motivo. Identidade visual ja definida e aprovada.                                                                                                                                                                       |
+| `gsap-skills`              | nao aplicavel        | sem GSAP; motion e curto e o alvo e Android de baixo custo                                                                                                                                                                    |
+| `core-web-vitals`          | nao aplicavel no MVP | produto e app autenticado, nao site publico                                                                                                                                                                                   |
+| `code-review-graph`        | **avaliar em I5**    | blast radius de mudanca fica util quando houver codigo real. Instalar cedo e custo sem retorno.                                                                                                                               |
+| `graphiti`                 | **nao ativar**       | Graphify ja e o grafo deste repo                                                                                                                                                                                              |
+| `emotion`                  | **nao ativar**       | CSS-in-JS conflita com Tailwind v4 LOCKED; skill de "emocao" de UI e ruido contra a fundacao de marca                                                                                                                         |
+| `gapskill`                 | **nao encontrado**   | nenhum pacote confiavel com esse nome; quality gates + Reality Checker cobrem o caso                                                                                                                                          |
+| `vercel-labs/agent-skills` | **avaliar em I5**    | React/Next best practices pagam quando houver UI real                                                                                                                                                                         |
 
 ---
 

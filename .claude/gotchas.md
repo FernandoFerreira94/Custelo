@@ -26,3 +26,7 @@ isso os componentes-mestre acabaram na pagina "02 — OPS" em vez de
 [GOTCHA] Penpot — instancia de `Status/StatusBadge` com override perde o icone,
 o que quebra a regra "cor + label + icone" da fundacao de marca (visivel em
 CUS-002). Conferir icone apos qualquer override.
+
+[GOTCHA] Cursor — MCP Notion (`https://mcp.notion.com/mcp`) esta no
+`.cursor/mcp.json` mas so aparece depois do OAuth em Settings → MCP → Connect.
+Sem isso o agente nao atualiza o tracker; use `docs/product/screen-tracker.csv`.

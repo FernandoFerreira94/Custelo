@@ -1,8 +1,9 @@
 # Screen Map — indice das 83 telas
 
 **A especificacao tela a tela vive no Notion**, nas quatro subpaginas de telas do
-projeto Custelo. Este arquivo e o **indice de execucao**: ID, modulo, superficie,
-wave, fase e status. Nao duplicamos as 83 specs aqui de proposito — spec
+projeto Custelo. Este arquivo e o **indice**: ID, modulo, superficie, wave, fase.
+O tracker Design → Frontend → Backend → Testes esta em `screen-tracker.md`
+(CSV para importar no Notion). Nao duplicamos as 83 specs aqui — spec
 duplicada diverge, e a que diverge e sempre a que alguem le.
 
 | Fonte             | Onde                                                                                                                                                                        |

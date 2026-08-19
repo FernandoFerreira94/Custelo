@@ -51,4 +51,6 @@ esta em 77/83 e o desenvolvimento em 0 — a folga e confortavel.
 
 ## Onde estamos
 
-**Preparacao concluida (16/08/2026).** Proxima entrega: **I1**.
+**I1 em andamento (18/08/2026).** Codigo da fundacao no repo. Contas
+Supabase ×3, GitHub remote, DSN Sentry e chaves Inngest ainda sao passo
+humano (`docs/workflow/environments.md`). Proxima entrega de dominio: **I2**.
