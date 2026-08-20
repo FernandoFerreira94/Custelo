@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
+import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
 import { useForm } from "react-hook-form";
 
 import {
@@ -54,18 +54,7 @@ export function RecoverAccessForm({ onBack, onSent }: RecoverAccessFormProps) {
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <div className="mb-4 flex flex-col items-center gap-3 lg:hidden">
-          <Image
-            src="/brand/logo-custelo-icon.png"
-            alt=""
-            width={56}
-            height={68}
-            className="h-14 w-auto"
-          />
-          <p className="text-xl font-semibold tracking-tight text-foreground">
-            Custelo
-          </p>
-        </div>
+        <PacoteZapMobileHeader />
         <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
           <h1 className="contents">Recuperar acesso</h1>
         </CardTitle>

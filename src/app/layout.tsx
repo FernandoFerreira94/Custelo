@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 
 import "./globals.css";
 
 /**
  * Tipografia de produto — Inter (Brand & UI Foundation §8).
- * Bodoni Moda cobre a direcao didone da wordmark ate a fonte original e a
- * licenca serem confirmadas pelo cliente.
+ * Poppins SemiBold na parte "Zap" da wordmark PacoteZap.
  */
 const inter = Inter({
   subsets: ["latin"],
@@ -14,16 +13,17 @@ const inter = Inter({
   display: "swap",
 });
 
-const bodoniModa = Bodoni_Moda({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-display",
+  weight: ["600"],
+  variable: "--font-brand",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Custelo",
-    template: "%s · Custelo",
+    default: "PacoteZap",
+    template: "%s · PacoteZap",
   },
   description:
     "Recebimento e cadeia de custodia para portarias e operacoes prediais.",
@@ -45,7 +45,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.variable} ${bodoniModa.variable} antialiased`}>
+      <body className={`${inter.variable} ${poppins.variable} antialiased`}>
         {children}
       </body>
     </html>

@@ -26,6 +26,13 @@ vi.mock("next/image", () => ({
 describe("LoginForm", () => {
   it("mostra erros de validacao quando o envio esta vazio", async () => {
     render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("E-mail"), {
+      target: { value: "" },
+    });
+    fireEvent.change(screen.getByLabelText("Senha"), {
+      target: { value: "" },
+    });
     fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
     expect(await screen.findByText("Informe o e-mail.")).toBeInTheDocument();
