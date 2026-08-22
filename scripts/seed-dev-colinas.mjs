@@ -1,16 +1,14 @@
 /**
- * Seed dev — usuario Colinas para testes locais de login.
+ * Seed local para o login de desenvolvimento.
  *
  * Uso:
  *   node --env-file=.env scripts/seed-dev-colinas.mjs
  *
- * Cria o usuario no Supabase Auth (Admin API). Os registros de dominio
- * (organizacao, empreendimento, usuarios, escopos) precisam bypass de RLS —
- * rode via Supabase SQL Editor ou MCP execute_sql se o DATABASE_URL usar
- * custelo_app.
+ * A chave service_role e usada apenas neste processo de CLI para criar o
+ * usuario no Auth e os dados de tenancy. Ela nao e importada pelo app nem
+ * enviada ao navegador.
  */
 import { createClient } from "@supabase/supabase-js";
-import postgres from "postgres";
 
 const EMAIL = "colinas@colinas.com.br";
 const PASSWORD = "colinas123";
@@ -19,11 +17,10 @@ const EMP_ID = "cccccccc-cccc-4ccc-8ccc-cccccccccc02";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const databaseUrl = process.env.DATABASE_URL;
 
-if (!url || !serviceKey || !databaseUrl) {
+if (!url || !serviceKey) {
   console.error(
-    "Faltam NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY ou DATABASE_URL.",
+    "Faltam NEXT_PUBLIC_SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY.",
   );
   process.exit(1);
 }
@@ -32,95 +29,111 @@ const supabase = createClient(url, serviceKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
-const sql = postgres(databaseUrl, { prepare: false, max: 1 });
+function throwIfError(error) {
+  if (error) {
+    throw error;
+  }
+}
 
-async function main() {
-  const existing = await sql`
-    select id from usuarios where email = ${EMAIL} limit 1
-  `;
-
-  let userId = existing[0]?.id;
-
-  if (!userId) {
-    const { data, error } = await supabase.auth.admin.createUser({
+async function resolveUserId() {
+  const { data: created, error: createError } =
+    await supabase.auth.admin.createUser({
       email: EMAIL,
       password: PASSWORD,
       email_confirm: true,
       user_metadata: { nome: "Colinas Dev" },
     });
 
-    if (error) {
-      if (error.message.includes("already been registered")) {
-        const { data: listed } = await supabase.auth.admin.listUsers();
-        const found = listed.users.find((u) => u.email === EMAIL);
-        if (!found) {
-          throw error;
-        }
-        userId = found.id;
-        await supabase.auth.admin.updateUserById(userId, {
-          password: PASSWORD,
-          email_confirm: true,
-        });
-      } else {
-        throw error;
-      }
-    } else {
-      userId = data.user.id;
+  if (!createError) {
+    if (!created.user) {
+      throw new Error("Usuario de teste nao foi criado.");
     }
+    return created.user.id;
   }
 
-  await sql`
-    insert into organizacoes (id, nome, slug, status)
-    values (${ORG_ID}, 'Colinas', 'colinas', 'ativa')
-    on conflict (id) do nothing
-  `;
+  if (!createError.message.includes("already been registered")) {
+    throw createError;
+  }
 
-  await sql`
-    insert into empreendimentos (id, org_id, empreendimento_id, nome, slug, status)
-    values (
-      ${EMP_ID},
-      ${ORG_ID},
-      ${EMP_ID},
-      'Colinas Residencial',
-      'colinas-residencial',
-      'ativo'
-    )
-    on conflict (id) do nothing
-  `;
+  const { data: listed, error: listError } =
+    await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
+  throwIfError(listError);
 
-  await sql`
-    insert into usuarios (id, email, nome, status)
-    values (${userId}, ${EMAIL}, 'Colinas Dev', 'ativo')
-    on conflict (id) do update set
-      email = excluded.email,
-      nome = excluded.nome,
-      status = excluded.status
-  `;
+  const existing = listed.users.find((user) => user.email === EMAIL);
+  if (!existing) {
+    throw createError;
+  }
 
-  const [papel] = await sql`
-    select id from papeis where codigo = 'recepcionista' limit 1
-  `;
+  const { error: updateError } = await supabase.auth.admin.updateUserById(
+    existing.id,
+    { password: PASSWORD, email_confirm: true },
+  );
+  throwIfError(updateError);
 
-  if (!papel) {
+  return existing.id;
+}
+
+async function main() {
+  const userId = await resolveUserId();
+
+  const { error: organizationError } = await supabase
+    .from("organizacoes")
+    .upsert(
+      { id: ORG_ID, nome: "Colinas", slug: "colinas", status: "ativa" },
+      { onConflict: "id", ignoreDuplicates: true },
+    );
+  throwIfError(organizationError);
+
+  const { error: developmentError } = await supabase
+    .from("empreendimentos")
+    .upsert(
+      {
+        id: EMP_ID,
+        org_id: ORG_ID,
+        empreendimento_id: EMP_ID,
+        nome: "Colinas Residencial",
+        slug: "colinas-residencial",
+        status: "ativo",
+      },
+      { onConflict: "id", ignoreDuplicates: true },
+    );
+  throwIfError(developmentError);
+
+  const { error: userError } = await supabase
+    .from("usuarios")
+    .upsert(
+      { id: userId, email: EMAIL, nome: "Colinas Dev", status: "ativo" },
+      { onConflict: "id" },
+    );
+  throwIfError(userError);
+
+  const { data: role, error: roleError } = await supabase
+    .from("papeis")
+    .select("id")
+    .eq("codigo", "recepcionista")
+    .maybeSingle();
+  throwIfError(roleError);
+
+  if (!role) {
     throw new Error("Papel recepcionista nao encontrado.");
   }
 
-  await sql`
-    insert into escopos_usuario (usuario_id, org_id, empreendimento_id, papel_id, ativo)
-    values (${userId}, ${ORG_ID}, ${EMP_ID}, ${papel.id}, true)
-    on conflict (usuario_id, org_id, empreendimento_id) do update set
-      papel_id = excluded.papel_id,
-      ativo = true
-  `;
+  const { error: scopeError } = await supabase.from("escopos_usuario").upsert(
+    {
+      usuario_id: userId,
+      org_id: ORG_ID,
+      empreendimento_id: EMP_ID,
+      papel_id: role.id,
+      ativo: true,
+    },
+    { onConflict: "usuario_id,org_id,empreendimento_id" },
+  );
+  throwIfError(scopeError);
 
-  process.stdout.write(`Usuario dev pronto: ${EMAIL} (${userId})\n`);
+  process.stdout.write("Seed de login local concluido.\n");
 }
 
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await sql.end({ timeout: 2 });
-  });
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
