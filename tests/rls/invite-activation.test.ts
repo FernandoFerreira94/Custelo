@@ -13,11 +13,7 @@ describe("aceite de convite — AUTH-002", () => {
   });
 
   it("ativa somente o proprio usuario pendente", async () => {
-    await sql`
-      insert into usuarios (id, email, nome, status)
-      values ('aaaaaaaa-0000-4000-8000-000000000003', 'pending@example.test', 'Pendente', 'convite_pendente')
-      on conflict (id) do update set status = 'convite_pendente'
-    `;
+    await sql`select app.seed_convite_pendente_fixture()`;
 
     const pending = {
       ...FIXTURE_ORG_A,

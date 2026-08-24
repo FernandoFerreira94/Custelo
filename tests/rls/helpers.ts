@@ -12,6 +12,7 @@ const MIGRATIONS = [
   "0002_custom_access_token_hook.sql",
   "0003_contexto_ativo.sql",
   "0004_invite_activation.sql",
+  "0005_invite_activation_hardening.sql",
 ] as const;
 
 export const FIXTURE_ORG_A: TenantFixture = {
@@ -86,6 +87,14 @@ async function migrationApplied(
         (
           await sql<{ ready: boolean }[]>`
             select to_regprocedure('app.aceitar_convite(text)') is not null as ready
+          `
+        )[0]?.ready,
+      );
+    case "0005_invite_activation_hardening.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regprocedure('app.seed_convite_pendente_fixture()') is not null as ready
           `
         )[0]?.ready,
       );
