@@ -25,7 +25,7 @@ Verificacao em 18/08/2026 (sem MCP Notion autenticado):
 - **Desenvolvimento** de todas as 83: `NOT_STARTED` (nenhuma pagina em codigo).
 - Rotas, fases e modulos batem com `implementation-roadmap.md` e skills.
 
-Se o Notion divergir deste arquivo, **decida e registre** em `.claude/memory.md`.
+Se o Notion divergir deste arquivo, **decida e registre** em `.ai/memory.md`.
 Nunca resolva em silencio.
 
 ## Resumo de progresso
@@ -52,7 +52,8 @@ com `/verify` verde):
 1. Atualize **`docs/product/screen-tracker.csv`** — colunas `Frontend Status`,
    `API Status`, `Test Status` (e `Mobile Status` se OPS).
 2. Atualize **este arquivo** — mesma linha, mesmos status.
-3. Se houve decisao duradoura, registre em **`.claude/memory.md`**.
+3. Se houve decisao duradoura, registre em **`.ai/memory.md`**. Atualize
+   `.ai/page-map.md` se rota/estado/navegacao mudou.
 4. Quando o MCP Notion estiver autenticado, sincronize o _Roadmap Mestre_ no Notion
    (importar CSV ou editar a database).
 
@@ -75,8 +76,8 @@ Colunas abreviadas nas tabelas: **D** = Design · **F** = Frontend · **B** = Ba
 | AUTH-002 | Convite / 1o acesso | `/(auth)/convite`    | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar (preview); nome; senha; papel do convite; API na I2      |
 | AUTH-003 | Recuperar senha     | `/(auth)/recuperar`  | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar com translate; e-mail; sem vazar se existe; API na I2    |
 | AUTH-004 | Definir senha       | `/(auth)/senha`      | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Preview apos enviar link; nova senha + confirmacao; API na I2            |
-| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB          |
-| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Sessao invalida ou sem escopo; acao sair/contato admin                   |
+| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | DONE        | DONE        | IN_PROGRESS | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB          |
+| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | DONE        | DONE        | NOT_STARTED | Sessao invalida ou sem escopo; acao sair/contato admin                   |
 | AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                                |
 
 ## Wave 02 — OPS Recebimento · Fases I5/I6

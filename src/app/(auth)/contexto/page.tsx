@@ -1,17 +1,33 @@
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-/**
- * Placeholder AUTH-005 — selecionar contexto.
- * Sera substituida pela lista org/empreendimento na fase I2.
- */
-export default function ContextoPage() {
+import { resolveContextLanding } from "@/app/(auth)/contexto/actions";
+import { ContextSelector } from "@/components/auth/context-selector";
+
+export const metadata: Metadata = {
+  title: "Selecionar contexto",
+  description:
+    "Escolha a organização e o empreendimento para acessar o PacoteZap.",
+};
+
+export default async function ContextoPage() {
+  const landing = await resolveContextLanding();
+
+  if (landing.kind === "redirect") {
+    redirect(landing.href);
+  }
+
+  if (landing.kind === "unauthorized") {
+    redirect(landing.href);
+  }
+
+  if (landing.kind === "no-access") {
+    redirect(landing.href);
+  }
+
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-8 text-center">
-      <PacoteZapMark showIcon={false} textClassName="text-2xl" />
-      <h1 className="text-lg font-semibold">Login realizado</h1>
-      <p className="max-w-md text-sm text-muted-foreground">
-        Selecao de contexto (org/empreendimento) sera implementada em AUTH-005.
-      </p>
+    <main className="flex min-h-dvh items-center justify-center p-6">
+      <ContextSelector scopes={landing.scopes} />
     </main>
   );
 }

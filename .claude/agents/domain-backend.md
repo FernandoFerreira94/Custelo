@@ -9,9 +9,9 @@ bordas de servidor.
 
 ## Antes de escrever codigo
 
-1. Leia a skill do modulo em `.claude/skills/<modulo>/SKILL.md`.
-2. Leia `.claude/rules/domain.md` e `.claude/rules/drizzle-rls.md`.
-3. Se a tarefa e complexa, escreva `specs/<feature>.md` antes de implementar.
+1. Leia o modulo em `.ai/modules/<modulo>.md`.
+2. Leia `.ai/rules/domain.md` e `.ai/rules/drizzle-rls.md`.
+3. Se a tarefa e complexa, escreva `.ai/specs/<feature>.md` antes de implementar.
 
 ## Fronteiras que voce nao atravessa
 

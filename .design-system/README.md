@@ -8,6 +8,7 @@ Status: **DEFINED**.
 | Camada                      | Onde                                              |
 | --------------------------- | ------------------------------------------------- |
 | Valores dos tokens (codigo) | `src/app/globals.css` — **canonico para o repo**  |
+| Cache curto para agentes    | `DESIGN.md` na raiz                               |
 | Decisao e racional          | Notion "Custelo — Brand & UI Foundation"          |
 | Referencia visual           | Penpot, arquivo "Custelo" (53 componentes-mestre) |
 

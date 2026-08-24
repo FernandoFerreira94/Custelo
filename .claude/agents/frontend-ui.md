@@ -8,7 +8,7 @@ Voce constroi as superficies de gestao do Custelo: `(web)` e `(saas)`.
 
 ## Antes de escrever codigo
 
-1. Leia `.claude/rules/ui.md` e `docs/design-system/README.md`.
+1. Leia `.ai/rules/ui.md` e `DESIGN.md` (detalhe em `.design-system/`).
 2. Invoque a skill `frontend-design`.
 3. Confira o Component Inventory antes de criar componente novo. Se ja existe no
    design, ele nao nasce diferente aqui.

@@ -4,17 +4,17 @@ Vale para qualquer agente e para qualquer ferramenta.
 
 ## Comecar
 
-1. **Contexto minimo.** Leia `CLAUDE.md`. Nao leia `docs/` inteiro — leia o
-   arquivo que a tarefa exige.
+1. **Contexto minimo.** Leia `AGENTS.md`. Nao leia `docs/` inteiro — leia o
+   arquivo em `.ai/` que a tarefa exige.
 2. **Modulo.** Identifique o bounded context e carregue
-   `.claude/skills/<modulo>/SKILL.md`. E la que estao as invariantes daquele
-   contexto.
-3. **Fase.** Confirme em `docs/product/implementation-roadmap.md` que a fase que
-   habilita esta tarefa ja foi entregue. Dependencia invertida e o erro mais caro
-   deste roadmap.
+   `.ai/modules/<modulo>.md`. E la que estao as invariantes daquele contexto.
+3. **Fase.** Confirme em `.ai/roadmap.md` (e, se precisar da ordem I1–I13,
+   `docs/product/implementation-roadmap.md`) que a fase que habilita esta
+   tarefa ja foi entregue. Dependencia invertida e o erro mais caro deste
+   roadmap.
 4. **Tela.** Se e uma tela, use `/tela <ID>` — ele checa status de design, fase e
-   skill do modulo antes de deixar comecar.
-5. **Complexidade.** Feature complexa ganha `specs/<feature>.md` **antes** do
+   modulo antes de deixar comecar. `.ai/page-map.md` + `DESIGN.md` na UI.
+5. **Complexidade.** Feature complexa ganha `.ai/specs/<feature>.md` **antes** do
    codigo: requisitos, criterios de aceite, o que muda e o que nao muda.
 6. **Branch.** `feat/<ID>` quando for tela, `feat/<nome>` caso contrario.
 
@@ -23,10 +23,10 @@ Vale para qualquer agente e para qualquer ferramenta.
 - Regras path-scoped carregam sozinhas quando o arquivo entra em contexto. No
   Cursor, o mesmo — via `globs` em `.cursor/rules/`.
 - Teste nasce com o codigo, nao depois.
-- Decisao arquitetural, padrao novo ou workaround com motivo → `.claude/memory.md`
+- Decisao arquitetural, padrao novo ou workaround com motivo → `.ai/memory.md`
   no formato `[YYYY-MM-DD] contexto — decisao`. Se for critica, atualize o bloco
   `## Summary`.
-- Erro que aparece pela segunda vez → `.claude/gotchas.md`.
+- Erro que aparece pela segunda vez → `.ai/gotchas.md`.
 - Dependencia nova, mudanca de assinatura publica, renomeio, exclusao ou
   migration → **pergunte antes**.
 - Precisa mudar uma decisao LOCKED? Escreva um ADR em `docs/adr/`. Nao decida no
@@ -49,8 +49,11 @@ pnpm test:e2e   # se tocou UI
 4. Commit em Conventional Commits, um contexto por commit.
 5. Atualize `docs/product/screen-tracker.csv` e `docs/product/pages-roadmap.md`
    (colunas Frontend, Backend/API, Testes). Regra: `.cursor/rules/pages-roadmap.mdc`.
+   Atualize `.ai/page-map.md` se rota/estado/navegacao mudou e `.ai/roadmap.md`
+   se o status de fase mudou.
 6. Sincronize o Notion (_Roadmap Mestre_) quando o MCP estiver autenticado.
-7. Atualize `.claude/memory.md` se houve decisao duradoura.
+7. Atualize `.ai/memory.md` se houve decisao duradoura.
+8. Se a estrutura de codigo mudou, `graphify update .`.
 
 ## O que nunca fazer
 

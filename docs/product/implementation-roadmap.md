@@ -46,11 +46,12 @@ tela.
 | 06 e 07        | I3, I10  |
 | 08             | I10, I11 |
 
-O design roda a frente do desenvolvimento em pelo menos uma wave. Hoje o design
-esta em 77/83 e o desenvolvimento em 0 — a folga e confortavel.
+O design roda a frente do desenvolvimento em pelo menos uma wave. Design MVP
+esta em 77/83; desenvolvimento esta em I2 (AUTH), nao em zero.
 
 ## Onde estamos
 
-**I1 em andamento (18/08/2026).** Codigo da fundacao no repo. Contas
-Supabase ×3, GitHub remote, DSN Sentry e chaves Inngest ainda sao passo
-humano (`docs/workflow/environments.md`). Proxima entrega de dominio: **I2**.
+**I2 em andamento (20/08/2026).** I1 codigo no repo. I2.1 (tenancy+RLS) e I2.2
+(sessao+claims) entregues. AUTH-005/006 no working tree. Contas de nuvem ainda
+sao passo humano (`docs/workflow/environments.md`). Proxima: seed + E2E + I2.3.
+Fatia operacional: `.ai/roadmap.md`.

@@ -4,8 +4,7 @@ globs: **/schemas/**,**/*.schema.ts,src/lib/env.ts
 alwaysApply: false
 ---
 
-Regra canonica deste topico: @.claude/rules/zod.md
+Regra canonica deste topico: @.ai/rules/zod.md
 
-O conteudo vive naquele arquivo de proposito. Claude Code e Cursor leem a MESMA
-regra — nao existe versao "do Cursor". Se precisar mudar a regra, edite
-`.claude/rules/zod.md`; este arquivo so declara quando ela se aplica.
+O conteudo vive naquele arquivo. Claude Code e Cursor leem a MESMA regra.
+Se precisar mudar, edite `.ai/rules/zod.md`.

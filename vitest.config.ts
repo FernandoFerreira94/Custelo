@@ -26,7 +26,7 @@ export default defineConfig({
           name: "unit",
           environment: "node",
           include: [
-            "src/{domain,application,lib,ports,infrastructure}/**/*.test.ts",
+            "src/{app,domain,application,lib,ports,infrastructure}/**/*.test.ts",
           ],
         },
       },
