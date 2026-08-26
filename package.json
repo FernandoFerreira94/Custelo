@@ -88,7 +88,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "serwist": "^9.2.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "typescript": "^6",
     "vitest": "^3.2.4"
   },
   "pnpm": {
