@@ -12,10 +12,9 @@
 - Design: glass REVOGADO; cache em `DESIGN.md`; tokens em `globals.css`
 - Contexto de agentes: `.ai/` e canonico (Boot Protocol ago/2026). `CLAUDE.md`
   e `.cursor/` so adaptam. Nao ha memoria paralela por ferramenta.
-- Fase: I1 codigo feito. I2.1 (tenancy+RLS) e I2.2 (sessao+claims) feitos.
-  I2.3 / AUTH-005–006 no working tree. Falta seed + E2E + convite/reset reais.
-- AUTH `/entrar`: palco unico (entrar | recuperar | senha | convite) com
-  translate GSAP. Login real redireciona a `/contexto`.
+- Fase: I1 codigo feito. I2 (tenancy+RLS+auth) fechado no repo (commit `30b5379`).
+  **I3 iniciado:** migration `0007` + schema `areas`/`unidades`/`pessoas`/`vinculos`.
+- AUTH `/entrar`: convite, recuperacao e senha reais via Supabase.
 - Roadmap de paginas: `docs/product/pages-roadmap.md` + CSV.
 - Notion pagina-mae alinhada ao repo em 21/08 (PWA; RN/Expo 17/08 SUPERSEDED).
 

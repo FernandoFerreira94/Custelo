@@ -28,3 +28,16 @@ export const papelCodigoEnum = pgEnum("papel_codigo", [
   "recepcionista",
   "auditor",
 ]);
+
+/** Papel da pessoa na unidade (pessoas-vinculos). */
+export const vinculoTipoEnum = pgEnum("vinculo_tipo", [
+  "titular",
+  "morador",
+  "dependente",
+]);
+
+/** Ciclo de vida do vinculo pessoa-unidade. */
+export const vinculoStatusEnum = pgEnum("vinculo_status", [
+  "ativo",
+  "encerrado",
+]);

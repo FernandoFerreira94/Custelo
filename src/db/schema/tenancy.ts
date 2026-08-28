@@ -49,6 +49,9 @@ export const empreendimentos = pgTable(
     empreendimentoId: uuid("empreendimento_id").notNull(),
     nome: text("nome").notNull(),
     slug: text("slug").notNull(),
+    rotuloCamadaIntermediaria: text("rotulo_camada_intermediaria")
+      .notNull()
+      .default("Bloco"),
     status: empreendimentoStatusEnum("status").notNull().default("ativo"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()

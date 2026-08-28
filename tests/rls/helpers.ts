@@ -14,6 +14,7 @@ const MIGRATIONS = [
   "0004_invite_activation.sql",
   "0005_invite_activation_hardening.sql",
   "0006_access_management.sql",
+  "0007_i3_estrutura_pessoas.sql",
 ] as const;
 
 export const FIXTURE_ORG_A: TenantFixture = {
@@ -104,6 +105,14 @@ async function migrationApplied(
         (
           await sql<{ ready: boolean }[]>`
             select to_regprocedure('app.conceder_escopo(uuid, uuid, uuid, papel_codigo)') is not null as ready
+          `
+        )[0]?.ready,
+      );
+    case "0007_i3_estrutura_pessoas.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regclass('public.unidades') is not null as ready
           `
         )[0]?.ready,
       );

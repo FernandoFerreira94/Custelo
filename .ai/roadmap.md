@@ -3,23 +3,21 @@
 Ordem **por dependencia**, nao por tela. Fases I1–I13:
 `docs/product/implementation-roadmap.md`. Telas: `.ai/page-map.md`.
 
-Atualizado: **20/08/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
+Atualizado: **27/08/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## IN PROGRESS
 
-- **I2.3 / front AUTH** — AUTH-001..004 no palco `/entrar` (login real + convite,
-  recuperacao e senha via Supabase). AUTH-005 `/contexto` e AUTH-006 `/sem-acesso`
-  validados. Adaptadores I2.3 no repo: `manage-access`, migration `0006`, convite,
-  escopo, desativacao + revogacao de sessao. **Falta aplicar migration 0006 no
-  Supabase remoto** e validar e-mail de convite/recuperacao em ambiente real.
+- **I3 estrutura fisica + pessoas** — migration `0007` com `areas`, `unidades`,
+  `pontos_recebimento`, `pessoas`, `vinculos` + RLS. Schema Drizzle no repo.
+  Proximo: application commands/queries + telas UNI/PES.
 - **I1 nuvem** — contas humanas: Supabase x3, GitHub remote, DSN Sentry,
   chaves Inngest. Codigo da fundacao ja esta no repo.
 
 ## NEXT
 
-- Aplicar migration `0006_access_management.sql` no Supabase e rodar `pnpm test:rls`.
+- Aplicar migrations `0006` e `0007` no Supabase remoto; rodar `pnpm test:rls`.
 - Configurar redirect URLs + e-mail Supabase Auth (convite/recuperacao).
-- Depois: **I3** estrutura fisica e pessoas — so com I2 (RLS) de pe.
+- I3 application layer: CRUD unidades/pessoas/vinculos.
 
 ## BLOCKED
 
@@ -41,6 +39,8 @@ Atualizado: **20/08/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   `0000_tenancy_i2.sql`, `pnpm test:rls` verde.
 - **I2.2:** Supabase SSR, middleware refresh, `app.resolve_auth_claims()`,
   hook Postgres `custom_access_token_hook`, `requestSession()` real.
+- **I2.3:** adaptadores auth-rbac reais (migration `0006`, convite, escopo,
+  desativacao, recovery/senha, 109 testes). Commit `30b5379`.
 
 ## LATER / PHASE 2
 
