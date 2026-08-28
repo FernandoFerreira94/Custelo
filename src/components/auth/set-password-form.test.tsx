@@ -3,6 +3,14 @@ import { describe, expect, it, vi } from "vitest";
 
 import { SetPasswordForm } from "@/components/auth/set-password-form";
 
+const { requestSetPassword } = vi.hoisted(() => ({
+  requestSetPassword: vi.fn(),
+}));
+
+vi.mock("@/components/auth/request-set-password", () => ({
+  requestSetPassword,
+}));
+
 vi.mock("next/image", () => ({
   default: ({ alt, src }: { alt: string; src: string | { src: string } }) => (
     // eslint-disable-next-line @next/next/no-img-element -- mock do next/image no jsdom
@@ -35,6 +43,11 @@ describe("SetPasswordForm", () => {
   });
 
   it("salva senha valida", async () => {
+    requestSetPassword.mockResolvedValue({
+      ok: true,
+      redirectTo: "/contexto",
+    });
+
     const onSaved = vi.fn();
     render(<SetPasswordForm onBack={vi.fn()} onSaved={onSaved} />);
     fireEvent.change(screen.getByLabelText("Nova senha"), {
@@ -45,6 +58,28 @@ describe("SetPasswordForm", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Salvar senha" }));
 
-    await vi.waitFor(() => expect(onSaved).toHaveBeenCalledTimes(1));
+    await vi.waitFor(() => expect(onSaved).toHaveBeenCalledWith("/contexto"));
+  });
+
+  it("mostra erro retornado pela acao de definir senha", async () => {
+    requestSetPassword.mockResolvedValue({
+      ok: false,
+      message: "Link expirado. Solicite um novo link de recuperação.",
+    });
+
+    render(<SetPasswordForm onBack={vi.fn()} onSaved={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText("Nova senha"), {
+      target: { value: "1234567890" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirmar senha"), {
+      target: { value: "1234567890" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Salvar senha" }));
+
+    expect(
+      await screen.findByText(
+        "Link expirado. Solicite um novo link de recuperação.",
+      ),
+    ).toBeInTheDocument();
   });
 });

@@ -2,22 +2,34 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 import { AcceptInviteForm } from "@/components/auth/accept-invite-form";
 import { LoginForm } from "@/components/auth/login-form";
 import { RecoverAccessForm } from "@/components/auth/recover-access-form";
 import { SetPasswordForm } from "@/components/auth/set-password-form";
+import { useAuthHashView } from "@/components/auth/use-auth-hash-view";
+import type { PendingInvitePreview } from "@/components/auth/request-accept-invite";
 
 gsap.registerPlugin(useGSAP);
 
 type AuthCardView = "entrar" | "recuperar" | "senha" | "convite";
 
-export function AuthCardStage() {
+type AuthCardStageProps = {
+  initialInvite?: PendingInvitePreview | null;
+};
+
+export function AuthCardStage({ initialInvite = null }: AuthCardStageProps) {
+  const router = useRouter();
   const root = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<AuthCardView>("entrar");
   const isFirstView = useRef(true);
+
+  useAuthHashView((detected) => {
+    setView(detected);
+  });
 
   useGSAP(
     () => {
@@ -73,21 +85,23 @@ export function AuthCardStage() {
             />
           ) : null}
           {view === "recuperar" ? (
-            <RecoverAccessForm
-              onBack={() => go("entrar")}
-              onSent={() => go("senha")}
-            />
+            <RecoverAccessForm onBack={() => go("entrar")} />
           ) : null}
           {view === "senha" ? (
             <SetPasswordForm
               onBack={() => go("entrar")}
-              onSaved={() => go("entrar")}
+              onSaved={(redirectTo) => {
+                router.push(redirectTo ?? "/contexto");
+              }}
             />
           ) : null}
           {view === "convite" ? (
             <AcceptInviteForm
+              initialInvite={initialInvite}
               onBack={() => go("entrar")}
-              onActivated={() => go("entrar")}
+              onActivated={(redirectTo) => {
+                router.push(redirectTo ?? "/contexto");
+              }}
             />
           ) : null}
         </div>

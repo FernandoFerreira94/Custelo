@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -10,7 +11,8 @@ import {
 } from "@/components/auth/accept-invite-schema";
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import {
-  PREVIEW_INVITE,
+  fetchPendingInvite,
+  type PendingInvitePreview,
   requestAcceptInvite,
 } from "@/components/auth/request-accept-invite";
 import { Button } from "@/components/ui/button";
@@ -34,13 +36,21 @@ import { Spinner } from "@/components/ui/spinner";
 
 type AcceptInviteFormProps = {
   onBack: () => void;
-  onActivated: () => void;
+  onActivated: (redirectTo?: string) => void;
+  initialInvite?: PendingInvitePreview | null;
 };
 
 export function AcceptInviteForm({
   onBack,
   onActivated,
+  initialInvite = null,
 }: AcceptInviteFormProps) {
+  const [invite, setInvite] = useState<PendingInvitePreview | null>(
+    initialInvite,
+  );
+  const [isLoadingInvite, setIsLoadingInvite] = useState(!initialInvite);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -50,10 +60,87 @@ export function AcceptInviteForm({
     defaultValues: { fullName: "", password: "" },
   });
 
+  useEffect(() => {
+    if (initialInvite) {
+      return;
+    }
+
+    void fetchPendingInvite()
+      .then((metadata) => {
+        if (!metadata) {
+          setLoadError(
+            "Convite não encontrado ou expirado. Abra novamente o link do convite.",
+          );
+          return;
+        }
+        setInvite(metadata);
+      })
+      .finally(() => setIsLoadingInvite(false));
+  }, [initialInvite]);
+
   async function onSubmit(values: AcceptInviteInput) {
-    await requestAcceptInvite(values);
-    onActivated();
+    setFormError(null);
+    const result = await requestAcceptInvite(values);
+
+    if (!result.ok) {
+      setFormError(result.message);
+      return;
+    }
+
+    onActivated(result.redirectTo);
   }
+
+  if (isLoadingInvite) {
+    return (
+      <Card
+        data-login-card
+        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
+      >
+        <CardHeader>
+          <PacoteZapMobileHeader />
+          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+            <h1 className="contents">Aceitar convite</h1>
+          </CardTitle>
+          <CardDescription>Carregando detalhes do convite…</CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center py-8">
+          <Spinner aria-label="Carregando convite" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (loadError || !invite) {
+    return (
+      <Card
+        data-login-card
+        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
+      >
+        <CardHeader>
+          <PacoteZapMobileHeader />
+          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+            <h1 className="contents">Aceitar convite</h1>
+          </CardTitle>
+          <CardDescription>
+            {loadError ??
+              "Convite não encontrado ou expirado. Abra novamente o link do convite."}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            type="button"
+            variant="link"
+            onClick={onBack}
+            className="h-auto min-h-[var(--size-touch-min)] w-full underline"
+          >
+            Voltar para o login
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const preview = invite;
 
   return (
     <Card
@@ -66,7 +153,7 @@ export function AcceptInviteForm({
           <h1 className="contents">Aceitar convite</h1>
         </CardTitle>
         <CardDescription>
-          {PREVIEW_INVITE.inviter} convidou você para operar no PacoteZap.
+          {preview.inviter} convidou você para operar no PacoteZap.
         </CardDescription>
       </CardHeader>
 
@@ -114,12 +201,16 @@ export function AcceptInviteForm({
                 Seu acesso neste convite
               </p>
               <span className="mt-3 inline-flex rounded-[var(--radius-chip)] bg-card px-2.5 py-1 text-xs font-medium text-primary ring-1 ring-foreground/10">
-                {PREVIEW_INVITE.role}
+                {preview.role}
               </span>
               <p className="mt-2 text-sm">
-                Empreendimentos: {PREVIEW_INVITE.properties}
+                Empreendimentos: {preview.properties}
               </p>
             </div>
+
+            {formError ? (
+              <FieldError role="alert">{formError}</FieldError>
+            ) : null}
 
             <Button
               type="submit"

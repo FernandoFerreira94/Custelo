@@ -3,12 +3,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import {
   recoverSchema,
   type RecoverInput,
 } from "@/components/auth/recover-schema";
-import { requestRecovery } from "@/components/auth/request-recovery";
+import {
+  RECOVERY_ACCEPTED,
+  requestRecovery,
+} from "@/components/auth/request-recovery";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -30,10 +34,9 @@ import { Spinner } from "@/components/ui/spinner";
 
 type RecoverAccessFormProps = {
   onBack: () => void;
-  onSent: () => void;
 };
 
-export function RecoverAccessForm({ onBack, onSent }: RecoverAccessFormProps) {
+export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
   const {
     register,
     handleSubmit,
@@ -43,9 +46,51 @@ export function RecoverAccessForm({ onBack, onSent }: RecoverAccessFormProps) {
     defaultValues: { email: "" },
   });
 
+  const [formError, setFormError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   async function onSubmit(values: RecoverInput) {
-    await requestRecovery(values);
-    onSent();
+    setFormError(null);
+    const result = await requestRecovery(values);
+
+    if (!result.ok) {
+      setFormError(result.message);
+      return;
+    }
+
+    setSuccessMessage(result.message || RECOVERY_ACCEPTED);
+  }
+
+  if (successMessage) {
+    return (
+      <Card
+        data-login-card
+        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
+      >
+        <CardHeader>
+          <PacoteZapMobileHeader />
+          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+            <h1 className="contents">Link enviado</h1>
+          </CardTitle>
+          <CardDescription>{successMessage}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            type="button"
+            variant="link"
+            onClick={onBack}
+            className="h-auto min-h-[var(--size-touch-min)] w-full underline"
+          >
+            Voltar para o login
+          </Button>
+        </CardContent>
+        <CardFooter className="bg-muted">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Verifique também a pasta de spam. O link vale por 30 min.
+          </p>
+        </CardFooter>
+      </Card>
+    );
   }
 
   return (
@@ -91,6 +136,10 @@ export function RecoverAccessForm({ onBack, onSent }: RecoverAccessFormProps) {
                 </FieldDescription>
               )}
             </Field>
+
+            {formError ? (
+              <FieldError role="alert">{formError}</FieldError>
+            ) : null}
 
             <Button
               type="submit"

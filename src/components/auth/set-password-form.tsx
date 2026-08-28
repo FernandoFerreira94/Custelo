@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import { requestSetPassword } from "@/components/auth/request-set-password";
@@ -19,12 +20,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FieldGroup } from "@/components/ui/field";
+import { FieldError, FieldGroup } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 
 type SetPasswordFormProps = {
   onBack: () => void;
-  onSaved: () => void;
+  onSaved: (redirectTo?: string) => void;
 };
 
 export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
@@ -36,10 +37,18 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
     resolver: zodResolver(setPasswordSchema),
     defaultValues: { password: "", confirmPassword: "" },
   });
+  const [formError, setFormError] = useState<string | null>(null);
 
   async function onSubmit(values: SetPasswordInput) {
-    await requestSetPassword(values);
-    onSaved();
+    setFormError(null);
+    const result = await requestSetPassword(values);
+
+    if (!result.ok) {
+      setFormError(result.message);
+      return;
+    }
+
+    onSaved(result.redirectTo);
   }
 
   return (
@@ -78,6 +87,10 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
               hideLabel="Ocultar confirmação da senha"
               {...register("confirmPassword")}
             />
+
+            {formError ? (
+              <FieldError role="alert">{formError}</FieldError>
+            ) : null}
 
             <Button
               type="submit"

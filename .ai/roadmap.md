@@ -7,20 +7,18 @@ Atualizado: **20/08/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## IN PROGRESS
 
-- **I2.3 / front AUTH** — AUTH-001..004 no palco `/entrar` (preview + login
-  real). AUTH-005 `/contexto` e AUTH-006 `/sem-acesso` validados por teste
-  unitario server-side (sessao, status, escopo unico/multiplo e escopo
-  invalido). Politica `application/auth-rbac` para convite, mudanca/revogacao
-  de escopo e desativacao foi validada por testes unitarios. Seed idempotente
-  por CLI e E2E real validam entrar, contexto e recebimento em desktop e OPS.
-  Faltam adaptadores reais de convite, persistencia, revogacao de sessao e reset.
+- **I2.3 / front AUTH** — AUTH-001..004 no palco `/entrar` (login real + convite,
+  recuperacao e senha via Supabase). AUTH-005 `/contexto` e AUTH-006 `/sem-acesso`
+  validados. Adaptadores I2.3 no repo: `manage-access`, migration `0006`, convite,
+  escopo, desativacao + revogacao de sessao. **Falta aplicar migration 0006 no
+  Supabase remoto** e validar e-mail de convite/recuperacao em ambiente real.
 - **I1 nuvem** — contas humanas: Supabase x3, GitHub remote, DSN Sentry,
   chaves Inngest. Codigo da fundacao ja esta no repo.
 
 ## NEXT
 
-- I2.3 adaptadores auth-rbac (convite, persistencia de papel/escopo e
-  revogacao de refresh token).
+- Aplicar migration `0006_access_management.sql` no Supabase e rodar `pnpm test:rls`.
+- Configurar redirect URLs + e-mail Supabase Auth (convite/recuperacao).
 - Depois: **I3** estrutura fisica e pessoas — so com I2 (RLS) de pe.
 
 ## BLOCKED

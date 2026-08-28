@@ -9,7 +9,13 @@ import { LoginOrbs } from "@/components/auth/login-orbs";
 import { useLoginMotion } from "@/components/auth/use-login-motion";
 import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
 
-export function LoginDesktop() {
+import type { PendingInvitePreview } from "@/components/auth/request-accept-invite";
+
+type LoginDesktopProps = {
+  initialInvite?: PendingInvitePreview | null;
+};
+
+export function LoginDesktop({ initialInvite = null }: LoginDesktopProps) {
   const root = useRef<HTMLDivElement>(null);
   useLoginMotion({ root });
 
@@ -24,7 +30,7 @@ export function LoginDesktop() {
         className="relative z-10 flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-12 lg:ml-auto lg:w-1/2 lg:px-10"
       >
         <LoginOrbs />
-        <AuthCardStage />
+        <AuthCardStage initialInvite={initialInvite} />
       </div>
 
       <div
