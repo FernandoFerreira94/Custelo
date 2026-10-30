@@ -5,7 +5,7 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 ## Projeto
 
 - Tipo de produto (blueprint): `field-service` na superfície `(ops)` (PWA da portaria), `saas` na `(web)` (gestão) e `admin` na `(saas)` → siga `blueprints/<id>.md` pela skill `webcode-ui-patterns`.
-- Tema: próprio do Custelo (Brand & UI Foundation rev. 15/08/2026, tokens em `src/app/globals.css`). Ainda não existe tema `custelo` no DS: até ele existir, os tokens `--wc-*` que os componentes `@webcode` usam precisam vir do tema exportado pelo Estúdio do DS a partir das cores do Custelo. Não instale componente `@webcode` antes disso.
+- Tema: `custelo` no DS (`@webcode/theme-custelo`), feito a partir do `src/app/globals.css` (Deep Blue, Floral White, Powder Blue no escuro, Bodoni Moda nos títulos, Inter no corpo). O `globals.css` continua sendo a fonte canônica: antes de instalar o tema, compare os dois e mantenha os estados de encomenda (`--state-*`) e a elevação sólida do projeto.
 - Stack: Next.js App Router + Tailwind v4 + shadcn (`radix-nova`). Componentes em `src/components/ui/`, import por `@/components/ui/<nome>`.
 
 ## O que continua valendo do Custelo (LOCK)
