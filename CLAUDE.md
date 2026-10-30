@@ -72,6 +72,11 @@ Lista completa com origem: `docs/product/invariantes.md`.
 - Alvo de toque minimo 44px; acao primaria 48–56px.
 - Antes de qualquer UI nova: `docs/design-system/README.md` + a skill
   `frontend-design`.
+- Biblioteca de componentes e padroes de tela: WebCode Design System
+  (`@webcode`, decisao do Fernando em 30/10/2026). Regras em `WEBCODE-DS.md`,
+  importado abaixo. O LOCK acima vence em conflito.
+
+@WEBCODE-DS.md
 
 ## Onde esta cada coisa
 
@@ -81,6 +86,7 @@ Lista completa com origem: `docs/product/invariantes.md`.
 | modulos, dependencias, ordem     | `docs/architecture/module-map.md`                  |
 | telas, IDs, rotas, prioridade    | `docs/product/screen-map.md` + `screen-tracker.md` |
 | tokens, componentes, estados     | `.design-system/` + `src/app/globals.css`          |
+| biblioteca de componentes        | `WEBCODE-DS.md` (registry `@webcode`)              |
 | contexto de negocio              | `.claude/scope.md` (comando `scope`)               |
 | decisoes que evoluem             | `.claude/memory.md`                                |
 | erro recorrente ja diagnosticado | `.claude/gotchas.md` (comando `gotchas`)           |

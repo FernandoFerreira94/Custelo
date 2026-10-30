@@ -7,14 +7,15 @@ Todos leem a **mesma** fonte. Nao existe memoria paralela por ferramenta.
 
 ## Ecossistema de memoria (unico)
 
-| Camada                     | Arquivo              | Quando ler                                         |
-| -------------------------- | -------------------- | -------------------------------------------------- |
-| Regras fixas + comandos    | `CLAUDE.md`          | sempre, no inicio                                  |
-| Contexto de negocio        | `.claude/scope.md`   | sob demanda                                        |
-| Decisoes que evoluem       | `.claude/memory.md`  | inicio (bloco `## Summary`) + ao registrar decisao |
-| Erros recorrentes          | `.claude/gotchas.md` | quando um erro se repete                           |
-| Arquitetura, design, telas | `docs/**`            | conforme a tarefa                                  |
-| Regras por stack           | `.claude/rules/*.md` | ao tocar arquivos do tipo                          |
+| Camada                      | Arquivo              | Quando ler                                         |
+| --------------------------- | -------------------- | -------------------------------------------------- |
+| Regras fixas + comandos     | `CLAUDE.md`          | sempre, no inicio                                  |
+| Contexto de negocio         | `.claude/scope.md`   | sob demanda                                        |
+| Decisoes que evoluem        | `.claude/memory.md`  | inicio (bloco `## Summary`) + ao registrar decisao |
+| Erros recorrentes           | `.claude/gotchas.md` | quando um erro se repete                           |
+| Arquitetura, design, telas  | `docs/**`            | conforme a tarefa                                  |
+| Biblioteca de UI (@webcode) | `WEBCODE-DS.md`      | antes de criar ou trocar componente                |
+| Regras por stack            | `.claude/rules/*.md` | ao tocar arquivos do tipo                          |
 
 Ferramentas que nao suportam carregamento path-scoped (`.claude/rules/`) devem
 ler manualmente o arquivo de regra correspondente antes de editar aquele tipo de
