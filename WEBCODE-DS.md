@@ -16,7 +16,7 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 
 ## Componentes
 
-1. Existe em `@webcode`? Instale: `npx shadcn@latest add @webcode/<nome>` (namespace registrado no `components.json`; `GITHUB_TOKEN` no `.env`, nunca no git).
+1. Existe em `@webcode`? Instale: `npx shadcn@latest add @webcode/<nome>` (namespace `@webcode` no `components.json`, registry público, sem token).
 2. Não existe? Use `@shadcn/<nome>`: herda o tema pela ponte de tokens. Anote a falta em `DESIGN-NOTAS.md`.
 3. Tela inteira (hero, checkout, kanban, dashboard…)? Parta do padrão da skill `webcode-ui-patterns`.
 4. Não edite a API dos componentes; acrescente props. Não crie uma segunda versão de um componente que já existe.
@@ -47,11 +47,8 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 - No `components.json` do app:
   ```json
   "registries": {
-    "@webcode": {
-      "url": "https://raw.githubusercontent.com/FernandoFerreira94/webcode-design/main/site/public/r/{name}.json",
-      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN}" }
-    }
+    "@webcode": "https://webcode-design.vercel.app/r/{name}.json"
   }
   ```
-- O repo do DS é privado: token fine-grained do GitHub, só leitura de Contents do `webcode-design`, em `GITHUB_TOKEN=` no `.env` local.
+- Registry público no site do DS (https://webcode-design.vercel.app), sem token. Atualizar componente já instalado: não reinstale por cima; o `npm run sync` do repo do DS mostra o diff e só aplica o que não foi customizado (base em `webcode-ds.lock.json`, não edite).
 - Guia completo: `docs/usar-em-projeto.md` no repo do DS.
