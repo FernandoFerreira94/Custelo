@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { resolveContextLanding } from "@/app/(auth)/contexto/actions";
 import { ContextSelector } from "@/components/auth/context-selector";
+import { EntrarLayout } from "@/components/auth/entrar-layout";
 
 // Depende da sessão (cookies) em toda requisição; nunca pré-renderizar no build.
 export const dynamic = "force-dynamic";
@@ -42,15 +43,17 @@ export default async function ContextoPage({
   }
 
   return (
-    <main className="flex min-h-dvh items-center justify-center p-6">
-      <ContextSelector
-        scopes={landing.scopes}
-        initialError={
-          erro
-            ? "Não conseguimos abrir o empreendimento sozinhos. Toque nele para tentar de novo."
-            : null
-        }
-      />
-    </main>
+    <EntrarLayout>
+      <main className="w-full max-w-[460px]">
+        <ContextSelector
+          scopes={landing.scopes}
+          initialError={
+            erro
+              ? "Não conseguimos abrir o empreendimento sozinhos. Toque nele para tentar de novo."
+              : null
+          }
+        />
+      </main>
+    </EntrarLayout>
   );
 }

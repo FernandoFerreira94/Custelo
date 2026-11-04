@@ -203,7 +203,7 @@ Instale: `result skeleton empty banner badge`.
 | `src/app/not-found.tsx`                      | `Result status="404"`, "Página não encontrada", ação "Voltar para o início"                       | `Result`, `Button shape="pill"` | "O endereço mudou ou não existe. Nada foi perdido." |
 | `src/app/error.tsx`                          | `Result status="500"`, botões "Tentar de novo" (`reset()`) e "Falar com o suporte" (ghost)        | `Result`, `Button`              | `MSG.inesperado` com o código (digest/Sentry id)    |
 | `src/app/global-error.tsx`                   | igual ao `error.tsx`, com `<html><body>` próprios e sem depender de tema carregado                | `Result`                        | idem                                                |
-| `src/app/loading.tsx`                        | `Skeleton` no formato do conteúdo (ver `EsqueletoDesktop`/`EsqueletoFila`), não spinner de página | `Skeleton`, `SkeletonCard`      | —                                                   |
+| `src/app/(web)/loading.tsx`                  | `Skeleton` no formato do conteúdo (ver `EsqueletoDesktop`/`EsqueletoFila`), não spinner de página | `Skeleton`, `SkeletonCard`      | —                                                   |
 | `(ops)/(web)/(saas)` sem permissão           | o guard já redireciona; se mostrar tela, use `Result status="403"` "Sem permissão para esta área" | `Result`                        | `MSG.semPermissao`                                  |
 
 Outros pontos:

@@ -32,6 +32,15 @@ const eslintConfig = [
     },
   },
   {
+    // Componentes vindos do registry @webcode: o codigo e da biblioteca e um
+    // `--overwrite` refaz o arquivo, entao nao se corrige regra de lint nele.
+    files: ["src/components/ui/**"],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+  {
     // ADR-001/002: a camada de dominio nao conhece framework nem fornecedor.
     // Esta e a fronteira que impede a "dilucao de fronteiras" citada no ADR-001.
     files: ["src/domain/**/*.ts", "src/application/**/*.ts"],

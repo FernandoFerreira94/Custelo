@@ -1,48 +1,50 @@
 import type { ReactNode } from "react";
 
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { PzMarca } from "@/components/brand/marca";
+import { Card, CardContent } from "@/components/ui/card";
+import { Result } from "@/components/ui/result";
 
-/** Tela cheia para erro, página não encontrada e falhas de carregamento. */
+type Status = "404" | "403" | "500" | "warning" | "info";
+
+/** Tela cheia de erro, página não encontrada e sem permissão (prancha #estados). */
 export function TelaDeEstado({
+  status,
   titulo,
   descricao,
-  detalhe,
+  codigo,
   acoes,
 }: {
+  status: Status;
   titulo: string;
   descricao: string;
-  detalhe?: ReactNode;
+  codigo?: string;
   acoes: ReactNode;
 }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center p-6">
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-6 bg-background p-6">
+      <PzMarca texto="text-xl" />
       <Card
-        role="alert"
-        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)]"
+        role={status === "500" || status === "warning" ? "alert" : undefined}
+        className="w-full max-w-lg rounded-3xl py-0"
       >
-        <CardHeader>
-          <PacoteZapMark showIcon={false} textClassName="text-xl" />
-          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
-            <h1 className="contents">{titulo}</h1>
-          </CardTitle>
-          <CardDescription>{descricao}</CardDescription>
-        </CardHeader>
-        {detalhe ? (
-          <CardContent className="text-sm text-muted-foreground">
-            {detalhe}
-          </CardContent>
-        ) : null}
-        <CardFooter className="flex flex-col gap-3 bg-muted">
-          {acoes}
-        </CardFooter>
+        <CardContent>
+          <Result
+            status={status}
+            headingLevel={1}
+            title={titulo}
+            description={
+              codigo ? (
+                <>
+                  {descricao} Código:{" "}
+                  <span className="font-mono">{codigo}</span>
+                </>
+              ) : (
+                descricao
+              )
+            }
+            extra={acoes}
+          />
+        </CardContent>
       </Card>
     </main>
   );

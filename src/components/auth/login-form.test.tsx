@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { LoginForm } from "@/components/auth/login-form";
@@ -120,5 +120,29 @@ describe("LoginForm", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       AUTH_UNAVAILABLE,
     );
+  });
+
+  it("bloqueia o envio na quinta falha e mostra a contagem", async () => {
+    vi.mocked(requestSession).mockResolvedValue({
+      ok: false,
+      message: "E-mail ou senha incorretos.",
+    });
+
+    render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("E-mail"), {
+      target: { value: "carla.souza@vilaverde.com.br" },
+    });
+    fireEvent.change(screen.getByLabelText("Senha"), {
+      target: { value: "uma-senha" },
+    });
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
+      await waitFor(() => expect(requestSession).toHaveBeenCalledTimes(i + 1));
+    }
+
+    expect(await screen.findByText(/Acesso bloqueado/)).toBeInTheDocument();
+    expect(screen.getByText("15:00")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Entrar" })).toBeDisabled();
   });
 });
