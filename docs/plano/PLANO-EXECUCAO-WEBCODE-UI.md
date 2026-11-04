@@ -397,6 +397,8 @@ Confirme cada item com `grep -rn "<nome>" src tests` antes de apagar. **Rotas do
 
 ## Apêndice A. Telas × prancha × rota × fase (próximas fases)
 
+> **Substituído em 04/11/2026** pela seção 6 do plano mestre (`docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md`), que tem as rotas canônicas (seção 5.1) e as pranchas novas. Esta tabela fica só como histórico.
+
 Rota canônica: `docs/product/screen-tracker.csv`. Prancha: arquivo em `docs/pranchas/` e aba no artifact.
 A migração (Passos 1–8) cobre só o que existe hoje (AUTH e cascas). As outras telas seguem o **Apêndice D** quando a fase chegar.
 

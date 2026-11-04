@@ -30,6 +30,16 @@
 
 ## Log
 
+[2026-11-04] Plano mestre (`docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md`)
+vira o plano de execucao. Fernando aprovou todas as recomendacoes D1–D19 da
+secao 1: importacao Excel/CSV na I3, autorizado como vinculo, contatos na I3,
+benchmark OCR x LLM na I5 (ADR-023 se trocar), rotas canonicas, turno fora,
+Asaas so com conta, `#importar` substitui `#importacao`, sem modo escuro, meta
+<=15 s/<=25 s por registro, PDF por pagina de impressao, plano trava so
+relatorios e organizacao, prazos de retencao do juridico (stop-ship), assinatura
+fixa na retirada, copia diaria dos arquivos de evidencia. Pendem de fora: D4,
+D9, D12, D17, D19.
+
 [2026-09-01] Fechamento formal AUTH-001..004 revalidado sem alterar codigo:
 `pnpm test:rls` passou (20 testes) e o E2E Auth passou (14 testes reais em
 desktop e OPS, incluindo login, recovery/callback e convite/ativacao). O a11y

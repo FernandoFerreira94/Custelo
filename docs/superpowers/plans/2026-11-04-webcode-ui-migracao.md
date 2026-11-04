@@ -10,6 +10,8 @@
 
 **Spec:** `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md` (decisões, mapa tela × prancha × fase, cola da API). Pranchas: `docs/pranchas/` e o artifact https://claude.ai/artifact/62ToCCANhT2uCNvvi4eWoD.
 
+**Parte 1 do plano mestre:** este plano é a Parte 1 de `docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md` (seção 2). Ao terminar, siga a Fase 0 de lá. O catálogo de telas das próximas fases é a seção 6 do plano mestre.
+
 ## Global Constraints
 
 - **Componente só da biblioteca `@webcode`.**
@@ -1950,13 +1952,15 @@ Depois apague:
 - os arquivos de `src/components/ui/*` que o knip listou como não usados;
 - os exports sem uso que o knip listou;
 - os `README.md` de route group que só dizem "a fazer";
-- as variáveis CSS antigas sem uso no `globals.css`: `--brand-deep-blue`, `--brand-powder-blue`, `--brand-floral-white`, `--brand-pale-brown` e qualquer `--font-brand`.
+- as variáveis CSS antigas sem uso no `globals.css`: `--brand-deep-blue`, `--brand-powder-blue`, `--brand-floral-white` e `--brand-pale-brown`.
 
 Antes de apagar uma variável CSS, confira com `grep -rn "<variável>" src`.
 
 **Não apague:**
 
 - `--state-*`;
+- `--font-brand`: desde o PR #15 é a Plus Jakarta dos títulos (`layout.tsx`, `pacotezap-mark.tsx`, `design-tokens.test.ts`);
+- `src/application/gestao/*`, `src/db/schema/*` e tudo de `pontos_recebimento`, mesmo que o knip acuse: é a base da I3 (plano mestre, seção 8);
 - `--shadow-elevation-*` (se ainda houver uso);
 - READMEs que documentam fronteira (`src/domain`, `src/application`, `src/ports`, `src/infrastructure`);
 - nada em `src/db/migrations`.
