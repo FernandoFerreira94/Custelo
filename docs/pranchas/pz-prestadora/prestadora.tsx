@@ -76,8 +76,33 @@ function Linha({ children }: { children: React.ReactNode }) {
   return <div className="relative flex gap-8 overflow-x-auto pb-6">{children}</div>
 }
 
-function TelaCelular({ children }: { children: React.ReactNode }) {
-  return <div className="flex h-full flex-col gap-4 overflow-y-auto bg-muted px-4 pt-8 pb-8">{children}</div>
+/* Regra do app (Fernando, 04/11): celular sem logo no topo; header com voltar e título centralizado;
+   pouco texto de apoio, um destaque que diz só o que aconteceu e uma ação clara. */
+
+function TelaCelular({ titulo, voltar = true, acaoTopo, rodape, children }: { titulo: string; voltar?: boolean; acaoTopo?: React.ReactNode; rodape?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="flex h-full flex-col bg-muted">
+      <header className="grid grid-cols-[48px_minmax(0,1fr)_48px] items-center gap-2 px-2 pt-10 pb-2">
+        <div>{voltar && <Button variant="ghost" shape="pill" size="icon-lg" aria-label="Voltar"><ArrowLeftIcon aria-hidden /></Button>}</div>
+        <h1 className="truncate text-center text-lg font-semibold">{titulo}</h1>
+        <div className="justify-self-end">{acaoTopo}</div>
+      </header>
+      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-4 pt-4 pb-4">{children}</div>
+      {rodape && <footer className="grid gap-2 px-4 pt-2 pb-8">{rodape}</footer>}
+    </div>
+  )
+}
+
+/** Texto de destaque: o que aconteceu, em poucas palavras, com uma linha de apoio opcional. */
+function Destaque({ tom = "neutro", icone, titulo, apoio }: { tom?: "neutro" | "ok" | "erro" | "aviso"; icone: React.ReactNode; titulo: string; apoio?: string }) {
+  const cor = { neutro: "bg-accent text-brand", ok: "bg-success-soft text-success", erro: "bg-danger-soft text-danger", aviso: "bg-warning-soft text-warning" }[tom]
+  return (
+    <div className="grid justify-items-center gap-3 pt-4 text-center" role={tom === "erro" || tom === "aviso" ? "alert" : "status"}>
+      <span className={`grid size-16 place-items-center rounded-full [&>svg]:size-8 ${cor}`}>{icone}</span>
+      <h2 className="font-display text-3xl leading-tight font-extrabold tracking-tight text-balance">{titulo}</h2>
+      {apoio && <p className="text-muted-foreground">{apoio}</p>}
+    </div>
+  )
 }
 
 /* ============ LOC-001 · Entrar com o código do local (celular) ============ */
@@ -85,73 +110,45 @@ function TelaCelular({ children }: { children: React.ReactNode }) {
 type EstadoCodigo = "vazio" | "conferindo" | "erro" | "bloqueado" | "ok" | "offline"
 
 function EntrarComCodigo({ estado = "vazio" }: { estado?: EstadoCodigo }) {
-  const valor = estado === "vazio" ? "" : estado === "erro" ? "GX4T2P" : estado === "bloqueado" ? "GX4T2P" : "GIRA2K"
+  const valor = estado === "vazio" || estado === "offline" ? "" : estado === "erro" || estado === "bloqueado" ? "GX4T2P" : "GIRA2K"
   if (estado === "ok") {
     return (
-      <TelaCelular>
-        <PzMarca />
-        <Card className={`${CARTAO} shadow-wc-md`}>
-          <CardContent className="grid gap-4">
-            <Result
-              status="success"
-              title="Aparelho pareado"
-              description="Este aparelho agora é da portaria do Residencial Girassol 2. Não precisa digitar o código de novo."
-            />
-            <DescriptionList layout="horizontal" bordered>
-              <DescriptionItem label="Local">Residencial Girassol 2</DescriptionItem>
-              <DescriptionItem label="Aparelho">Portaria · celular da empresa</DescriptionItem>
-              <DescriptionItem label="Pareado em">04/11 às 14:20</DescriptionItem>
-            </DescriptionList>
-            <Button shape="pill" size="lg">Continuar para o login</Button>
-          </CardContent>
-        </Card>
+      <TelaCelular titulo="Código do local" voltar={false} rodape={<Button shape="pill" size="lg">Continuar</Button>}>
+        <Destaque tom="ok" icone={<CheckCircle2Icon aria-hidden />} titulo="Aparelho pareado" apoio="Residencial Girassol 2" />
+      </TelaCelular>
+    )
+  }
+  if (estado === "erro" || estado === "offline" || estado === "bloqueado") {
+    const d = {
+      erro: { tom: "erro" as const, icone: <XCircleIcon aria-hidden />, t: "Código não encontrado ou vencido", a: "Peça um novo ao gestor." },
+      offline: { tom: "aviso" as const, icone: <WifiOffIcon aria-hidden />, t: "Sem internet", a: "Conecte para parear." },
+      bloqueado: { tom: "aviso" as const, icone: <ClockIcon aria-hidden />, t: "Muitas tentativas", a: "Tente de novo em 2:00." },
+    }[estado]
+    return (
+      <TelaCelular titulo="Código do local" rodape={<Button shape="pill" size="lg" disabled={estado === "bloqueado"}>{estado === "bloqueado" ? "Espere 2:00" : "Tentar de novo"}</Button>}>
+        <Destaque tom={d.tom} icone={d.icone} titulo={d.t} apoio={d.a} />
+        <InputOTP id={`cod-${estado}`} maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} defaultValue={valor} aria-invalid={estado === "erro"} disabled={estado === "bloqueado"} containerClassName="justify-center">
+          <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}</InputOTPGroup>
+        </InputOTP>
       </TelaCelular>
     )
   }
   return (
-    <TelaCelular>
-      <div className="flex items-center justify-between"><PzMarca /></div>
-      <div className="grid gap-1">
-        <h2 className="font-display text-3xl font-extrabold tracking-tight">Código do local</h2>
-        <p className="text-muted-foreground">Peça ao gestor do condomínio. O código fica impresso no cartaz da portaria e vale uma vez por aparelho.</p>
-      </div>
-      {estado === "offline" && (
-        <Banner variant="warning" className="rounded-2xl">
-          <WifiOffIcon aria-hidden />
-          <BannerContent>
-            <BannerTitle>Sem internet</BannerTitle>
-            <BannerDescription>Para parear o aparelho precisa de internet. Conecte e tente de novo.</BannerDescription>
-          </BannerContent>
-        </Banner>
-      )}
-      <Card className={`${CARTAO} shadow-wc-md`}>
-        <CardContent className="grid gap-5">
-          <Field>
-            <FieldLabel htmlFor={`cod-${estado}`}>Código com 6 letras e números</FieldLabel>
-            <InputOTP id={`cod-${estado}`} maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} defaultValue={valor} aria-invalid={estado === "erro" || estado === "bloqueado"} disabled={estado === "conferindo" || estado === "bloqueado"}>
-              <InputOTPGroup>
-                {[0, 1, 2, 3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}
-              </InputOTPGroup>
-            </InputOTP>
-            {estado === "erro" && <FieldError>Código não encontrado ou vencido. Confira com o gestor do condomínio.</FieldError>}
-            {estado === "bloqueado" && (
-              <FieldError>Muitas tentativas seguidas. Tente de novo em 2:00.</FieldError>
-            )}
-          </Field>
-          <Button shape="pill" size="lg" disabled={estado === "vazio" || estado === "conferindo" || estado === "bloqueado" || estado === "offline"} aria-busy={estado === "conferindo"}>
-            {estado === "conferindo" ? <><Spinner aria-hidden />Conferindo o código…</> : "Parear aparelho"}
+    <TelaCelular
+      titulo="Código do local"
+      rodape={
+        <>
+          <Button shape="pill" size="lg" disabled={estado === "vazio" || estado === "conferindo"} aria-busy={estado === "conferindo"}>
+            {estado === "conferindo" ? <><Spinner aria-hidden />Conferindo…</> : "Parear aparelho"}
           </Button>
-          <Button variant="outline" shape="pill" size="lg" disabled={estado === "conferindo" || estado === "bloqueado"}>
-            <ScanLineIcon aria-hidden />
-            Ler o QR do cartaz
-          </Button>
-        </CardContent>
-      </Card>
-      <p className="flex items-start gap-2 text-sm text-muted-foreground">
-        <ShieldCheckIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
-        Por segurança, o PacoteZap não mostra lista de condomínios nem busca por nome antes do login.
-      </p>
-      <p className="text-sm text-muted-foreground">Trabalha para uma empresa de portaria ou vigilância? <a href="#entrar" className="font-medium text-brand underline-offset-4 hover:underline">Entre com e-mail e senha</a>.</p>
+          <Button variant="outline" shape="pill" size="lg" disabled={estado === "conferindo"}><ScanLineIcon aria-hidden />Ler QR do cartaz</Button>
+        </>
+      }
+    >
+      <Destaque icone={<KeyRoundIcon aria-hidden />} titulo="Digite o código do local" apoio="Está no cartaz da portaria." />
+      <InputOTP id={`cod-${estado}`} maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} defaultValue={valor} disabled={estado === "conferindo"} aria-label="Código com 6 letras e números" containerClassName="justify-center">
+        <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}</InputOTPGroup>
+      </InputOTP>
     </TelaCelular>
   )
 }
@@ -159,119 +156,84 @@ function EntrarComCodigo({ estado = "vazio" }: { estado?: EstadoCodigo }) {
 /* ============ LOC-002 · Quem vai entrar neste aparelho (celular) ============ */
 
 const PESSOAS = [
-  { n: "Carlos Mendes", m: "c•••••@selva.com.br", u: "hoje, 07:58", i: "CM" },
-  { n: "Rita Oliveira", m: "r••••@selva.com.br", u: "ontem, 18:02", i: "RO" },
-  { n: "Jorge Lima", m: "j••••@selva.com.br", u: "há 6 dias", i: "JL" },
+  { n: "Carlos Mendes", u: "hoje, 07:58", i: "CM" },
+  { n: "Rita Oliveira", u: "ontem, 18:02", i: "RO" },
+  { n: "Jorge Lima", u: "há 6 dias", i: "JL" },
 ]
 
 type EstadoLista = "lista" | "senha" | "senhaErrada" | "entrando" | "vazia" | "remover"
 
 function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
-  const cabecalho = (
-    <>
-      <div className="flex items-center justify-between"><PzMarca /></div>
-      <Item variant="outline" className="rounded-2xl bg-card">
-        <ItemMedia variant="icon"><Building2Icon aria-hidden /></ItemMedia>
-        <ItemContent>
-          <ItemTitle>Residencial Girassol 2</ItemTitle>
-          <ItemDescription>Portaria · aparelho pareado</ItemDescription>
-        </ItemContent>
-        <ItemActions><Badge variant="success"><CheckCircle2Icon aria-hidden />Pareado</Badge></ItemActions>
-      </Item>
-    </>
-  )
   if (estado === "vazia") {
     return (
-      <TelaCelular>
-        {cabecalho}
-        <Card className={`${CARTAO} shadow-wc-md`}>
-          <CardContent className="grid gap-5">
-            <EmptyState
-              icon={<UsersIcon aria-hidden />}
-              title="Ninguém entrou neste aparelho ainda"
-              description="Digite seu e-mail e senha. Da próxima vez seu nome aparece aqui."
-            />
-            <Field>
-              <FieldLabel htmlFor="ld-email">E-mail</FieldLabel>
-              <Input id="ld-email" type="email" autoComplete="username" placeholder="voce@empresa.com.br" />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="ld-senha">Senha</FieldLabel>
-              <InputPassword id="ld-senha" autoComplete="current-password" />
-            </Field>
-            <Button shape="pill" size="lg">Entrar</Button>
-          </CardContent>
-        </Card>
+      <TelaCelular titulo="Girassol 2" voltar={false} rodape={<Button shape="pill" size="lg">Entrar</Button>}>
+        <Destaque icone={<UsersIcon aria-hidden />} titulo="Primeiro acesso neste aparelho" apoio="Da próxima vez seu nome aparece aqui." />
+        <Field>
+          <FieldLabel htmlFor="ld-email">E-mail</FieldLabel>
+          <Input id="ld-email" type="email" autoComplete="username" placeholder="voce@empresa.com.br" />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="ld-senha">Senha</FieldLabel>
+          <InputPassword id="ld-senha" autoComplete="current-password" />
+        </Field>
       </TelaCelular>
     )
   }
   if (estado === "senha" || estado === "senhaErrada" || estado === "entrando") {
     return (
-      <TelaCelular>
-        {cabecalho}
-        <Card className={`${CARTAO} shadow-wc-md`}>
-          <CardHeader>
-            <Button variant="ghost" size="sm" className="w-fit px-2"><ArrowLeftIcon aria-hidden />Trocar de pessoa</Button>
-            <div className="mt-2 flex items-center gap-3">
-              <Avatar size="lg"><AvatarFallback>CM</AvatarFallback></Avatar>
-              <div>
-                <CardTitle className="text-xl">Carlos Mendes</CardTitle>
-                <CardDescription>c•••••@selva.com.br</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-5">
-            <Field>
-              <FieldLabel htmlFor="ls-senha">Senha</FieldLabel>
-              <InputPassword id="ls-senha" autoComplete="current-password" defaultValue={estado === "senha" ? "" : "exemplo-senha"} aria-invalid={estado === "senhaErrada"} disabled={estado === "entrando"} />
-              {estado === "senhaErrada" && <FieldError>Senha incorreta. Restam 3 tentativas antes de esperar 5 minutos.</FieldError>}
-            </Field>
-            <Button shape="pill" size="lg" disabled={estado === "entrando"} aria-busy={estado === "entrando"}>
-              {estado === "entrando" ? <><Spinner aria-hidden />Entrando…</> : "Entrar"}
-            </Button>
-            <FieldDescription className="text-center">A senha é sempre pedida, mesmo neste aparelho.</FieldDescription>
-          </CardContent>
-        </Card>
+      <TelaCelular
+        titulo="Girassol 2"
+        rodape={
+          <Button shape="pill" size="lg" disabled={estado === "entrando"} aria-busy={estado === "entrando"}>
+            {estado === "entrando" ? <><Spinner aria-hidden />Entrando…</> : "Entrar"}
+          </Button>
+        }
+      >
+        <div className="grid justify-items-center gap-3 pt-4 text-center">
+          <Avatar className="size-16 text-xl"><AvatarFallback>CM</AvatarFallback></Avatar>
+          <h2 className="font-display text-3xl font-extrabold tracking-tight">Carlos Mendes</h2>
+        </div>
+        <Field>
+          <FieldLabel htmlFor="ls-senha">Senha</FieldLabel>
+          <InputPassword id="ls-senha" autoComplete="current-password" defaultValue={estado === "senha" ? "" : "exemplo-senha"} aria-invalid={estado === "senhaErrada"} disabled={estado === "entrando"} />
+          {estado === "senhaErrada" && <FieldError>Senha incorreta. Restam 3 tentativas.</FieldError>}
+        </Field>
       </TelaCelular>
     )
   }
   return (
-    <TelaCelular>
-      {cabecalho}
-      <div className="grid gap-1">
-        <h2 className="font-display text-3xl font-extrabold tracking-tight">Quem vai entrar?</h2>
-        <p className="text-muted-foreground">Só aparecem pessoas que já entraram neste aparelho.</p>
-      </div>
+    <TelaCelular
+      titulo="Girassol 2"
+      voltar={false}
+      acaoTopo={<Button variant="ghost" shape="pill" size="icon-lg" aria-label="Remover alguém deste aparelho"><Trash2Icon aria-hidden /></Button>}
+      rodape={<Button variant="outline" shape="pill" size="lg"><PlusIcon aria-hidden />Usar outro e-mail</Button>}
+    >
+      <Destaque icone={<UsersIcon aria-hidden />} titulo="Quem vai entrar?" />
       <ItemGroup className="gap-2">
         {PESSOAS.map((p) => (
-          <Item key={p.n} variant="outline" className="min-h-14 rounded-2xl bg-card text-left shadow-wc-md" asChild>
+          <Item key={p.n} variant="outline" className="min-h-16 rounded-2xl bg-card text-left shadow-wc-md" asChild>
             <button type="button">
               <ItemMedia><Avatar size="lg"><AvatarFallback>{p.i}</AvatarFallback></Avatar></ItemMedia>
               <ItemContent>
                 <ItemTitle>{p.n}</ItemTitle>
-                <ItemDescription>{p.m} · {p.u}</ItemDescription>
+                <ItemDescription>{p.u}</ItemDescription>
               </ItemContent>
             </button>
           </Item>
         ))}
       </ItemGroup>
-      <Button variant="outline" shape="pill" size="lg"><PlusIcon aria-hidden />Usar outro e-mail</Button>
-      {estado === "remover" ? (
+      {estado === "remover" && (
         <Alert className="rounded-2xl">
           <Trash2Icon aria-hidden />
           <AlertTitle>Remover Jorge Lima deste aparelho?</AlertTitle>
           <AlertDescription>
-            O nome some desta lista. A conta dele continua valendo e ele pode entrar de novo digitando o e-mail.
-            <span className="mt-3 flex gap-2">
+            <span className="flex gap-2 pt-2">
               <Button size="sm" variant="destructive" shape="pill">Remover</Button>
               <Button size="sm" variant="outline" shape="pill">Cancelar</Button>
             </span>
           </AlertDescription>
         </Alert>
-      ) : (
-        <Button variant="ghost" shape="pill" className="w-fit"><Trash2Icon aria-hidden />Remover alguém deste aparelho</Button>
       )}
-      <p className="text-xs text-muted-foreground">Esta lista fica só neste aparelho e some sozinha depois de 30 dias sem uso.</p>
     </TelaCelular>
   )
 }
@@ -281,55 +243,36 @@ function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
 type EstadoEscolha = "lista" | "carregando" | "semContrato" | "erro" | "suspenso"
 
 const CONTRATOS_FUNC = [
-  { n: "Residencial Girassol 1", p: "Porteiro", s: "ativo" },
-  { n: "Residencial Girassol 2", p: "Porteiro", s: "ativo" },
-  { n: "Edifício Mirante", p: "Porteiro", s: "suspenso" },
+  { n: "Residencial Girassol 1", s: "ativo" },
+  { n: "Residencial Girassol 2", s: "ativo" },
+  { n: "Edifício Mirante", s: "suspenso" },
 ]
 
 function EscolherCondominio({ estado = "lista" }: { estado?: EstadoEscolha }) {
+  if (estado === "semContrato") {
+    return (
+      <TelaCelular titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg" variant="outline">Pedir ao gestor da Selva</Button>}>
+        <Destaque tom="aviso" icone={<LockIcon aria-hidden />} titulo="Nenhum condomínio liberado" apoio="Peça ao gestor da Selva." />
+      </TelaCelular>
+    )
+  }
+  if (estado === "erro") {
+    return (
+      <TelaCelular titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg">Tentar de novo</Button>}>
+        <Destaque tom="erro" icone={<WifiOffIcon aria-hidden />} titulo="Não carregou" apoio="Confira a internet." />
+      </TelaCelular>
+    )
+  }
   return (
-    <TelaCelular>
-      <PzMarca />
-      <div className="grid gap-1">
-        <h2 className="font-display text-3xl font-extrabold tracking-tight">Onde você trabalha hoje?</h2>
-        <p className="text-muted-foreground">Carlos Mendes · Selva Vigilância</p>
-      </div>
-      {estado === "carregando" && (
+    <TelaCelular titulo="Onde você trabalha?">
+      {estado === "carregando" ? (
         <div role="status" aria-label="Carregando seus condomínios" className="grid gap-3">
           {[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 rounded-2xl" />)}
-          <SkeletonText lines={1} />
         </div>
-      )}
-      {estado === "semContrato" && (
-        <Card className={`${CARTAO} shadow-wc-md`}>
-          <CardContent>
-            <Result
-              status="warning"
-              icon={<LockIcon aria-hidden className="size-8" />}
-              title="Você ainda não tem condomínio liberado"
-              description="Sua conta da Selva existe, mas nenhum contrato ativo está ligado a você. Peça ao gestor da Selva para atribuir você a um condomínio."
-              extra={<Button shape="pill" size="lg" variant="outline">Pedir ao gestor da Selva</Button>}
-            />
-          </CardContent>
-        </Card>
-      )}
-      {estado === "erro" && (
-        <Card className={`${CARTAO} shadow-wc-md`}>
-          <CardContent>
-            <Result
-              status="error"
-              icon={<WifiOffIcon aria-hidden className="size-8" />}
-              title="Não conseguimos carregar agora"
-              description="Parece falta de internet ou instabilidade. Seus dados estão salvos. Tente de novo."
-              extra={<Button shape="pill" size="lg">Tentar de novo</Button>}
-            />
-          </CardContent>
-        </Card>
-      )}
-      {(estado === "lista" || estado === "suspenso") && (
+      ) : (
         <>
           <ItemGroup className="gap-2">
-            {CONTRATOS_FUNC.filter((c) => estado === "suspenso" || c.s === "ativo").map((c, i) => {
+            {CONTRATOS_FUNC.filter((c) => estado === "suspenso" || c.s === "ativo").map((c) => {
               const off = c.s === "suspenso"
               return (
                 <Item key={c.n} variant="outline" className={`min-h-16 rounded-2xl bg-card text-left ${off ? "opacity-80" : "shadow-wc-md"}`} asChild>
@@ -337,11 +280,9 @@ function EscolherCondominio({ estado = "lista" }: { estado?: EstadoEscolha }) {
                     <ItemMedia variant="icon"><Building2Icon aria-hidden /></ItemMedia>
                     <ItemContent>
                       <ItemTitle>{c.n}</ItemTitle>
-                      <ItemDescription>{off ? "Contrato suspenso pelo condomínio" : `${c.p} · contrato ativo`}</ItemDescription>
+                      <ItemDescription>{off ? "Suspenso pelo condomínio" : "Porteiro"}</ItemDescription>
                     </ItemContent>
-                    <ItemActions>
-                      {off ? <Badge variant="warning"><PauseCircleIcon aria-hidden />Suspenso</Badge> : i === 0 ? <Badge variant="soft"><ClockIcon aria-hidden />Último usado</Badge> : null}
-                    </ItemActions>
+                    {off && <ItemActions><Badge variant="warning"><PauseCircleIcon aria-hidden />Suspenso</Badge></ItemActions>}
                   </button>
                 </Item>
               )
@@ -349,12 +290,8 @@ function EscolherCondominio({ estado = "lista" }: { estado?: EstadoEscolha }) {
           </ItemGroup>
           <div className="flex min-h-11 items-center gap-3">
             <Checkbox id="lembrar-local" defaultChecked />
-            <Label htmlFor="lembrar-local" className="leading-snug">Lembrar a escolha neste aparelho</Label>
+            <Label htmlFor="lembrar-local" className="leading-snug">Lembrar neste aparelho</Label>
           </div>
-          <p className="flex items-start gap-2 text-sm text-muted-foreground">
-            <ShieldCheckIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
-            Você vê só os condomínios em que a Selva liberou o seu acesso.
-          </p>
         </>
       )}
     </TelaCelular>
