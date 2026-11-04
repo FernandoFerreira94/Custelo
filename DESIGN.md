@@ -22,7 +22,7 @@ Nevoa `#EEF1F5` · ocean `#629FAD` · erro carmim `#B4123F`.
 Light: fundo Nevoa, cards brancos, foreground e primary navy. Botao grande e
 card de destaque navy; botao pequeno de acao `variant="brasa"`. Nunca brasa em
 todos os botoes. Sobre navy, brasa clara `#F4826D`.
-Dark: derivado, **ainda nao revisado em prancha** — base `#0A1B33`.
+Dark: aprovado em prancha (04/11/2026) — base `#0A1B33`.
 
 Estados operacionais (cor + label + icone, sempre): recebida, aguardando,
 nao identificada, falha, urgente, pronta, retirada, devolvida, offline.
@@ -38,7 +38,8 @@ chip 8 · sheet 20. Elevacao 0–3 (`--shadow-elevation-*`, navy em camadas) + b
 `--shadow-primary` e `--shadow-brasa` nos botoes.
 OPS 390×908. WEB/SAAS 1440 / sidebar 240 / conteudo 1200.
 
-**Proibido:** `blur`, `backdrop-filter`, superficie translucida.
+**Proibido:** `blur`, `backdrop-filter`, superficie translucida. Unica excecao:
+a `TabBar` inferior do `(ops)` em vidro (ADR-022), com fallback solido.
 
 ## Typography
 

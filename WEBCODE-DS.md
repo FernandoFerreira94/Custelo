@@ -10,7 +10,7 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 
 ## O que continua valendo do Custelo (LOCK)
 
-- **Sem vidro**: nada de blur, `backdrop-filter`, superfície translúcida nem `variant="glass"`/`material="glass"` dos componentes `@webcode`. Profundidade = tom sólido + borda 1px + `--shadow-elevation-0..3`.
+- **Sem vidro**: nada de blur, `backdrop-filter`, superfície translúcida nem `variant="glass"`/`material="glass"` dos componentes `@webcode` (única exceção: `TabBar` inferior do `(ops)` com `material="glass"`, ADR-022). Profundidade = tom sólido + borda 1px + `--shadow-elevation-0..3`.
 - Estado nunca só por cor: cor + label + ícone. Alvo de toque ≥ 44px; ação primária 48–56px.
 - Conflito entre o DS WebCode e o LOCK do Custelo: o LOCK vence até um ADR novo.
 

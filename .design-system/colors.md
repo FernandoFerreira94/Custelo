@@ -28,7 +28,7 @@ com foreground branco · `--brasa` com hover `#B9321F` · borda `#DDE3EA` · inp
 
 ## Dark Mode
 
-Derivado, **ainda nao revisado em prancha**. Fundo `#0A1B33`, cards `#10294A`,
+Aprovado em prancha (04/11/2026). Fundo `#0A1B33`, cards `#10294A`,
 primary `#8CC3CF`, brasa clara `#F4826D`, erro `#FF8FA6`.
 
 Superficies operacionais criticas mantem contraste solido — sem transparencia.

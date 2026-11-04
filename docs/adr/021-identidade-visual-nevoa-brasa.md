@@ -56,15 +56,14 @@ LOCK de superficie solida.
 
 ## Riscos e mitigacao
 
-- **Modo escuro derivado, nao revisado em prancha.** Mitigacao: revisar em
-  prancha antes da primeira tela escura ir para producao.
+- **Modo escuro** aprovado em prancha em 04/11/2026 (aba Modo escuro).
 - **Borda de input (`#C6CFDA`) tem 1,57:1 sobre branco**, abaixo do 3:1 de
   WCAG 1.4.11. A sombra `elevation-1` delimita o campo; se a auditoria de
   acessibilidade reprovar, escurecer `--input`.
 - **Brasa sobre navy da 2,9:1.** Sobre navy usar sempre a brasa clara do modo
   escuro (`#F4826D`).
-- O vidro continua proibido. A barra inferior mobile em vidro das pranchas e
-  uma excecao que **ainda precisa de ADR proprio**; ate la, nao entra no codigo.
+- O vidro continua proibido, com uma unica excecao na barra inferior mobile
+  (ADR-022).
 
 ## Gatilho de revisao
 
