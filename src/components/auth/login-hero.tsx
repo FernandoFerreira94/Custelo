@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
 import loginHero from "../../../Imagen/Penot-referencia/img02.png";
 
 const BULLETS = [
@@ -39,12 +40,12 @@ export function LoginHero() {
 
       <div className="relative z-10 flex h-full flex-col px-10 py-10 xl:px-14 xl:py-12">
         <header className="flex flex-col gap-2">
-          <p
+          <PacoteZapMark
             data-login-brand
-            className="font-heading text-3xl font-semibold tracking-tight text-primary-foreground"
-          >
-            Custelo
-          </p>
+            showIcon={false}
+            variant="onPrimary"
+            textClassName="text-3xl"
+          />
           <p data-login-copy className="text-sm text-primary-foreground/70">
             Gestão de encomendas em condomínio
           </p>

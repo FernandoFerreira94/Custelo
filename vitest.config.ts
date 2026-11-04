@@ -16,7 +16,13 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: { "@": path.resolve(__dirname, "./src") },
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "server-only": path.resolve(
+        __dirname,
+        "./src/tests/mocks/server-only.ts",
+      ),
+    },
   },
   test: {
     projects: [
@@ -26,7 +32,7 @@ export default defineConfig({
           name: "unit",
           environment: "node",
           include: [
-            "src/{domain,application,lib,ports,infrastructure}/**/*.test.ts",
+            "src/{app,domain,application,lib,ports,infrastructure}/**/*.test.ts",
           ],
         },
       },
@@ -46,6 +52,9 @@ export default defineConfig({
           environment: "node",
           include: ["tests/rls/**/*.test.ts"],
           // Postgres real, nunca mock. Sem DATABASE_URL o projeto falha alto.
+          // Um arquivo por vez: as fixtures compartilham o mesmo banco.
+          pool: "forks",
+          poolOptions: { forks: { singleFork: true } },
           testTimeout: 30_000,
         },
       },

@@ -4,8 +4,7 @@ globs: src/app/**/route.ts,src/app/**/actions.ts,src/app/api/**
 alwaysApply: false
 ---
 
-Regra canonica deste topico: @.claude/rules/api-actions.md
+Regra canonica deste topico: @.ai/rules/api-actions.md
 
-O conteudo vive naquele arquivo de proposito. Claude Code e Cursor leem a MESMA
-regra — nao existe versao "do Cursor". Se precisar mudar a regra, edite
-`.claude/rules/api-actions.md`; este arquivo so declara quando ela se aplica.
+O conteudo vive naquele arquivo. Claude Code e Cursor leem a MESMA regra.
+Se precisar mudar, edite `.ai/rules/api-actions.md`.

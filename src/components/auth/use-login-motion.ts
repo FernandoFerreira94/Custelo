@@ -13,16 +13,29 @@ type UseLoginMotionArgs = {
 export function useLoginMotion({ root }: UseLoginMotionArgs) {
   useGSAP(
     () => {
+      function enableInteraction() {
+        root.current
+          ?.querySelector("[data-login-right]")
+          ?.removeAttribute("inert");
+      }
+
       const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
       if (reduceMotion) {
-        gsap.set("[data-login-veil]", { autoAlpha: 0 });
+        gsap.set("[data-login-veil]", {
+          autoAlpha: 0,
+          pointerEvents: "none",
+        });
+        enableInteraction();
         return;
       }
 
-      gsap.set("[data-login-veil]", { autoAlpha: 1 });
+      gsap.set("[data-login-veil]", {
+        autoAlpha: 1,
+        pointerEvents: "auto",
+      });
       gsap.set("[data-login-glow]", { autoAlpha: 0, scale: 0.45 });
       gsap.set("[data-login-box-face]", { autoAlpha: 0, y: 26, scale: 0.9 });
       gsap.set("[data-login-box-lid]", {
@@ -47,6 +60,7 @@ export function useLoginMotion({ root }: UseLoginMotionArgs) {
 
       const intro = gsap.timeline({
         defaults: { ease: "power3.out" },
+        onComplete: enableInteraction,
       });
 
       intro
@@ -121,6 +135,7 @@ export function useLoginMotion({ root }: UseLoginMotionArgs) {
         })
         .to("[data-login-veil]", {
           autoAlpha: 0,
+          pointerEvents: "none",
           duration: 0.42,
           ease: "power3.out",
         })

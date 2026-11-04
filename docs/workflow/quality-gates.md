@@ -85,10 +85,13 @@ Nunca reportar pronto com High ou Critical em aberto.
 
 - README atualizado quando surgir env var nova, servico externo novo ou mudanca
   de setup
-- decisao arquitetural registrada em `.claude/memory.md`; mudanca de decisao
+- decisao arquitetural registrada em `.ai/memory.md`; mudanca de decisao
   congelada exige **ADR novo** em `docs/adr/`
-- feature complexa tem `specs/<feature>.md` antes da implementacao
-- erro recorrente vai para `.claude/gotchas.md`
+- feature complexa tem `.ai/specs/<feature>.md` antes da implementacao
+- erro recorrente vai para `.ai/gotchas.md`
+- progresso de fase → `.ai/roadmap.md`; tela/fluxo → `.ai/page-map.md`
+- Gate 9 (SaaS) e Gate 10 (IA/agente) do Dev Hub aplicam quando o diff toca
+  billing/entitlement/tenant SaaS ou caminho de OCR/modelo (`.ai/rules/ai.md`)
 
 ## Gate 5 — Acessibilidade e UX
 

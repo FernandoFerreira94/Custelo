@@ -49,6 +49,9 @@ export const empreendimentos = pgTable(
     empreendimentoId: uuid("empreendimento_id").notNull(),
     nome: text("nome").notNull(),
     slug: text("slug").notNull(),
+    rotuloCamadaIntermediaria: text("rotulo_camada_intermediaria")
+      .notNull()
+      .default("Bloco"),
     status: empreendimentoStatusEnum("status").notNull().default("ativo"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -132,4 +135,25 @@ export const escoposUsuario = pgTable(
       table.empreendimentoId,
     ),
   ],
+);
+
+/**
+ * Contexto de empreendimento/org selecionado pelo usuario (ADR-005).
+ * Usado pelo Auth Hook quando ha multiplos escopos de empreendimento.
+ */
+export const contextoAtivo = pgTable(
+  "contexto_ativo",
+  {
+    usuarioId: uuid("usuario_id")
+      .primaryKey()
+      .references(() => usuarios.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id")
+      .notNull()
+      .references(() => organizacoes.id, { onDelete: "cascade" }),
+    empreendimentoId: uuid("empreendimento_id").notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [index("contexto_ativo_org_id_idx").on(table.orgId)],
 );

@@ -1,7 +1,7 @@
 # Seguranca — sempre ativo
 
-Sem `paths:` de proposito: estas regras valem no momento em que o arquivo e
-**criado**, e regra com `paths:` so injeta em leitura.
+Canonico: `.ai/rules/security.md` (manter os dois iguais). Sem `paths:` de
+proposito: estas regras valem no momento em que o arquivo e **criado**.
 
 ## Multi-tenant (a classe de bug mais cara deste produto)
 

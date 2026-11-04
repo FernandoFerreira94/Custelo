@@ -1,82 +1,101 @@
 # AGENTS.md — Custelo
 
-Contrato unico para **qualquer** agente que trabalhe neste repositorio: Claude
-Code, Codex, Cursor (Grok/Composer), Gemini CLI ou humano.
+Contrato unico para qualquer agente (Claude Code, Cursor/Grok, Codex, humano).
+Este arquivo e um **roteador**. Detalhe vive em `.ai/` e `docs/`.
 
-Todos leem a **mesma** fonte. Nao existe memoria paralela por ferramenta.
+## Identity
 
-## Ecossistema de memoria (unico)
+- **Produto:** Custelo — SaaS B2B de recebimento e cadeia de custodia para portarias.
+- **Dono:** Webcodeff. Brasil, LGPD.
+- **Status:** IMPLEMENTATION READY — I2 em andamento (tenancy + auth + RLS).
+- **Fonte canonica de produto:** este repo (`.ai/` + `docs/` + codigo). A pagina
+  Notion do projeto pode estar atras do Architecture Freeze — nao reabrir
+  React Native/Expo nem monorepo multi-app.
 
-| Camada                      | Arquivo              | Quando ler                                         |
-| --------------------------- | -------------------- | -------------------------------------------------- |
-| Regras fixas + comandos     | `CLAUDE.md`          | sempre, no inicio                                  |
-| Contexto de negocio         | `.claude/scope.md`   | sob demanda                                        |
-| Decisoes que evoluem        | `.claude/memory.md`  | inicio (bloco `## Summary`) + ao registrar decisao |
-| Erros recorrentes           | `.claude/gotchas.md` | quando um erro se repete                           |
-| Arquitetura, design, telas  | `docs/**`            | conforme a tarefa                                  |
-| Biblioteca de UI (@webcode) | `WEBCODE-DS.md`      | antes de criar ou trocar componente                |
-| Regras por stack            | `.claude/rules/*.md` | ao tocar arquivos do tipo                          |
+## Locked stack
 
-Ferramentas que nao suportam carregamento path-scoped (`.claude/rules/`) devem
-ler manualmente o arquivo de regra correspondente antes de editar aquele tipo de
-arquivo. A tabela de mapeamento esta em `.claude/rules/README.md`.
+Uma app Next.js (App Router) com route groups `(ops)` `(web)` `(saas)` `(auth)`.
+Postgres/Supabase + Drizzle + RLS · Supabase Auth (claims) · Storage privado ·
+Inngest · PWA (Serwist + Dexie) · Tailwind v4 + shadcn/ui · TanStack Query ·
+Vercel. Detalhe e ADR: `.ai/architecture.md`.
 
-**Regra de escrita:** decisao que evolui com o projeto vai para
-`.claude/memory.md`. Regra fixa vai para `CLAUDE.md`. Nunca duplicar as duas.
-
-## Precedencia
-
-1. Instrucao atual do humano
-2. `AGENTS.md` / `CLAUDE.md` deste repositorio
-3. `docs/` do projeto
-4. `C:\Users\ferna\.ai-context\` (contexto global compartilhado)
-5. Instrucoes globais da ferramenta
-
-## O que este projeto e
-
-SaaS B2B multi-tenant de recebimento e cadeia de custodia para portarias.
-O diferencial defensavel do produto e a **evidencia**: se um evento pode ser
-apagado ou reescrito, o produto perde a razao de existir.
-
-Leia `CLAUDE.md` antes de escrever qualquer linha. As 12 invariantes listadas la
-nao sao negociaveis por preferencia, elegancia ou pressa.
-
-## Stack (LOCKED)
-
-TypeScript strict · Next.js App Router (app unico, route groups `(ops)` `(web)`
-`(saas)`) · Tailwind v4 + shadcn/ui · Drizzle + Postgres/Supabase com RLS ·
-Supabase Auth + Storage · Inngest · Vercel · Vitest + Playwright.
-
-Decisao congelada no Architecture Freeze (13/08/2026). Nao proponha stack
-alternativa; se houver motivo real, escreva um ADR novo em `docs/adr/`.
-
-## Comandos
+## Commands
 
 ```bash
-pnpm dev
-pnpm verify        # typecheck + lint + format + test — obrigatorio antes de "pronto"
-pnpm test:rls      # cross-tenant negativo
-pnpm test:e2e
+pnpm dev            # desenvolvimento
+pnpm verify         # typecheck + lint + format:check + test — antes de "pronto"
+pnpm test:rls       # negativo cross-tenant (banco/tenancy/auth)
+pnpm test:e2e       # Playwright (web + ops + a11y)
+pnpm db:generate    # migration a partir do schema Drizzle
 ```
 
-## Regras de trabalho
+## Context router
 
-- Portugues do Brasil. Direto. Somente o escopo pedido.
-- Nao ampliar escopo sem autorizacao. Perguntar antes de: dependencia nova,
-  mudanca de assinatura publica, renomeio, exclusao, migration.
-- `src/domain` e `src/application` nao importam framework nem SDK. Use as portas
-  de `src/ports`.
-- Nao declarar entrega pronta sem evidencia observavel (saida de teste, lint,
-  build, log, fluxo reproduzido).
-- Nunca commitar `.env`. Nunca imprimir segredo. Nunca usar a service_role key
-  em codigo de request.
-- Commits: Conventional Commits, escopo da lista em `commitlint.config.mjs`.
+| Preciso de                       | Leia                                        |
+| -------------------------------- | ------------------------------------------- |
+| Produto, atores, nao-objetivos   | `.ai/scope.md` e `.ai/modules/<modulo>.md`  |
+| ADR / Freeze                     | `.ai/architecture.md`                       |
+| Done / now / next / blocked      | `.ai/roadmap.md`                            |
+| Telas, rotas, estados            | `.ai/page-map.md`                           |
+| Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)               |
+| Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente) |
+| Regra de stack                   | `.ai/rules/`                                |
+| Feature complexa                 | `.ai/specs/<feature>.md`                    |
+| Decisao que evolui               | `.ai/memory.md` (Summary no boot)           |
+| Erro ja diagnosticado 2x         | `.ai/gotchas.md`                            |
+| Spec tela a tela / ADR estendido | `docs/` — nunca a pagina Notion inteira     |
 
-## Fase atual
+## Invariantes (stop-ship)
 
-Preparacao concluida; implementacao nao comecou. Proxima fase: **I1 — Fundacao
-tecnica** (`docs/product/implementation-roadmap.md`).
+Lista completa: `docs/product/invariantes.md`. Violar qualquer uma e bug.
 
-Nao criar tabela de dominio, migration de dominio, pagina funcional ou API real
-antes de **I2 (tenancy + RLS)** estar de pe e com teste negativo cross-tenant
-passando.
+1. Tenant vem do contexto autenticado — nunca de id do cliente.
+2. Autorizacao e server-side; o banco recusa (RLS).
+3. `custody_events` e append-only. Correcao gera evento novo.
+4. Nao existe hard delete de evidencia operacional.
+5. Sem internet, OCR ou WhatsApp **nunca** bloqueiam o recebimento fisico.
+6. IA sugere; humano confirma. Ninguem e cadastrado automaticamente.
+7. Matching: unidade/endereco primeiro; nome e segundo sinal.
+8. QR e locator opaco: nao autoriza retirada nem reativa encomenda.
+9. Sync offline e append, nunca merge. Sem last-write-wins.
+10. Correcao pos-notificacao nao revela o destinatario certo ao contato errado.
+11. Falha de notificacao e estado visivel, nunca silencio.
+12. Nunca logar dado pessoal, imagem de etiqueta ou segredo.
+
+## Operating rules
+
+- Portugues do Brasil. So o escopo pedido.
+- Carregue **somente** o contexto da tarefa. Graphify para estrutura/blast
+  radius; Serena (se ativo) para simbolo/referencia; fonte bruta por ultimo.
+- Nao pare para confirmar tarefa ja escopada e nao destrutiva.
+- Pergunte antes de: dependencia nova, schema/migration, auth/segredo, decisao
+  LOCKED, comando destrutivo, refactor amplo.
+- Escolha tecnica em aberto: 1 recomendacao + 1 alternativa real + trade-off.
+- Nativo do framework antes de dependencia. shadcn antes de primitivo novo.
+- `src/domain` e `src/application` nao importam Next, React nem SDK.
+- Nao declare pronto sem evidencia (`pnpm verify` + gates aplicaveis).
+- Commits: Conventional Commits, escopos em `commitlint.config.mjs`.
+- Nunca commitar `.env`. Nunca imprimir segredo. Nunca service_role em request.
+
+## Precedence
+
+1. Pedido explicito e aprovado do Fernando
+2. Architecture Freeze / ADR aceito + este `AGENTS.md`
+3. `.ai/architecture.md`, modulo, spec ou regra da tarefa
+4. Dev Hub (Quality Gates, Padroes de Codigo)
+5. Exemplos de skill/plugin
+6. Default de framework
+
+Adaptadores (CLAUDE.md, `.cursor/`, hooks) **exigem** regras; nao as redefinem.
+
+## Chat triggers
+
+`boot` diagnostico · `scope` · `roadmap` · `page map` · `graph refresh` ·
+`graph deps <alvo>` · `mem add:` / `mem read` · `gotchas` · `/security-review` ·
+`/performance-review` · `/tela <ID>` · `skill audit` (nunca a cada boot)
+
+## End of task
+
+Atualize so o que mudou: `.ai/roadmap.md` · `.ai/page-map.md` · `.ai/memory.md`
+· Graphify (`graphify update .`) · CSV/pages-roadmap se for tela.
+Relatorio: `Done — … / Validation: … / Context updated: … / Blocked: …`

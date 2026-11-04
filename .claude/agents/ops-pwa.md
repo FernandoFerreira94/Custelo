@@ -9,8 +9,8 @@ custo, uma mao livre e uma fila de encomendas na frente.
 
 ## Antes de escrever codigo
 
-Leia `.claude/rules/ops-pwa.md` e as skills `ui-ops-pwa`, `recebimento` e
-`offline-sync`.
+Leia `.ai/rules/ops-pwa.md` e os modulos `ui-ops-pwa`, `recebimento` e
+`offline-sync` em `.ai/modules/`.
 
 ## Criterio que decide tudo
 

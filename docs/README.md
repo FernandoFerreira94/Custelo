@@ -4,14 +4,14 @@ Leia o que a tarefa exige. Nao leia tudo.
 
 ## Por onde comecar
 
-| Voce e / quer                | Comece por                             |
-| ---------------------------- | -------------------------------------- |
-| agente entrando no projeto   | `../CLAUDE.md` e depois `../AGENTS.md` |
-| entender o produto           | `../.claude/scope.md`                  |
-| saber o que nao pode mudar   | `product/invariantes.md`               |
-| entender a arquitetura       | `architecture/adr-index.md`            |
-| comecar uma tarefa           | `workflow/task-lifecycle.md`           |
-| saber o estado da preparacao | `boot-protocol-status.md`              |
+| Voce e / quer                | Comece por                                           |
+| ---------------------------- | ---------------------------------------------------- |
+| agente entrando no projeto   | `../AGENTS.md` (Claude: `../CLAUDE.md` e so adapter) |
+| entender o produto           | `../.ai/scope.md`                                    |
+| saber o que nao pode mudar   | `product/invariantes.md`                             |
+| entender a arquitetura       | `architecture/adr-index.md`                          |
+| comecar uma tarefa           | `workflow/task-lifecycle.md`                         |
+| saber o estado da preparacao | `boot-protocol-status.md`                            |
 
 ## Indice
 
@@ -48,8 +48,8 @@ Leia o que a tarefa exige. Nao leia tudo.
 
 ### Design System
 
-Fica em `../.design-system/` (convencao do ambiente). Valores canonicos em
-`../src/app/globals.css`.
+Fica em `../.design-system/` (convencao do ambiente). Cache curto: `../DESIGN.md`.
+Valores canonicos em `../src/app/globals.css`.
 
 ## Fontes canonicas fora do repo
 

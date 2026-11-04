@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --project unit --project ui",
     "test:watch": "vitest --project unit --project ui",
-    "test:rls": "node --env-file=.env ./node_modules/vitest/vitest.mjs run --project rls",
+    "test:rls": "node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --project rls",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",

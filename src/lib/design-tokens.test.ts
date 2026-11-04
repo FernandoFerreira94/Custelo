@@ -78,8 +78,9 @@ describe("design tokens", () => {
     expect(css).toContain("prefers-reduced-motion: reduce");
   });
 
-  it("liga a serifada de marca em --font-heading", () => {
-    expect(css).toContain("--font-heading: var(--font-display)");
+  it("liga Poppins da wordmark em --font-brand", () => {
+    expect(css).toContain("--font-brand: var(--font-brand)");
+    expect(css).toContain("--font-heading: var(--font-sans)");
   });
 
   it("tem dark mode que nao e inversao do light", () => {

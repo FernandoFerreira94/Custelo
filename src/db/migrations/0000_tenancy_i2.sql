@@ -233,7 +233,8 @@ DO $$
 BEGIN
   GRANT custelo_app TO custelo_app;
 EXCEPTION
-  WHEN undefined_object THEN NULL;
+  -- Postgres puro recusa membership circular (invalid_grant_operation).
+  WHEN undefined_object OR invalid_grant_operation THEN NULL;
 END
 $$;
 

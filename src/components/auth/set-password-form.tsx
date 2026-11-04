@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
+import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import { requestSetPassword } from "@/components/auth/request-set-password";
@@ -19,12 +20,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FieldGroup } from "@/components/ui/field";
+import { FieldError, FieldGroup } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 
 type SetPasswordFormProps = {
   onBack: () => void;
-  onSaved: () => void;
+  onSaved: (redirectTo?: string) => void;
 };
 
 export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
@@ -36,10 +37,18 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
     resolver: zodResolver(setPasswordSchema),
     defaultValues: { password: "", confirmPassword: "" },
   });
+  const [formError, setFormError] = useState<string | null>(null);
 
   async function onSubmit(values: SetPasswordInput) {
-    await requestSetPassword(values);
-    onSaved();
+    setFormError(null);
+    const result = await requestSetPassword(values);
+
+    if (!result.ok) {
+      setFormError(result.message);
+      return;
+    }
+
+    onSaved(result.redirectTo);
   }
 
   return (
@@ -48,18 +57,7 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <div className="mb-4 flex flex-col items-center gap-3 lg:hidden">
-          <Image
-            src="/brand/logo-custelo-icon.png"
-            alt=""
-            width={56}
-            height={68}
-            className="h-14 w-auto"
-          />
-          <p className="text-xl font-semibold tracking-tight text-foreground">
-            Custelo
-          </p>
-        </div>
+        <PacoteZapMobileHeader />
         <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
           <h1 className="contents">Definir nova senha</h1>
         </CardTitle>
@@ -89,6 +87,10 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
               hideLabel="Ocultar confirmação da senha"
               {...register("confirmPassword")}
             />
+
+            {formError ? (
+              <FieldError role="alert">{formError}</FieldError>
+            ) : null}
 
             <Button
               type="submit"

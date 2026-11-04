@@ -1,82 +1,60 @@
 # Boot Protocol — Status
 
-Sessao original: **16/08/2026**. Revisao de fechamento: **18/08/2026**.
-Nenhuma funcionalidade de produto implementada — por instrucao explicita.
+Reaplicacao: **20/08/2026**, a partir do Boot Protocol universal (Notion, ago/2026)
+e dos Boot Assets. Sessao original de preparacao: 16–18/08/2026.
 
-## Pre-condicao
+Nenhuma stack LOCKED foi reaberta. A pagina-mae do Custelo no Notion (19/08)
+ainda cita React Native/Expo e monorepo `web`+`mobile` — **ignorada** em favor
+de ADR-001 e ADR-012 no repo.
 
-Architecture Freeze **CONCLUIDO em 13/08/2026** (20 ADRs). O cabecalho da pagina
-principal no Notion ainda diz "AGUARDANDO ARCHITECTURE FREEZE" / G3 `PENDING` —
-esta desatualizado. Nao tratar como bloqueio. Correcao: `docs/workflow/notion-pages.md`.
+## O que mudou nesta reaplicacao
 
-## Aplicado
+O protocolo deixou de tratar `.claude/` como fonte de produto. Canonico agora:
 
-### Fundacao tecnica
+```
+AGENTS.md          # roteador universal, curto
+CLAUDE.md          # adapter Claude (`@AGENTS.md`)
+DESIGN.md          # cache de UI (projeto UI-heavy)
+.ai/scope.md
+.ai/architecture.md
+.ai/roadmap.md
+.ai/page-map.md
+.ai/memory.md
+.ai/gotchas.md
+.ai/rules/         # 10 arquivos (9 originais + ai.md)
+.ai/modules/       # 19 bounded contexts
+```
 
-- Git em `main`; Next.js 16.3.1 · React 19.2.8 · TypeScript strict · Tailwind v4 ·
-  pnpm 10.33 · shadcn/ui (radix, preset nova).
-- Stack congelada instalada: Drizzle, Supabase ssr+js, Inngest, TanStack Query/Table,
-  RHF + Zod, Dexie, Serwist, Recharts, signature_pad, zxing, uuidv7, Sentry, PostHog.
-- Estrutura **ADR-001**: uma app, route groups `(ops)` `(web)` `(saas)` `(auth)`,
-  camadas `domain` / `application` / `infrastructure` / `ports` / `components`
-  (READMEs de fronteira; sem codigo de produto).
-- **Nao** ha `apps/web|api|mobile`. Isso violaria o freeze.
+`.claude/` e `.cursor/` continuam: hooks, settings, commands, agents, skills
+como **ponte de descoberta**, rules como `paths:`/`globs` + `@.ai/rules/…`.
 
-### Qualidade
+Politica de confirmacao nova: nao parar em tarefa escopada e nao destrutiva.
 
-- `src/lib/env.ts` + `.env.example`
-- ESLint bloqueando framework/SDK em `domain` e `application`
-- Prettier + plugin Tailwind · Vitest (`unit` `ui` `rls`) · Playwright (`web` `ops` `a11y`)
-- commitlint (escopos = modulos) · Husky pre-commit + commit-msg · lint-staged
-- CI: verify, build, tenant-isolation (Postgres 16), security (audit + segredo)
-- Dependabot semanal (npm + actions)
-- Cabecalhos de seguranca em `next.config.ts`
-- Placeholder RLS + fumaca e2e/a11y do scaffold (nao sao telas de produto)
+## Preservado (nao rediscutir)
 
-### Design System
+- Architecture Freeze 13/08/2026 — 20 ADRs
+- Uma app Next.js, PWA, Drizzle, RLS, Inngest, shadcn, tokens em `globals.css`
+- 12 invariantes, quality gates do produto, 5 subagentes
+- Graphify local; Serena como opt-in (nao forçado no `.mcp.json`)
+- I1 codigo + I2.1/I2.2 ja no repo — o boot **nao** voltou o relogio para
+  "implementacao nao comecou"
 
-Tokens LOCKED em `src/app/globals.css`. `.design-system/` com 9 docs.
-Glass effect revogado. Inter via `next/font`. 53 componentes-mestre no Penpot,
-zero em codigo.
+## Skills / MCP / plugins
 
-### Agentes
+Sem `skill audit` completo nesta sessao (o protocolo manda auditar na criacao,
+falha, ~mensal ou upgrade — nao a cada boot). Tabelas: `docs/workflow/agent-workflow.md`.
 
-- `CLAUDE.md` enxuto · `AGENTS.md` contrato unico
-- `.claude/memory.md` `scope.md` `gotchas.md`
-- 9 rules path-scoped (`security.md` sempre ativa)
-- **19 skills de modulo** (18 originais + `relatorios`)
-- commands `/verify` `/security-review` `/performance-review` `/tela`
-- 5 agentes: `domain-backend` `frontend-ui` `ops-pwa` `security-reviewer`
-  `test-engineer` (+ Reality Checker global)
-- 5 hooks: boot-check, secret-guard, destructive-guard, lint, quality-check
-- Paridade Cursor: `.cursor/rules` `.cursor/commands` `.cursor/hooks.json`
+Ainda nao adotados: Graphiti, ui-ux-pro-max, Emotion, Caveman, Figma MCP.
+GSAP permanece **excecao** em AUTH `/entrar`, nao no OPS.
 
-### Documentacao de produto e workflow
+## Falta (nao bloqueia I2)
 
-- `docs/architecture/` ADR index + module map
-- `docs/product/` invariantes, screen-map, tracker+CSV, fluxos, roadmaps
-  I1–I13, backend, mobile, riscos
-- `docs/workflow/` quality gates, task lifecycle, agent workflow, tooling,
-  dev environment, paginas Notion
-- `docs/adr/` processo para ADR-021+
-- Graphify indexado localmente (`graphify-out/` gitignored)
+- [ ] Contas humanas de nuvem (Supabase x3, GitHub, Sentry, Inngest)
+- [ ] Seed de usuario de teste + E2E `/entrar` → `/contexto`
+- [ ] Logo SVG + licenca da didone
+- [ ] Validar HEX dos estados no Penpot "00 — Foundations"
+- [ ] Importar `screen-tracker.csv` no Roadmap Mestre (Notion)
 
-## Skills / MCP / plugins — resumo
+## Proximo passo de produto
 
-Ver tabelas canônicas em `docs/workflow/agent-workflow.md`.
-Avaliadas nesta revisao e **nao adotadas**: Graphiti (Graphify cobre),
-ui-ux-pro-max, Emotion, GapSkill (nao encontrado), Figma MCP, Turborepo,
-Storybook, OTel, feature flags, MSW. Serena fica para I1.
-
-## Falta (nao bloqueia comecar I1 no codigo)
-
-- [ ] Autenticar MCP Notion no Cursor e corrigir o cabecalho G3
-- [ ] Importar `docs/product/screen-tracker.csv` na database do Roadmap Mestre
-- [ ] Logo SVG + favicon/app icon (cliente) — bloqueia PWA install, nao I1
-- [ ] Validar HEX dos estados contra o board Penpot "00 — Foundations"
-- [ ] Contas Vercel / Supabase / Inngest / Sentry — trabalho de **I1**
-
-## Nao feito de proposito
-
-Nenhuma pagina funcional, API real, regra de negocio, migration de dominio,
-autenticacao, OCR ou WhatsApp. Proxima sessao: **I1 — Fundacao tecnica**.
+`.ai/roadmap.md` — seed + E2E + I2.3. Nao e I1 do zero.

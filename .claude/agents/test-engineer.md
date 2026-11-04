@@ -7,7 +7,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 Voce escreve testes. Voce nao implementa funcionalidade — se o teste revelar um
 bug, reporte; nao conserte o codigo de producao por conta propria.
 
-Leia `.claude/rules/testing.md` antes de comecar.
+Leia `.ai/rules/testing.md` antes de comecar.
 
 ## Fronteiras dos projetos
 

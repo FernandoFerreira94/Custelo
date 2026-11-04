@@ -9,32 +9,40 @@ Nada entra em "always load" sem justificar o custo em toda sessao.
 
 ### Always Load (custo fixo por sessao — mantenha pequeno)
 
-| Item                                     | Por que                                                                                                                    |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `CLAUDE.md`                              | regras fixas, comandos e as 12 invariantes. Curto de proposito.                                                            |
-| `AGENTS.md`                              | contrato de agentes (lido por Cursor/Codex)                                                                                |
-| `.claude/memory.md` — bloco `## Summary` | 5 linhas com as decisoes ativas                                                                                            |
-| `.claude/rules/security.md`              | sem `paths:` porque regra de seguranca vale no momento da **criacao** do arquivo, e regra path-scoped so injeta em leitura |
-| hook `boot-check.sh`                     | injeta so o relatorio de diagnostico, nao o protocolo                                                                      |
+| Item                                 | Por que                                                                 |
+| ------------------------------------ | ----------------------------------------------------------------------- |
+| `AGENTS.md`                          | roteador universal (Cursor/Codex/Claude via adapter)                    |
+| `CLAUDE.md`                          | thin adapter Claude Code (`@AGENTS.md`) — nao duplica regra de produto  |
+| `.ai/memory.md` — bloco `## Summary` | decisoes ativas                                                         |
+| `.ai/rules/security.md`              | sempre ativo: vale na **criacao** do arquivo; glob so injeta em leitura |
+| hook `boot-check.sh`                 | injeta so o relatorio de diagnostico, nao o protocolo                   |
 
 ### Load On Demand
 
-| Item                               | Gatilho                                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `.claude/rules/<topico>.md`        | automatico, quando um arquivo que casa com `paths:` entra em contexto                                  |
-| `.claude/skills/<modulo>/SKILL.md` | tarefa naquele bounded context                                                                         |
-| `.claude/scope.md`                 | comando `scope` — contexto de negocio                                                                  |
-| `.claude/gotchas.md`               | comando `gotchas` — erro recorrente suspeito                                                           |
-| `docs/**`                          | conforme a tarefa; nunca "docs inteiro"                                                                |
-| Graphify                           | primeira pergunta estrutural. No boot carrega **so o resumo** (contagem de nos), nunca o mapa completo |
-| MCP do Notion                      | consultar spec de tela, ADR ou atualizar tracker                                                       |
-| MCP do Penpot                      | trabalho visual contra o arquivo de design                                                             |
+| Item                      | Gatilho                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `.ai/rules/<topico>.md`   | automatico via adapter (`.claude/rules/` ou `.cursor/rules/`) quando o glob casa |
+| `.ai/modules/<modulo>.md` | tarefa naquele bounded context (skill Claude e so ponte)                         |
+| `.ai/scope.md`            | comando `scope`                                                                  |
+| `.ai/architecture.md`     | tarefa que toca Freeze/ADR                                                       |
+| `.ai/roadmap.md`          | comando `roadmap` / mudanca de fase                                              |
+| `.ai/page-map.md`         | tarefa de tela/fluxo                                                             |
+| `DESIGN.md`               | tarefa de UI                                                                     |
+| `.ai/gotchas.md`          | comando `gotchas` — erro recorrente suspeito                                     |
+| `docs/**`                 | conforme a tarefa; nunca "docs inteiro"                                          |
+| Graphify                  | estrutura/blast radius. Boot: so contagem de nos                                 |
+| Serena                    | simbolo/referencia, se o MCP estiver ativo; senao Graphify + grep                |
+| MCP do Notion             | spec de tela ou tracker — **repo ganha** se a pagina-mae estiver atras do Freeze |
+| MCP do Penpot             | trabalho visual contra o arquivo de design                                       |
 
 ### Anti-padrao
 
-Nao repetir arquitetura em varios arquivos. `CLAUDE.md` aponta; `docs/` detalha.
-Se a mesma frase aparece em dois lugares, um dos dois esta errado — e sera o que
-alguem le.
+Nao repetir arquitetura em varios arquivos. `AGENTS.md` aponta; `.ai/` e o
+cache; `docs/` detalha. Se a mesma frase aparece em dois lugares, um dos dois
+esta errado — e sera o que alguem le.
+
+Nao parar para confirmar tarefa ja escopada e nao destrutiva. Confirmar:
+LOCKED, dependencia, schema, segredo, destrutivo, blast radius maior que o pedido.
 
 ---
 
@@ -74,8 +82,10 @@ declarar qualquer coisa "pronta".
 
 ### De modulo (deste projeto — 19)
 
-Materializadas do catalogo do Notion em `.claude/skills/`. Cada uma carrega o que
-o modulo faz, a regra de negocio e **a invariante que o agente nao pode violar**.
+Materializadas em `.ai/modules/`. Cada arquivo diz o que o modulo faz, a regra
+de negocio e **a invariante que o agente nao pode violar**. Skills em
+`.claude/skills/` existem so para o Claude Code descobrir o modulo — o corpo
+canonico nao vive la.
 
 `tenancy` · `auth-rbac` · `estrutura-fisica` · `pessoas-vinculos` ·
 `recebimento` · `ocr-matching` · `custodia-eventos` · `correcoes` · `whatsapp` ·
@@ -93,7 +103,7 @@ o modulo faz, a regra de negocio e **a invariante que o agente nao pode violar**
 | `caveman`                  | **nao ativar**       | comprime a saida em 65–75%, mas em estilo telegrafico. Conflita com a exigencia de comunicacao clara em PT-BR e com a rastreabilidade que este produto exige. A economia real vem de contexto enxuto, nao de saida abreviada. |
 | `ui-ux-pro-max`            | **nao ativar**       | sobrepoe `frontend-design` e traz direcao visual generica. O design system daqui e LOCKED — direcao externa e ruido.                                                                                                          |
 | `impeccable`               | **nao ativar**       | mesmo motivo. Identidade visual ja definida e aprovada.                                                                                                                                                                       |
-| `gsap-skills`              | nao aplicavel        | sem GSAP; motion e curto e o alvo e Android de baixo custo                                                                                                                                                                    |
+| `gsap-skills`              | so AUTH `/entrar`    | GSAP e excecao registrada nessa tela; OPS continua sem biblioteca de motion. Nao carregar skill GSAP no PWA.                                                                                                                  |
 | `core-web-vitals`          | nao aplicavel no MVP | produto e app autenticado, nao site publico                                                                                                                                                                                   |
 | `code-review-graph`        | **avaliar em I5**    | blast radius de mudanca fica util quando houver codigo real. Instalar cedo e custo sem retorno.                                                                                                                               |
 | `graphiti`                 | **nao ativar**       | Graphify ja e o grafo deste repo                                                                                                                                                                                              |
@@ -108,12 +118,12 @@ o modulo faz, a regra de negocio e **a invariante que o agente nao pode violar**
 Configurados em `.mcp.json` (Claude Code) e `.cursor/mcp.json` (Cursor) — mesmos
 servidores nos dois.
 
-| MCP          | Finalidade                                                 | Fase                | Quem usa                        | Riscos                                                                                        | Quando NAO usar                                                    |
-| ------------ | ---------------------------------------------------------- | ------------------- | ------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **notion**   | fonte canonica: ADRs, spec de tela, tracker, Boot Protocol | todas               | principal                       | conteudo desatualizado (o cabecalho do projeto ja estava); escrita acidental em pagina errada | para regra que ja esta no repo — o repo e a fonte de valor         |
-| **penpot**   | arquivo de design "Custelo" — 53 componentes, 77 telas     | trabalho visual     | `frontend-ui`, `ops-pwa`        | exige servidor local em `localhost:4401`; `export_shape` instavel com arquivo grande          | para decidir valor de token — isso vem de `globals.css`            |
-| **serena**   | navegacao semantica de codigo, edicao por simbolo          | a partir de I1      | `domain-backend`, `frontend-ui` | indexa o projeto; sem risco de dado                                                           | enquanto nao houver codigo real                                    |
-| **supabase** | SQL, tabelas, migrations, storage                          | **adicionar em I1** | `domain-backend`                | acesso direto ao banco; token com permissao ampla                                             | nunca apontado para producao a partir de sessao de desenvolvimento |
+| MCP          | Finalidade                                             | Fase            | Quem usa                        | Riscos                                                                               | Quando NAO usar                                                       |
+| ------------ | ------------------------------------------------------ | --------------- | ------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| **notion**   | spec de tela, tracker, Boot Protocol universal         | todas           | principal                       | pagina-mae do Custelo pode estar atras do Freeze (RN/Expo); **repo ganha**           | para regra que ja esta em `.ai/` ou ADR                               |
+| **penpot**   | arquivo de design "Custelo" — 53 componentes, 77 telas | trabalho visual | `frontend-ui`, `ops-pwa`        | exige servidor local em `localhost:4401`; `export_shape` instavel com arquivo grande | para decidir valor de token — isso vem de `globals.css` / `DESIGN.md` |
+| **serena**   | navegacao semantica de codigo, edicao por simbolo      | opt-in          | `domain-backend`, `frontend-ui` | indexa o projeto; complementar ao Graphify                                           | se o MCP nao estiver no `.mcp.json`, degradar para Graphify + grep    |
+| **supabase** | SQL, tabelas, migrations, storage                      | I2+             | `domain-backend`                | acesso direto ao banco; token com permissao ampla                                    | nunca apontado para producao a partir de sessao de desenvolvimento    |
 
 ### Nao conectados, por decisao
 

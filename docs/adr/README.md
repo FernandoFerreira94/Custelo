@@ -18,7 +18,7 @@ congelada exige um ADR novo.
 ## Quando **nao** escrever
 
 Escolha de biblioteca pequena, padrao de codigo, refactor local. Isso vai para
-`.claude/memory.md`.
+`.ai/memory.md`.
 
 ## Formato
 
@@ -67,7 +67,7 @@ vira dogma.
 ## Depois de aceitar um ADR
 
 1. Atualize `docs/architecture/adr-index.md`.
-2. Atualize o bloco `## Summary` de `.claude/memory.md` se for critico.
+2. Atualize o bloco `## Summary` de `.ai/memory.md` se for critico.
 3. Registre no Notion, na pagina de Architecture Freeze.
-4. Se a decisao muda uma regra de codigo, atualize `.claude/rules/` — que e o que
-   o Cursor tambem le.
+4. Se a decisao muda uma regra de codigo, atualize `.ai/rules/` — adapters
+   Claude/Cursor so apontam.

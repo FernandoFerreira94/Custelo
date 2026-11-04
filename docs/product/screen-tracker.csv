@@ -1,10 +1,10 @@
 ID,Sistema,Modulo,Pagina,Tipo,Rota,MVP,Prioridade,Wave,Fase,UX Status,Penpot Status,Frontend Status,Backend Dependency,API Status,Mobile Status,Test Status,Blocked,Notes
-AUTH-001,AUTH,01 Tenancy,Entrar,tela,/(auth)/entrar,sim,P0,01,I2,APPROVED,DONE,IN_PROGRESS,auth-rbac,NOT_STARTED,N/A,IN_PROGRESS,nao,UI desktop + validacao; sessao real na I2
-AUTH-002,AUTH,01 Tenancy,Convite / primeiro acesso,tela,/(auth)/convite,sim,P0,01,I2,APPROVED,DONE,IN_PROGRESS,auth-rbac,NOT_STARTED,N/A,IN_PROGRESS,nao,Card no /entrar (preview); API na I2
-AUTH-003,AUTH,01 Tenancy,Recuperar senha,tela,/(auth)/recuperar,sim,P1,01,I2,APPROVED,DONE,IN_PROGRESS,auth-rbac,NOT_STARTED,N/A,IN_PROGRESS,nao,Card no /entrar com translate; API na I2
-AUTH-004,AUTH,01 Tenancy,Definir senha,tela,/(auth)/senha,sim,P0,01,I2,APPROVED,DONE,IN_PROGRESS,auth-rbac,NOT_STARTED,N/A,IN_PROGRESS,nao,Preview apos enviar link no /entrar; API na I2
-AUTH-005,AUTH,01 Tenancy,Selecionar contexto,tela,/(auth)/contexto,sim,P0,01,I2,APPROVED,DONE,NOT_STARTED,tenancy,NOT_STARTED,N/A,NOT_STARTED,nao,
-AUTH-006,AUTH,01 Tenancy,Sem acesso,tela,/(auth)/sem-acesso,sim,P1,01,I2,APPROVED,DONE,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,Confirmar nome na spec Notion
+AUTH-001,AUTH,01 Tenancy,Entrar,tela,/(auth)/entrar,sim,P0,01,I2,APPROVED,DONE,REVIEW,auth-rbac,REVIEW,N/A,REVIEW,sim,RLS e E2E desktop/OPS verdes; bloqueia verify/a11y global e configuracao Supabase
+AUTH-002,AUTH,01 Tenancy,Convite / primeiro acesso,tela,/(auth)/entrar,sim,P0,01,I2,APPROVED,DONE,REVIEW,auth-rbac,REVIEW,N/A,REVIEW,sim,RLS e E2E desktop/OPS verdes; bloqueia verify/a11y global e configuracao Supabase
+AUTH-003,AUTH,01 Tenancy,Recuperar senha,tela,/(auth)/entrar,sim,P1,01,I2,APPROVED,DONE,REVIEW,auth-rbac,REVIEW,N/A,REVIEW,sim,RLS e E2E desktop/OPS verdes; bloqueia verify/a11y global e configuracao Supabase
+AUTH-004,AUTH,01 Tenancy,Definir senha,tela,/(auth)/entrar,sim,P0,01,I2,APPROVED,DONE,REVIEW,auth-rbac,REVIEW,N/A,REVIEW,sim,RLS e E2E desktop/OPS verdes; bloqueia verify/a11y global e configuracao Supabase
+AUTH-005,AUTH,01 Tenancy,Selecionar contexto,tela,/(auth)/contexto,sim,P0,01,I2,APPROVED,DONE,DONE,tenancy,DONE,N/A,DONE,nao,E2E desktop e OPS
+AUTH-006,AUTH,01 Tenancy,Sem acesso,tela,/(auth)/sem-acesso,sim,P1,01,I2,APPROVED,DONE,DONE,auth-rbac,DONE,N/A,DONE,nao,Sessao sem escopo; sair e voltar ao login
 AUTH-007,AUTH,01 Tenancy,MFA / step-up,tela,pos-MVP,nao,P3,09,pos-MVP,NOT_STARTED,NOT_STARTED,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,Nao desenhar antes do piloto
 REC-001,OPS,06 Recebimento,Inicio / atalho de captura,tela,/(ops)/receber,sim,P0,02,I5,APPROVED,DONE,NOT_STARTED,recebimento,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,
 REC-002,OPS,06 Recebimento,Captura da etiqueta,tela,/(ops)/receber/captura,sim,P0,02,I5,APPROVED,DONE,NOT_STARTED,recebimento+ocr,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,KPI segundos por registro

@@ -6,7 +6,7 @@ import { expect, test } from "@playwright/test";
  */
 test("scaffold da raiz sobe", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Custelo" })).toBeVisible();
+  await expect(page.getByText("PacoteZap")).toBeVisible();
 });
 
 test("health liveness responde sem vazamento", async ({ request }) => {

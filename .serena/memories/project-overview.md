@@ -3,8 +3,8 @@
 SaaS B2B multi-tenant de recebimento e **cadeia de custodia** para portarias e
 operacoes prediais. Produto proprio da Webcodeff. Brasil, LGPD.
 
-**Estado em 18/08/2026: preparacao concluida, implementacao NAO comecou.**
-Nao existe codigo de dominio, migration, rota real nem componente de produto.
+**Estado em 20/08/2026: I2 em andamento** (tenancy + auth). Contexto de agentes
+em `.ai/`. Nao reabra RN/Expo.
 
 ## Arquitetura (LOCKED — Architecture Freeze 13/08/2026, 20 ADRs)
 
@@ -43,19 +43,20 @@ Vercel · Vitest + Playwright.
 
 ## Onde procurar
 
-| Preciso de                       | Arquivo                                        |
-| -------------------------------- | ---------------------------------------------- |
-| regras fixas e comandos          | `CLAUDE.md`                                    |
-| contrato de agentes              | `AGENTS.md`                                    |
-| ADRs resumidos                   | `docs/architecture/adr-index.md`               |
-| modulos e camadas                | `docs/architecture/module-map.md`              |
-| invariantes e maquinas de estado | `docs/product/invariantes.md`                  |
-| 83 telas (indice)                | `docs/product/screen-map.md`                   |
-| ordem de construcao              | `docs/product/implementation-roadmap.md`       |
-| regras por stack                 | `.claude/rules/*.md`                           |
-| regra de negocio por modulo      | `.claude/skills/<modulo>/SKILL.md` (19 skills) |
-| tracker de telas                 | `docs/product/screen-tracker.md`               |
-| design system                    | `.design-system/` + `src/app/globals.css`      |
+| Preciso de                       | Arquivo                                   |
+| -------------------------------- | ----------------------------------------- |
+| regras fixas e comandos          | `CLAUDE.md`                               |
+| contrato de agentes              | `AGENTS.md`                               |
+| ADRs resumidos                   | `docs/architecture/adr-index.md`          |
+| modulos e camadas                | `docs/architecture/module-map.md`         |
+| invariantes e maquinas de estado | `docs/product/invariantes.md`             |
+| 83 telas (indice)                | `docs/product/screen-map.md`              |
+| ordem de construcao              | `docs/product/implementation-roadmap.md`  |
+| regras por stack                 | `.ai/rules/*.md`                          |
+| regra de negocio por modulo      | `.ai/modules/<modulo>.md`                 |
+| cache de UI                      | `DESIGN.md`                               |
+| tracker de telas                 | `docs/product/screen-tracker.md`          |
+| design system                    | `.design-system/` + `src/app/globals.css` |
 
 ## Verificacao
 
@@ -64,4 +65,5 @@ Vercel · Vitest + Playwright.
 
 ## Proxima fase
 
-I1 — Fundacao tecnica. Nada de dominio antes de I2 (tenancy + RLS) estar de pe.
+I2.3 / AUTH — depois I3. Nada de tabela de dominio extra antes da RLS (I2.1)
+estar de pe.

@@ -25,7 +25,7 @@ Verificacao em 18/08/2026 (sem MCP Notion autenticado):
 - **Desenvolvimento** de todas as 83: `NOT_STARTED` (nenhuma pagina em codigo).
 - Rotas, fases e modulos batem com `implementation-roadmap.md` e skills.
 
-Se o Notion divergir deste arquivo, **decida e registre** em `.claude/memory.md`.
+Se o Notion divergir deste arquivo, **decida e registre** em `.ai/memory.md`.
 Nunca resolva em silencio.
 
 ## Resumo de progresso
@@ -36,13 +36,14 @@ Atualizado: **19/08/2026**
 | ------------------------ | ----- | ----- | -------- |
 | Design MVP (Penpot)      | 77    | 77    | 0        |
 | Design pos-MVP           | 0     | 6     | 6        |
-| Frontend (codigo)        | 0     | 83    | 83       |
-| Backend (API/modulo)     | 0     | 83    | 83       |
-| Testes (unit/ui/e2e/rls) | 0     | 83    | 83       |
+| Frontend (codigo)        | 2     | 83    | 81       |
+| Backend (API/modulo)     | 2     | 83    | 81       |
+| Testes (unit/ui/e2e/rls) | 6     | 83    | 77       |
 
-**Fase atual:** I1 (fundacao tecnica). AUTH-001 tem superficie desktop em
-`IN_PROGRESS` (UI + validacao, sem sessao). Backend de auth continua bloqueado
-ate I2.
+**Fase atual:** I3 (estrutura e pessoas). AUTH-001..004 estao em REVIEW: RLS e
+E2E desktop/OPS revalidados, mas `pnpm verify`, a11y global e a configuracao
+humana de redirects, templates/SMTP e leaked-password protection em
+staging/producao continuam pendentes. AUTH-005/006 estao DONE.
 
 ## Regra obrigatoria — ao finalizar uma pagina
 
@@ -52,7 +53,8 @@ com `/verify` verde):
 1. Atualize **`docs/product/screen-tracker.csv`** — colunas `Frontend Status`,
    `API Status`, `Test Status` (e `Mobile Status` se OPS).
 2. Atualize **este arquivo** — mesma linha, mesmos status.
-3. Se houve decisao duradoura, registre em **`.claude/memory.md`**.
+3. Se houve decisao duradoura, registre em **`.ai/memory.md`**. Atualize
+   `.ai/page-map.md` se rota/estado/navegacao mudou.
 4. Quando o MCP Notion estiver autenticado, sincronize o _Roadmap Mestre_ no Notion
    (importar CSV ou editar a database).
 
@@ -69,15 +71,15 @@ Colunas abreviadas nas tabelas: **D** = Design · **F** = Frontend · **B** = Ba
 
 ## Wave 01 — AUTH · Fase I2
 
-| ID       | Pagina              | Rota                 | D           | F           | B           | T           | Conteudo previsto                                                        |
-| -------- | ------------------- | -------------------- | ----------- | ----------- | ----------- | ----------- | ------------------------------------------------------------------------ |
-| AUTH-001 | Entrar              | `/(auth)/entrar`     | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Form email/senha; recuperar no mesmo card (translate); sessao real na I2 |
-| AUTH-002 | Convite / 1o acesso | `/(auth)/convite`    | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar (preview); nome; senha; papel do convite; API na I2      |
-| AUTH-003 | Recuperar senha     | `/(auth)/recuperar`  | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Card no /entrar com translate; e-mail; sem vazar se existe; API na I2    |
-| AUTH-004 | Definir senha       | `/(auth)/senha`      | APPROVED    | IN_PROGRESS | NOT_STARTED | IN_PROGRESS | Preview apos enviar link; nova senha + confirmacao; API na I2            |
-| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB          |
-| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | NOT_STARTED | NOT_STARTED | NOT_STARTED | Sessao invalida ou sem escopo; acao sair/contato admin                   |
-| AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                                |
+| ID       | Pagina              | Rota                 | D           | F           | B           | T           | Conteudo previsto                                                   |
+| -------- | ------------------- | -------------------- | ----------- | ----------- | ----------- | ----------- | ------------------------------------------------------------------- |
+| AUTH-001 | Entrar              | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Login real; recuperar/convite no mesmo palco; redirect por contexto |
+| AUTH-002 | Convite / 1o acesso | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Callback seguro; nome/senha; papel e escopo; ativacao server-side   |
+| AUTH-003 | Recuperar senha     | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Envio sem enumerar conta; callback token-hash/PKCE                  |
+| AUTH-004 | Definir senha       | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Nova senha; outras sessoes encerradas; sessao atual preservada      |
+| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | DONE        | DONE        | DONE        | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB     |
+| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | DONE        | DONE        | DONE        | Sessao sem escopo/claim util; sair e voltar ao login                |
+| AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                           |
 
 ## Wave 02 — OPS Recebimento · Fases I5/I6
 

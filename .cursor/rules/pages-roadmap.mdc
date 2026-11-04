@@ -12,6 +12,7 @@ Ao **concluir** uma tela ou sheet (frontend + backend + testes, com `pnpm verify
 2. Atualize a mesma linha em `docs/product/pages-roadmap.md` (colunas F, B, T).
 3. Se OPS, atualize tambem `Mobile Status` no CSV quando aplicavel.
 4. Nao marque `DONE` sem evidencia de teste. Estados validos: ver legenda no roadmap.
-5. Decisao duradoura → `.claude/memory.md`. Sync Notion quando MCP autenticado.
+5. Decisao duradoura → `.ai/memory.md`. Sync Notion quando MCP autenticado.
+   Atualize tambem a entrada em `.ai/page-map.md` se rota/estado/navegacao mudou.
 
 Antes de comecar uma tela: `/tela <ID>` — checar design `APPROVED` e fase habilitadora.

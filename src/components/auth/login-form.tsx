@@ -2,13 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, Lock } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import { loginSchema, type LoginInput } from "@/components/auth/login-schema";
 import { requestSession } from "@/components/auth/request-session";
+import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,10 +32,15 @@ import { Spinner } from "@/components/ui/spinner";
 type LoginFormProps = {
   onInvite: () => void;
   onRecover: () => void;
+  initialError?: string | null;
 };
 
-export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
-  const [submitError, setSubmitError] = useState<string | null>(null);
+export function LoginForm({
+  onInvite,
+  onRecover,
+  initialError = null,
+}: LoginFormProps) {
+  const [submitError, setSubmitError] = useState<string | null>(initialError);
 
   const {
     register,
@@ -43,7 +48,6 @@ export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
   });
 
   async function onSubmit(values: LoginInput) {
@@ -51,7 +55,10 @@ export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
     const result = await requestSession(values);
     if (!result.ok) {
       setSubmitError(result.message);
+      return;
     }
+
+    window.location.assign(result.redirectTo);
   }
 
   return (
@@ -60,21 +67,7 @@ export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <div
-          data-login-card-item
-          className="mb-4 flex flex-col items-center gap-3 lg:hidden"
-        >
-          <Image
-            src="/brand/logo-custelo-icon.png"
-            alt=""
-            width={56}
-            height={68}
-            className="h-14 w-auto"
-          />
-          <p className="text-xl font-semibold tracking-tight text-foreground">
-            Custelo
-          </p>
-        </div>
+        <PacoteZapMobileHeader data-login-card-item />
         <CardTitle
           data-login-card-item
           className="font-sans text-2xl font-semibold tracking-tight"

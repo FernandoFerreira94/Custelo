@@ -70,7 +70,7 @@ Pendencias →  REC-009 fila local · REC-010 conflito · CUS-007 nao identifica
 Offline e **limitado ao recebimento**, nao operacao offline completa. OCR,
 WhatsApp e servicos externos aguardam reconexao.
 
-Regras em `.claude/rules/ops-pwa.md` e na skill `offline-sync`.
+Regras em `.ai/rules/ops-pwa.md` e no modulo `offline-sync`.
 
 ### Risco iOS assumido
 

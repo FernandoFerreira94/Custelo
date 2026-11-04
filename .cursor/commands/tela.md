@@ -14,7 +14,7 @@ Antes de escrever qualquer codigo:
    avise.
 3. Confirme que a **fase** do Implementation Roadmap que habilita esta tela ja
    foi entregue. Tela cuja dependencia de backend nao existe nao comeca.
-4. Carregue a skill do modulo correspondente (`.claude/skills/<modulo>/SKILL.md`).
+4. Carregue o modulo correspondente (`.ai/modules/<modulo>.md`).
 5. Se a tela e do route group `(ops)`, leia tambem a skill `ui-ops-pwa`.
 
 Ao implementar:
