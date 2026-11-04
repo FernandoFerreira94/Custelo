@@ -16,6 +16,8 @@ import { Importar } from "../pz-importar/importar"
 import { Plataforma } from "../pz-plataforma/plataforma"
 import { Laranja } from "../pz-laranja/laranja"
 import { Escuro } from "../pz-escuro/escuro"
+import { Faltam } from "../pz-faltam/faltam"
+import { Prestadora } from "../pz-prestadora/prestadora"
 import { Configuracoes } from "../pz-config/config"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/webcode/ui/tabs"
 
@@ -103,6 +105,8 @@ const ABAS = [
   { id: "plataforma", label: "Admin", conteudo: <Plataforma /> },
   { id: "laranja", label: "Paleta", conteudo: <Laranja /> },
   { id: "escuro", label: "Modo escuro", conteudo: <Escuro /> },
+  { id: "piloto", label: "Piloto e implantação", conteudo: <Faltam /> },
+  { id: "prestadora", label: "Prestadora e login por local", conteudo: <Prestadora /> },
 ]
 
 function lerHash() {
