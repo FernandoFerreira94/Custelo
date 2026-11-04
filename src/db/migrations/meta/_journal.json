@@ -22,6 +22,55 @@
       "when": 1755566600000,
       "tag": "0002_custom_access_token_hook",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755566700000,
+      "tag": "0003_contexto_ativo",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1755566800000,
+      "tag": "0004_invite_activation",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1755566900000,
+      "tag": "0005_invite_activation_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1755567000000,
+      "tag": "0006_access_management",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1755567100000,
+      "tag": "0007_i3_estrutura_pessoas",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1755567200000,
+      "tag": "0008_rls_fixture_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1755567300000,
+      "tag": "0009_revoke_seed_fixtures",
+      "breakpoints": true
     }
   ]
 }

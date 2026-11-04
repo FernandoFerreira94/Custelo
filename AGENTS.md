@@ -31,19 +31,19 @@ pnpm db:generate    # migration a partir do schema Drizzle
 
 ## Context router
 
-| Preciso de                       | Leia                                       |
-| -------------------------------- | ------------------------------------------ |
-| Produto, atores, nao-objetivos   | `.ai/scope.md` e `.ai/modules/<modulo>.md` |
-| ADR / Freeze                     | `.ai/architecture.md`                      |
-| Done / now / next / blocked      | `.ai/roadmap.md`                           |
-| Telas, rotas, estados            | `.ai/page-map.md`                          |
-| Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)              |
+| Preciso de                       | Leia                                        |
+| -------------------------------- | ------------------------------------------- |
+| Produto, atores, nao-objetivos   | `.ai/scope.md` e `.ai/modules/<modulo>.md`  |
+| ADR / Freeze                     | `.ai/architecture.md`                       |
+| Done / now / next / blocked      | `.ai/roadmap.md`                            |
+| Telas, rotas, estados            | `.ai/page-map.md`                           |
+| Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)               |
 | Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente) |
-| Regra de stack                   | `.ai/rules/`                               |
-| Feature complexa                 | `.ai/specs/<feature>.md`                   |
-| Decisao que evolui               | `.ai/memory.md` (Summary no boot)          |
-| Erro ja diagnosticado 2x         | `.ai/gotchas.md`                           |
-| Spec tela a tela / ADR estendido | `docs/` — nunca a pagina Notion inteira    |
+| Regra de stack                   | `.ai/rules/`                                |
+| Feature complexa                 | `.ai/specs/<feature>.md`                    |
+| Decisao que evolui               | `.ai/memory.md` (Summary no boot)           |
+| Erro ja diagnosticado 2x         | `.ai/gotchas.md`                            |
+| Spec tela a tela / ADR estendido | `docs/` — nunca a pagina Notion inteira     |
 
 ## Invariantes (stop-ship)
 

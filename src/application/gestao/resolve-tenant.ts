@@ -1,8 +1,5 @@
 import type { AuthenticatedSession } from "@/application/auth/session-context";
-import {
-  ORG_SCOPE_SENTINEL,
-  type TenantContext,
-} from "@/db/session";
+import { ORG_SCOPE_SENTINEL, type TenantContext } from "@/db/session";
 
 export type GestaoErrorCode =
   | "UNAUTHORIZED"
@@ -13,8 +10,7 @@ export type GestaoErrorCode =
   | "UNAVAILABLE";
 
 export type GestaoResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; code: GestaoErrorCode };
+  { ok: true; data: T } | { ok: false; code: GestaoErrorCode };
 
 export function tenantContextFromSession(
   session: AuthenticatedSession,

@@ -10,3 +10,4 @@ src/db/migrations
 public
 Imagen
 *.csv
+.serena

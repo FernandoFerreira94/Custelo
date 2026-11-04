@@ -52,7 +52,9 @@ export default defineConfig({
           environment: "node",
           include: ["tests/rls/**/*.test.ts"],
           // Postgres real, nunca mock. Sem DATABASE_URL o projeto falha alto.
-          fileParallelism: false,
+          // Um arquivo por vez: as fixtures compartilham o mesmo banco.
+          pool: "forks",
+          poolOptions: { forks: { singleFork: true } },
           testTimeout: 30_000,
         },
       },

@@ -7,19 +7,26 @@ import { type TenantContext, withAppRls } from "@/db/session";
 
 export type TenantDb = PostgresJsDatabase<typeof schema>;
 
-export async function withTenantDb<T>(
-  context: TenantContext,
-  fn: (db: TenantDb) => Promise<T>,
-): Promise<T> {
+// Um client por instancia (serverless reaproveita entre requests).
+// Abrir e fechar conexao a cada chamada esgota o pooler do Supabase.
+let client: ReturnType<typeof postgres> | null = null;
+
+function getClient(): ReturnType<typeof postgres> {
+  if (client) return client;
   const url = getDatabaseUrl();
   if (!url) {
     throw new Error("DATABASE_UNAVAILABLE");
   }
+  client = postgres(url, { prepare: false, max: 1 });
+  return client;
+}
 
-  const sql = postgres(url, { prepare: false, max: 1 });
-  try {
-    return await withAppRls(sql, context, async (tx) => fn(drizzle(tx, { schema })));
-  } finally {
-    await sql.end({ timeout: 2 });
-  }
+export async function withTenantDb<T>(
+  context: TenantContext,
+  fn: (db: TenantDb) => Promise<T>,
+): Promise<T> {
+  return withAppRls(getClient(), context, async (tx) =>
+    // TransactionSql nao expoe end/options, que o drizzle nao usa dentro da transacao.
+    fn(drizzle(tx as unknown as postgres.Sql, { schema })),
+  );
 }
