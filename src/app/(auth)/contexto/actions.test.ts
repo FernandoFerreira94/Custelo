@@ -95,24 +95,17 @@ describe("resolveContextLanding â€” AUTH-005", () => {
     },
   );
 
-  it("persiste o unico escopo e envia recepcionista para OPS", async () => {
+  it("com um so escopo pede a entrada automatica, sem gravar nada na pagina", async () => {
     mocks.getAuthenticatedSession.mockResolvedValue(activeSession);
     mocks.listAccessibleScopes.mockResolvedValue([scopes[0]]);
-    mocks.defineActiveContext.mockResolvedValue({
-      ok: true,
-      papelCodigo: "recepcionista",
-    });
 
     await expect(resolveContextLanding()).resolves.toEqual({
-      kind: "redirect",
-      href: "/receber",
+      kind: "auto",
+      scopes: [scopes[0]],
     });
-    expect(mocks.defineActiveContext).toHaveBeenCalledWith(
-      activeSession.userId,
-      scopes[0]?.orgId,
-      scopes[0]?.empreendimentoId,
-    );
-    expect(mocks.refreshSession).toHaveBeenCalledOnce();
+    // Pagina nao grava cookie: gravar aqui causava o loop de /contexto.
+    expect(mocks.defineActiveContext).not.toHaveBeenCalled();
+    expect(mocks.refreshSession).not.toHaveBeenCalled();
   });
 });
 
