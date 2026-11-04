@@ -5,6 +5,16 @@ import { env } from "@/lib/env";
 // valor deixa de valer assim que a variável existir.
 const CANAL_PROVISORIO = "mailto:suporte@pacotezap.com.br";
 
+/**
+ * Contatos reais do diálogo de ajuda de /entrar. Vazio = botão de envio
+ * escondido (pendência do Fernando: definir WhatsApp e e-mail de suporte).
+ * `whatsapp` só com dígitos e DDI, ex.: "5511999999999".
+ */
+export const SUPORTE = { whatsapp: "", email: "" } as {
+  whatsapp: string;
+  email: string;
+};
+
 /** Único lugar que diz para onde vai o botão "Falar com o suporte". */
 export const suporteUrl = env.NEXT_PUBLIC_SUPORTE_URL ?? CANAL_PROVISORIO;
 

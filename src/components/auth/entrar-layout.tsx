@@ -1,5 +1,6 @@
 import { CheckCircle2Icon, PackageIcon, ShieldCheckIcon } from "lucide-react";
 
+import { BotaoAjuda } from "@/components/auth/botao-ajuda";
 import { PzMarca } from "@/components/brand/marca";
 import { Badge } from "@/components/ui/badge";
 
@@ -107,7 +108,11 @@ export function EntrarLayout({ children }: { children: React.ReactNode }) {
       <div className="hidden lg:flex">
         <PainelMarca />
       </div>
-      <div className="relative flex min-h-dvh flex-col items-center justify-center gap-6 px-4 py-8 lg:min-h-0 lg:px-10">
+      <div className="relative flex min-h-dvh flex-col items-center justify-center gap-6 px-4 pt-20 pb-8 lg:min-h-0 lg:px-10">
+        {/* pt-20 acima reserva a faixa do botão: sem isso o card o cobre em telas baixas. */}
+        <div className="absolute top-4 right-4">
+          <BotaoAjuda />
+        </div>
         {children}
         <div className="w-full max-w-[460px]">
           <Rodape />
