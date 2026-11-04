@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { signOutAction } from "@/app/(auth)/sem-acesso/actions";
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,7 +23,7 @@ export default function SemAcessoPage() {
     <main className="flex min-h-dvh items-center justify-center p-6">
       <Card className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)]">
         <CardHeader>
-          <PacoteZapMark showIcon={false} textClassName="text-xl" />
+          <PzMarca texto="text-xl" />
           <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
             <h1 className="contents">Sem acesso</h1>
           </CardTitle>

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -99,7 +99,7 @@ export function AcceptInviteForm({
         className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
       >
         <CardHeader>
-          <PacoteZapMobileHeader />
+          <PzMarca className="mb-4 lg:hidden" />
           <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
             <h1 className="contents">Aceitar convite</h1>
           </CardTitle>
@@ -119,7 +119,7 @@ export function AcceptInviteForm({
         className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
       >
         <CardHeader>
-          <PacoteZapMobileHeader />
+          <PzMarca className="mb-4 lg:hidden" />
           <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
             <h1 className="contents">Aceitar convite</h1>
           </CardTitle>
@@ -150,7 +150,7 @@ export function AcceptInviteForm({
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <PacoteZapMobileHeader />
+        <PzMarca className="mb-4 lg:hidden" />
         <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
           <h1 className="contents">Aceitar convite</h1>
         </CardTitle>

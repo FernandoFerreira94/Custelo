@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import { loginSchema, type LoginInput } from "@/components/auth/login-schema";
 import { requestSession } from "@/components/auth/request-session";
-import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,7 +67,7 @@ export function LoginForm({
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <PacoteZapMobileHeader data-login-card-item />
+        <PzMarca data-login-card-item className="mb-4 lg:hidden" />
         <CardTitle
           data-login-card-item
           className="font-sans text-2xl font-semibold tracking-tight"

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import {
   Card,
   CardContent,
@@ -29,7 +29,7 @@ export function TelaDeEstado({
         className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)]"
       >
         <CardHeader>
-          <PacoteZapMark showIcon={false} textClassName="text-xl" />
+          <PzMarca texto="text-xl" />
           <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
             <h1 className="contents">{titulo}</h1>
           </CardTitle>

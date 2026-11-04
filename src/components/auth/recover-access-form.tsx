@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PacoteZapMobileHeader } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
@@ -68,7 +68,7 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
         className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
       >
         <CardHeader>
-          <PacoteZapMobileHeader />
+          <PzMarca className="mb-4 lg:hidden" />
           <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
             <h1 className="contents">Link enviado</h1>
           </CardTitle>
@@ -99,7 +99,7 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
       className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
-        <PacoteZapMobileHeader />
+        <PzMarca className="mb-4 lg:hidden" />
         <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
           <h1 className="contents">Recuperar acesso</h1>
         </CardTitle>

@@ -1,4 +1,4 @@
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 
 /**
  * Placeholder da raiz.
@@ -10,7 +10,7 @@ import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
 export default function Home() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-8 text-center">
-      <PacoteZapMark showIcon={false} textClassName="text-2xl" />
+      <PzMarca texto="text-2xl" />
       <p className="max-w-md text-sm text-muted-foreground">
         Recebimento e cadeia de custódia para portarias e operações prediais.
       </p>

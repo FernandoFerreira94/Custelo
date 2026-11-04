@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import { selectContextAction } from "@/app/(auth)/contexto/actions";
 import type { UserScope } from "@/application/auth/user-scope";
 import { labelForScope } from "@/application/auth/user-scope";
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,7 +71,7 @@ export function ContextSelector({
   return (
     <Card className="w-full max-w-[480px] font-sans shadow-[var(--shadow-elevation-3)]">
       <CardHeader>
-        <PacoteZapMark showIcon={false} textClassName="text-xl" />
+        <PzMarca texto="text-xl" />
         <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
           <h1 className="contents">Selecionar contexto</h1>
         </CardTitle>

@@ -8,7 +8,7 @@ import { LoginHero } from "@/components/auth/login-hero";
 import { LoginIntroParcel } from "@/components/auth/login-intro-parcel";
 import { LoginOrbs } from "@/components/auth/login-orbs";
 import { useLoginMotion } from "@/components/auth/use-login-motion";
-import { PacoteZapMark } from "@/components/brand/pacotezap-mark";
+import { PzMarca } from "@/components/brand/marca";
 
 import type { PendingInvitePreview } from "@/components/auth/request-accept-invite";
 
@@ -56,11 +56,10 @@ export function LoginDesktop({
             className="absolute size-[22rem] rounded-full bg-[radial-gradient(circle_at_center,var(--secondary)_0%,color-mix(in_oklch,var(--secondary)_42%,transparent)_38%,transparent_72%)] sm:size-[28rem]"
           />
           <LoginIntroParcel />
-          <PacoteZapMark
+          <PzMarca
             data-login-mark
-            showIcon={false}
-            variant="onPrimary"
-            textClassName="text-4xl sm:text-5xl"
+            escuro
+            texto="text-4xl sm:text-5xl"
             className="relative z-10"
           />
         </div>
