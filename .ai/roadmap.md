@@ -7,6 +7,11 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## IN PROGRESS
 
+- **Plano mestre (04/11/2026)** — `docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md`
+  e o plano de execucao do resto do sistema: Parte 1 (migracao de UI, abaixo) →
+  Fase 0 → I3 … I13 (piloto). Decisoes D1–D19 na secao 1 aguardam o Fernando;
+  o plano segue a recomendacao ate a resposta. Telas sem prancha: secao 6.3.
+
 - **Migracao das telas para a WebCode UI + limpeza de codigo morto** — plano
   passo a passo em `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`
   (spec: `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md`) (base `@webcode`,
@@ -18,14 +23,18 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   no worktree compartilhado e a configuracao humana do Supabase Auth ser concluida.
 - **I3 estrutura fisica + pessoas** — migration `0007` com `areas`, `unidades`,
   `pontos_recebimento`, `pessoas`, `vinculos` + RLS. Schema Drizzle no repo.
-  Proximo: application commands/queries + telas UNI/PES.
+  Proximo: Fase 0 do plano mestre e depois a secao 8 (I3), que comeca pela
+  migration `0011` corrigindo os bugs do handoff.
 - **I1 nuvem** — contas humanas: Supabase x3, GitHub remote, DSN Sentry,
   chaves Inngest. Codigo da fundacao ja esta no repo.
 
 ## NEXT
 
+- Fase 0 do plano mestre (resultado padrao das acoes, contexto validado,
+  `0010` com `audit_log`, middleware, paginas de sistema por superficie,
+  telas de equipe USR-001..003).
 - I3: importacao Excel/CSV de cadastros (IMP-010..015) junto de UNI/PES —
-  recomendado em 04/11, aguarda ok. PDF assistido fica na I10.
+  recomendado em 04/11 (D1), aguarda ok. PDF assistido fica na I10.
 
 - Configurar no dashboard de staging/producao as redirect URLs, templates de
   convite/recuperacao e SMTP do Supabase Auth.
@@ -73,6 +82,7 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## LATER / PHASE 2
 
+- Detalhe de cada fase: plano mestre, secoes 9 a 18.
 - I4 cadeia de custodia → I5 recebimento/OCR → I6 offline → I7 WhatsApp →
   I8 saida → I9 correcoes → I10 importacao/relatorios → I11 billing/SaaS →
   I12 retencao/DR → I13 piloto.

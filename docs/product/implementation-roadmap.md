@@ -51,7 +51,8 @@ esta em 77/83; desenvolvimento esta em I2 (AUTH), nao em zero.
 
 ## Onde estamos
 
-**I2 em andamento (20/08/2026).** I1 codigo no repo. I2.1 (tenancy+RLS) e I2.2
-(sessao+claims) entregues. AUTH-005/006 no working tree. Contas de nuvem ainda
-sao passo humano (`docs/workflow/environments.md`). Proxima: seed + E2E + I2.3.
-Fatia operacional: `.ai/roadmap.md`.
+**04/11/2026: I2 entregue; migracao das telas para a WebCode UI em andamento.**
+Execucao pelo plano mestre `docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md`
+(Parte 1 = migracao de UI → Fase 0 → I3 … I13). Esta pagina continua sendo o mapa
+de fases e dependencias; o plano mestre tem as tasks. Contas de nuvem ainda sao
+passo humano (`docs/workflow/environments.md`). Fatia operacional: `.ai/roadmap.md`.
