@@ -3,9 +3,15 @@
 Ordem **por dependencia**, nao por tela. Fases I1–I13:
 `docs/product/implementation-roadmap.md`. Telas: `.ai/page-map.md`.
 
-Atualizado: **01/09/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
+Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## IN PROGRESS
+
+- **Migracao das telas para a WebCode UI + limpeza de codigo morto** — plano
+  passo a passo em `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`
+  (spec: `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md`) (base `@webcode`,
+  tema Nevoa + Brasa, marca final, estados, AUTH-001..006 nas pranchas, cascas
+  das superficies, limpeza). Pranchas versionadas em `docs/pranchas/`.
 
 - **AUTH-001..004 fechamento formal** — RLS (20) e E2E Auth desktop/OPS (14)
   revalidados; status REVIEW ate `pnpm verify` e o a11y global voltarem a passar
@@ -17,6 +23,9 @@ Atualizado: **01/09/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   chaves Inngest. Codigo da fundacao ja esta no repo.
 
 ## NEXT
+
+- I3: importacao Excel/CSV de cadastros (IMP-010..015) junto de UNI/PES —
+  recomendado em 04/11, aguarda ok. PDF assistido fica na I10.
 
 - Configurar no dashboard de staging/producao as redirect URLs, templates de
   convite/recuperacao e SMTP do Supabase Auth.
@@ -40,6 +49,12 @@ Atualizado: **01/09/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 - Prazos de retencao — I12 (motor parametrizavel ja e a regra).
 
 ## DONE
+
+- **04/11/2026 (PRs #12–#14):** journal Drizzle 0003–0008 + `0009` revoga
+  seeds; typecheck/Prettier verdes; catalogo de mensagens `src/lib/mensagens.ts`
+  - `error/global-error/not-found/loading`; guard de rota por papel
+    (`acesso-superficie.ts`, mapeamento aguarda confirmacao do Fernando);
+    contexto unico via Route Handler `/contexto/auto` (fim do loop).
 
 - Architecture Freeze (20 ADRs, 13/08/2026).
 - Boot Protocol no repo (16–18/08) e **reaplicacao universal `.ai/`** (20/08).
