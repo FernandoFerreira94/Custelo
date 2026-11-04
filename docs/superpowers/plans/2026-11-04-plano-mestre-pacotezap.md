@@ -128,6 +128,7 @@ Continuam dependendo de algo de fora: D4 (resultado do benchmark), D9 (conta Asa
 | D17 | Prazos de retenção, controlador × operador, DPA e subprocessadores                                                                | **Vêm do jurídico.** O motor nasce na I12 com prazo vazio = não expurga. **Sem os prazos, não há piloto** (stop-ship).                                                                   | — (o módulo proíbe prazo inventado)                                       | I12, I13          |
 | D18 | Chave "Assinatura na retirada" na prancha CFG-006 × regra "retirada exige assinatura"                                             | **Assinatura fixa**, no card "Sempre ligado" com o selo "Fixo".                                                                                                                          | Chave que permite retirar sem assinatura com motivo (enfraquece a prova). | I8, I11           |
 | D19 | Backup dos arquivos de evidência (assinaturas, fotos), se o Storage não entrar no PITR                                            | **Cópia diária das assinaturas e fotos de devolução para outra região/provedor** (custo a aprovar).                                                                                      | Aceitar o risco, documentado no runbook e no contrato.                    | I12               |
+| D20 | Prestadora (ex.: Selva) que atende condomínios de outras contas, login por local e contexto por aparelho (análise `docs/superpowers/plans/2026-11-04-analise-acesso-prestadora.md`) | **Aprovado pelo Fernando em 04/11 e entra no piloto.** Dado é do condomínio; `organizacoes.tipo`, `contratos_servico`, `escopos_usuario.via_contrato_id`; o condomínio encerra o contrato quando quiser. Local por **código curto/QR de pareamento** (sem busca pública por nome); lista de condomínios da prestadora só após login; lista de funcionários só no aparelho; senha sempre; sem biometria no MVP; contexto ativo por aparelho (cookie validado). Cobrança continua por empreendimento. | Busca por nome com rate limit (pior segurança) · PIN por aparelho · visão consolidada da Selva (pós-MVP). | Fase 0, IP, I6, I11 |
 
 Registradas em `.ai/memory.md` (04/11/2026).
 
@@ -7205,6 +7206,88 @@ O SQL de `app.anonimizar` usa a mesma regra. O teste RLS da Task 12.1 confere os
 
 ---
 
+## 17b. Fase IP — Prestadora, contratos e login por local (D20)
+
+**Objetivo:** a Selva (prestadora) atende condomínios de outras contas. Cadeia Prestadora > Condomínio > Funcionário, sem mudar a RLS das tabelas de domínio. O dado continua do condomínio (LOCKED: unidade é destino primário, eventos append-only).
+
+**Decisões do Fernando (04/11):** o condomínio pode cancelar o contrato quando quiser; a PacoteZap ganha de qualquer forma (cobrança por empreendimento); a Selva usa celular da empresa fixo no local e desktop; código/QR no lugar da busca por nome; a Selva entra no piloto.
+
+**Pré-requisito na Fase 0 (obrigatório antes desta fase):**
+- **Task 0.2:** o `contextoDaSessao()` passa a ler o empreendimento ativo de um cookie assinado `pz-emp` validado a cada requisição contra `escopos_usuario` para QUALQUER usuário com mais de um escopo (hoje só org_admin). O claim do JWT não carrega o local no multi-escopo.
+- **Task 0.3:** `contexto_ativo` (uma linha por usuário) deixa de decidir o contexto; fica só como "último usado" sugerido. Teste: o mesmo usuário em dois aparelhos com locais diferentes não se mistura.
+
+**Branch:** `feat/ip-prestadora`. **Roda depois da I3 e antes da I6** (o cache offline já nasce particionado).
+
+### Task IP.1: Migration de prestadora e contratos
+
+**Files:** `src/db/migrations/00NN_ip_prestadora.sql` (próximo número livre); journal; `src/db/schema/contratos.ts`; `tests/rls/ip-prestadora.test.ts`
+
+**Conteúdo:**
+- `organizacoes.tipo` (`contratante` · `prestadora`, padrão `contratante`).
+- `contratos_servico`: `id`, `prestadora_org_id`, `local_org_id`, `empreendimento_id`, `servico` (`portaria` · `vigilancia`), `papeis_permitidos` (subconjunto de `recepcionista`, `auditor`; check proíbe `org_admin` e `empreendimento_gestor`), `status` (`proposto` · `ativo` · `suspenso` · `encerrado`), `inicio`, `fim`, `encerrado_por`, `encerrado_em`, `motivo`. FK composta `(local_org_id, empreendimento_id)` para `empreendimentos(org_id, id)`.
+- `escopos_usuario.via_contrato_id` (nulo = vínculo direto), FK para `contratos_servico`.
+- Funções `SECURITY DEFINER`, presas ao usuário da sessão (padrão da Task 0.3), com `REVOKE ALL FROM PUBLIC` e `GRANT` função por função:
+  - `app.propor_contrato(...)`: gestor da prestadora propõe; o gestor do condomínio aceita em `app.aceitar_contrato(id)`. Só o gestor do condomínio (dono do dado) ativa.
+  - `app.atribuir_funcionario_contrato(contrato_id, usuario_id, papel)`: gestor da prestadora; papel dentro de `papeis_permitidos`; cria o escopo na org do condomínio com `via_contrato_id`.
+  - `app.suspender_funcionario_no_local(contrato_id, usuario_id, motivo)`: gestor do condomínio.
+  - `app.encerrar_contrato(id, motivo)`: gestor do condomínio OU gestor da prestadora. Na mesma transação desativa todos os escopos com esse `via_contrato_id`.
+- RLS de `contratos_servico`: visível às duas pontas (`local_org_id` ou `prestadora_org_id` do contexto); escrita só pelas funções.
+- `audit_log` ganha `prestadora_org_id` e `contrato_id` (nulos fora de contrato); todo evento de custódia feito por funcionário via contrato grava os dois.
+- `list_escopos_acessiveis` devolve `via_contrato`, `prestadora_nome`, `contrato_status`.
+
+**Testes RLS (negativos primeiro):**
+
+| Caso | Esperado |
+| ---- | -------- |
+| prestadora A lê contrato da prestadora B | 0 linhas |
+| recepcionista ou funcionário via contrato chama `propor_contrato` / `atribuir_funcionario_contrato` | `SEM_PERMISSAO` |
+| atribuir `empreendimento_gestor` por contrato | erro de check |
+| prestadora ativa contrato sozinha (sem aceite do condomínio) | `SEM_PERMISSAO` |
+| `encerrar_contrato` | todos os escopos `via_contrato_id` ficam `ativo = false` na mesma transação |
+| funcionário via contrato lê encomenda de OUTRO condomínio da mesma prestadora | 0 linhas (só o local do escopo ativo) |
+| evento criado por funcionário via contrato | `audit_log` com `prestadora_org_id` e `contrato_id` |
+
+- [ ] Steps TDD. Commit `feat(tenancy): prestadora, contratos de serviço e escopo via contrato`. Peça o ok do Fernando para aplicar no remoto.
+
+### Task IP.2: Casos de uso de contrato
+
+**Files:** `src/application/contratos/{propor,aceitar,atribuir-funcionario,suspender-funcionario,encerrar}.ts` + testes; `src/domain/contratos/situacao.ts` + teste
+
+- Domínio puro: transições válidas (`proposto > ativo > suspenso/encerrado`), papéis permitidos, contrato encerrado não reabre (cria outro).
+- Toda ação grava auditoria (`CONTRATO_PROPOSTO`, `CONTRATO_ACEITO`, `FUNCIONARIO_ATRIBUIDO`, `FUNCIONARIO_SUSPENSO`, `CONTRATO_ENCERRADO`) e usa o catálogo `src/lib/mensagens.ts`.
+- Encerrar pede motivo e mostra o efeito: "Os funcionários da Selva saem deste condomínio agora. O histórico fica com o condomínio."
+- Tests: papel proibido, aceite ausente, motivo vazio, encerramento derruba escopos, mensagens de estado.
+
+### Task IP.3: Pareamento do aparelho e login por local
+
+**Files:** `src/infrastructure/auth/pareamento.ts`, `src/app/(auth)/entrar/**`, `src/app/(auth)/contexto/**`, `src/db/schema/dispositivos.ts` + testes
+
+- **Tabela `locais_codigo`:** `empreendimento_id`, `codigo` (6 caracteres, sem 0/O/1/I, único), `expira_em`, `revogado_em`. Gerado pelo gestor do condomínio (QR + código impresso). Revogável.
+- **Pareamento:** o aparelho informa o código, o servidor devolve só o nome público do local e um token de aparelho (httpOnly), nunca lista de outros locais nem de clientes. Rate limit por IP e por código; resposta igual para código inválido ou expirado ("Código não encontrado ou vencido.").
+- **Aparelho pareado** lembra o local (cookie + armazenamento local). A etapa de local some.
+- **Prestadora:** o funcionário entra com e-mail e senha; a lista de condomínios vem de `list_escopos_acessiveis` (só os contratos DELE), nunca antes do login. Escolha grava o cookie `pz-emp` e é lembrada por aparelho.
+- **Lista de funcionários do aparelho:** só no aparelho (IndexedDB). Guarda nome e e-mail mascarado de quem já entrou ali; senha sempre obrigatória; "Remover deste aparelho"; expira após 30 dias sem uso; limpa em "Sair de todos os aparelhos". O servidor nunca devolve lista de usuários e responde igual para e-mail existente ou não.
+- **`dispositivos_conhecidos`** (I11) passa a ser por `(usuario_id, empreendimento_id, aparelho_sha256)`.
+- Tests: código inválido/expirado/revogado, rate limit, nenhuma lista de usuários ou locais vem do servidor antes do login, lista local respeita expiração e remoção, trocar de local não vaza dados do anterior.
+- Telas novas **sem prancha** (D8): "Entrar com código do local", "Lista de funcionários do aparelho", "Contratos" e "Atribuir funcionário". O Fernando desenha; até lá ficam como "aguarda prancha" e a fase só entrega banco e casos de uso.
+
+### Task IP.4: Telas de gestão de contratos (aguarda prancha)
+
+`/gestao/contratos` (condomínio: aceitar, suspender funcionário, encerrar) e `/prestadora` (gestor da prestadora: contratos, atribuir funcionários). Rota nova `(web)` com superfície própria para o papel de gestor da prestadora, a definir com o Fernando junto com a prancha.
+
+### Task IP.5: Cache offline por local (I6)
+
+- Dexie particionada por `(empreendimento_id, usuario_id)`; cadastro baixado por local; trocar de local com fila pendente é bloqueado até sincronizar; sair apaga o cache do usuário; contrato encerrado apaga o cache do local no próximo sync.
+- Tests: dois locais no mesmo aparelho não se misturam; fila de um usuário não sobe na sessão de outro (já coberto na 6.3).
+
+### Fora do MVP
+Biometria/passkey; visão consolidada da Selva em todos os condomínios; cobrança direta à prestadora (D9 muda só o pagador).
+
+### Riscos de produto/jurídico
+A prestadora tende a ser operadora ou suboperadora dos dados do condomínio. O contrato entre as partes e o DPA entram no jurídico (D17). Sem isso, a Selva não vai para o piloto.
+
+---
+
 ## 18. Fase I13 — Piloto e go-live (um empreendimento real, sem caderno paralelo)
 
 **Por quê:** o fracasso declarado é o porteiro voltar ao caderno. O piloto prova, num empreendimento real, que:
@@ -7323,6 +7406,7 @@ Esta seção é a conferência do plano inteiro. Ao mudar uma fase, atualize a l
 | Telas                                                              | Task                                        | Observação                                             |
 | ------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------ |
 | AUTH-001..006                                                      | Parte 1 + Fase 0 (0.5, 0.7)                 | AUTH-007 pós-MVP                                       |
+| Prestadora, contratos e login por local (D20)                      | Fase 0 (0.2, 0.3) + Fase IP (IP.1 a IP.5)   | Telas de contrato e login por local aguardam prancha (D8) |
 | USR-001..003                                                       | 0.8                                         | backend da I2                                          |
 | UNI-001 · UNI-002 · UNI-003/004                                    | 3.7 · 3.8 · 3.9 (+ 4.5 prateleiras)         | —                                                      |
 | PES-001/003 · PES-002                                              | 3.10                                        | autorizado (D2) e contatos (D3)                        |
