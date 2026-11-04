@@ -7,6 +7,7 @@ import {
   persistInviteRegistration,
   type PendingInviteMetadata,
 } from "@/infrastructure/auth/access-management-repository";
+import { comTimeoutDeAuth } from "@/infrastructure/auth/com-timeout";
 import {
   createSupabaseAdminClient,
   isSupabaseAdminConfigured,
@@ -23,7 +24,7 @@ export async function getPendingInviteForSession(): Promise<
     const supabase = await createSupabaseServerClient();
     const {
       data: { user },
-    } = await supabase.auth.getUser();
+    } = await comTimeoutDeAuth(supabase.auth.getUser());
 
     if (!user) {
       return { ok: false, code: "UNAUTHORIZED" };
