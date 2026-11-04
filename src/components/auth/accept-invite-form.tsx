@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authCardClass, authTitleClass } from "@/components/auth/auth-card";
 import { PzMarca } from "@/components/brand/marca";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import {
   acceptInviteSchema,
@@ -16,6 +17,9 @@ import {
   requestAcceptInvite,
 } from "@/components/auth/request-accept-invite";
 import { mensagemDeFalha } from "@/lib/mensagens";
+import { CircleAlert } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,7 +37,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  defaultPasswordRules,
+  PasswordStrength,
+  type PasswordRule,
+} from "@/components/ui/password-strength";
 import { Spinner } from "@/components/ui/spinner";
+
+// A regra de 10 caracteres espelha password-policy; o medidor só orienta.
+const regrasDeSenha: PasswordRule[] = [
+  {
+    id: "length",
+    label: "Pelo menos 10 caracteres",
+    test: (valor) => valor.length >= 10,
+  },
+  ...defaultPasswordRules.filter((regra) => regra.id !== "length"),
+];
 
 type AcceptInviteFormProps = {
   onBack: () => void;
@@ -54,12 +73,14 @@ export function AcceptInviteForm({
   const [formError, setFormError] = useState<string | null>(null);
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AcceptInviteInput>({
     resolver: zodResolver(acceptInviteSchema),
     defaultValues: { fullName: "", password: "" },
   });
+  const senha = useWatch({ control, name: "password" });
 
   useEffect(() => {
     if (initialInvite) {
@@ -94,13 +115,10 @@ export function AcceptInviteForm({
 
   if (isLoadingInvite) {
     return (
-      <Card
-        data-login-card
-        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-      >
+      <Card data-login-card className={authCardClass}>
         <CardHeader>
           <PzMarca className="mb-4 lg:hidden" />
-          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+          <CardTitle className={authTitleClass}>
             <h1 className="contents">Aceitar convite</h1>
           </CardTitle>
           <CardDescription>Carregando detalhes do convite…</CardDescription>
@@ -114,13 +132,10 @@ export function AcceptInviteForm({
 
   if (loadError || !invite) {
     return (
-      <Card
-        data-login-card
-        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-      >
+      <Card data-login-card className={authCardClass}>
         <CardHeader>
           <PzMarca className="mb-4 lg:hidden" />
-          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+          <CardTitle className={authTitleClass}>
             <h1 className="contents">Aceitar convite</h1>
           </CardTitle>
           <CardDescription>
@@ -145,13 +160,10 @@ export function AcceptInviteForm({
   const preview = invite;
 
   return (
-    <Card
-      data-login-card
-      className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-    >
+    <Card data-login-card className={authCardClass}>
       <CardHeader>
         <PzMarca className="mb-4 lg:hidden" />
-        <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+        <CardTitle className={authTitleClass}>
           <h1 className="contents">Aceitar convite</h1>
         </CardTitle>
         <CardDescription>
@@ -197,6 +209,7 @@ export function AcceptInviteForm({
               hideLabel="Ocultar senha do convite"
               {...register("password")}
             />
+            <PasswordStrength value={senha ?? ""} rules={regrasDeSenha} />
 
             <div className="rounded-[var(--radius-field)] bg-secondary p-4 text-secondary-foreground">
               <p className="text-xs font-semibold tracking-wide uppercase">
@@ -211,7 +224,11 @@ export function AcceptInviteForm({
             </div>
 
             {formError ? (
-              <FieldError role="alert">{formError}</FieldError>
+              <Alert variant="destructive">
+                <CircleAlert />
+                <AlertTitle>Não foi possível criar o acesso</AlertTitle>
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
             ) : null}
 
             <Button
@@ -241,7 +258,7 @@ export function AcceptInviteForm({
         </form>
       </CardContent>
 
-      <CardFooter className="bg-muted">
+      <CardFooter className="bg-muted py-4">
         <p className="text-xs leading-relaxed text-muted-foreground">
           Papel e empreendimentos foram definidos por quem convidou.
         </p>

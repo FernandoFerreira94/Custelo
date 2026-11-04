@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { authCardClass, authTitleClass } from "@/components/auth/auth-card";
 import { loginSchema, type LoginInput } from "@/components/auth/login-schema";
 import { requestSession } from "@/components/auth/request-session";
 import { PzMarca } from "@/components/brand/marca";
@@ -65,16 +66,10 @@ export function LoginForm({
   }
 
   return (
-    <Card
-      data-login-card
-      className="w-full max-w-[460px] overflow-hidden rounded-3xl pb-0 font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-    >
+    <Card data-login-card className={authCardClass}>
       <CardHeader>
         <PzMarca data-login-card-item className="mb-4 lg:hidden" />
-        <CardTitle
-          data-login-card-item
-          className="font-brand text-4xl font-extrabold tracking-tight"
-        >
+        <CardTitle data-login-card-item className={authTitleClass}>
           <h1 className="contents">Entrar</h1>
         </CardTitle>
         <CardDescription data-login-card-item>

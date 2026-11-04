@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authCardClass, authTitleClass } from "@/components/auth/auth-card";
 import { PzMarca } from "@/components/brand/marca";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useState } from "react";
 
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
@@ -11,6 +12,9 @@ import {
   setPasswordSchema,
   type SetPasswordInput,
 } from "@/components/auth/set-password-schema";
+import { CircleAlert } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,8 +24,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FieldError, FieldGroup } from "@/components/ui/field";
+import { FieldGroup } from "@/components/ui/field";
+import {
+  defaultPasswordRules,
+  PasswordStrength,
+  type PasswordRule,
+} from "@/components/ui/password-strength";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+
+// A regra de 10 caracteres espelha password-policy; o medidor só orienta.
+const regrasDeSenha: PasswordRule[] = [
+  {
+    id: "length",
+    label: "Pelo menos 10 caracteres",
+    test: (valor) => valor.length >= 10,
+  },
+  ...defaultPasswordRules.filter((regra) => regra.id !== "length"),
+];
 
 type SetPasswordFormProps = {
   onBack: () => void;
@@ -31,12 +51,14 @@ type SetPasswordFormProps = {
 export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SetPasswordInput>({
     resolver: zodResolver(setPasswordSchema),
     defaultValues: { password: "", confirmPassword: "" },
   });
+  const senha = useWatch({ control, name: "password" });
   const [formError, setFormError] = useState<string | null>(null);
 
   async function onSubmit(values: SetPasswordInput) {
@@ -48,17 +70,17 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
       return;
     }
 
+    toast.success("Senha alterada.", {
+      description: "Use a nova senha no próximo acesso.",
+    });
     onSaved(result.redirectTo);
   }
 
   return (
-    <Card
-      data-login-card
-      className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-    >
+    <Card data-login-card className={authCardClass}>
       <CardHeader>
         <PzMarca className="mb-4 lg:hidden" />
-        <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+        <CardTitle className={authTitleClass}>
           <h1 className="contents">Definir nova senha</h1>
         </CardTitle>
         <CardDescription>Crie uma senha de acesso individual.</CardDescription>
@@ -77,6 +99,7 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
               hideLabel="Ocultar nova senha"
               {...register("password")}
             />
+            <PasswordStrength value={senha ?? ""} rules={regrasDeSenha} />
 
             <AuthPasswordField
               id="confirm-password"
@@ -89,7 +112,11 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
             />
 
             {formError ? (
-              <FieldError role="alert">{formError}</FieldError>
+              <Alert variant="destructive">
+                <CircleAlert />
+                <AlertTitle>Não foi possível salvar a senha</AlertTitle>
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
             ) : null}
 
             <Button
@@ -119,7 +146,7 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
         </form>
       </CardContent>
 
-      <CardFooter className="bg-muted">
+      <CardFooter className="bg-muted py-4">
         <p className="text-xs leading-relaxed text-muted-foreground">
           O link vale por 30 min e só pode ser usado uma vez. Ao salvar, as
           sessões abertas desta conta são encerradas.

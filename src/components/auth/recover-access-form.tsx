@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authCardClass, authTitleClass } from "@/components/auth/auth-card";
 import { PzMarca } from "@/components/brand/marca";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -13,6 +14,15 @@ import {
   RECOVERY_ACCEPTED,
   requestRecovery,
 } from "@/components/auth/request-recovery";
+import { CircleAlert, MailIcon } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Banner,
+  BannerContent,
+  BannerDescription,
+  BannerTitle,
+} from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -63,18 +73,25 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
 
   if (successMessage) {
     return (
-      <Card
-        data-login-card
-        className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-      >
+      <Card data-login-card className={authCardClass}>
         <CardHeader>
           <PzMarca className="mb-4 lg:hidden" />
-          <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+          <CardTitle className={authTitleClass}>
             <h1 className="contents">Link enviado</h1>
           </CardTitle>
           <CardDescription>{successMessage}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="grid gap-4">
+          <Banner variant="success" className="rounded-2xl">
+            <MailIcon aria-hidden />
+            <BannerContent>
+              <BannerTitle>Confira seu e-mail</BannerTitle>
+              <BannerDescription>
+                Se existir uma conta com esse e-mail, o link chega em alguns
+                minutos.
+              </BannerDescription>
+            </BannerContent>
+          </Banner>
           <Button
             type="button"
             variant="link"
@@ -84,7 +101,7 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
             Voltar para o login
           </Button>
         </CardContent>
-        <CardFooter className="bg-muted">
+        <CardFooter className="bg-muted py-4">
           <p className="text-xs leading-relaxed text-muted-foreground">
             Verifique também a pasta de spam. O link vale por 30 min.
           </p>
@@ -94,13 +111,10 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
   }
 
   return (
-    <Card
-      data-login-card
-      className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
-    >
+    <Card data-login-card className={authCardClass}>
       <CardHeader>
         <PzMarca className="mb-4 lg:hidden" />
-        <CardTitle className="font-sans text-2xl font-semibold tracking-tight">
+        <CardTitle className={authTitleClass}>
           <h1 className="contents">Recuperar acesso</h1>
         </CardTitle>
         <CardDescription>
@@ -138,7 +152,11 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
             </Field>
 
             {formError ? (
-              <FieldError role="alert">{formError}</FieldError>
+              <Alert variant="destructive">
+                <CircleAlert />
+                <AlertTitle>Não foi possível enviar o link</AlertTitle>
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
             ) : null}
 
             <Button
@@ -168,7 +186,7 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
         </form>
       </CardContent>
 
-      <CardFooter className="bg-muted">
+      <CardFooter className="bg-muted py-4">
         <p className="text-xs leading-relaxed text-muted-foreground">
           Se existir uma conta com esse e-mail, o link será enviado. Por
           segurança, não confirmamos quais e-mails estão cadastrados.
