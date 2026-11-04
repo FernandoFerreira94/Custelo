@@ -59,3 +59,9 @@ system faltou. Levar ao repo `webcode-design`.
   (h1). O e2e `auth-callbacks.spec.ts` foi ajustado para esse título.
 - **Casca do card:** `authCardClass` tem `pb-0` (pensado para rodapé); a tela
   devolve o respiro de baixo com `pb-(--card-spacing)`.
+- **Contraste do selo de sucesso:** `--wc-success` passa de `#15803d` para
+  `#166534` (4,27 → acima de 4,5:1 sobre `success-soft`). `--state-retirada`
+  segue `#15803d`.
+- **Sem `loading.tsx` em `(auth)`:** um `loading.tsx` vazio fazia o redirect de
+  `/contexto` virar meta refresh (200) e reprovava o a11y da raiz. Sem ele o
+  redirect volta a ser 307.

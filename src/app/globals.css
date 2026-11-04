@@ -337,7 +337,7 @@
   --wc-accent-solid: var(--primary);
   --wc-danger: var(--destructive);
   --wc-danger-solid: var(--destructive);
-  --wc-success: var(--state-retirada);
+  --wc-success: #166534; /* verde-800: texto sobre success-soft precisa de 4,5:1 (#15803d dava 4,27) */
   --wc-warning: var(--state-aguardando);
   --wc-color-white: #ffffff;
   --wc-glass-highlight: #ffffff;
