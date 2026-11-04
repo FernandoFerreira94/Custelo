@@ -67,6 +67,7 @@ export async function selectContextAction(
 export async function resolveContextLanding(): Promise<
   | { kind: "redirect"; href: string }
   | { kind: "select"; scopes: Awaited<ReturnType<typeof listAccessibleScopes>> }
+  | { kind: "auto"; scopes: Awaited<ReturnType<typeof listAccessibleScopes>> }
   | { kind: "unauthorized"; href: string }
   | { kind: "no-access"; href: string }
 > {
@@ -94,28 +95,9 @@ export async function resolveContextLanding(): Promise<
   }
 
   if (scopes.length === 1) {
-    const only = scopes[0];
-    if (!only) {
-      return { kind: "no-access", href: "/sem-acesso" };
-    }
-
-    const persisted = await defineActiveContext(
-      session.userId,
-      only.orgId,
-      only.empreendimentoId,
-    );
-
-    if (!persisted.ok) {
-      return { kind: "no-access", href: "/sem-acesso" };
-    }
-
-    const supabase = await createSupabaseServerClient();
-    await supabase.auth.refreshSession();
-
-    return {
-      kind: "redirect",
-      href: resolveSurfaceRedirect(persisted.papelCodigo),
-    };
+    // A escolha automática grava contexto e renova o cookie da sessão.
+    // Página (Server Component) não pode gravar cookie: isso roda em /contexto/auto.
+    return { kind: "auto", scopes };
   }
 
   return { kind: "select", scopes };

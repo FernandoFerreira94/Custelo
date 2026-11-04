@@ -29,10 +29,14 @@ const MENSAGEM_CONTEXTO = {
 
 type ContextSelectorProps = {
   scopes: UserScope[];
+  initialError?: string | null;
 };
 
-export function ContextSelector({ scopes }: ContextSelectorProps) {
-  const [submitError, setSubmitError] = useState<string | null>(null);
+export function ContextSelector({
+  scopes,
+  initialError = null,
+}: ContextSelectorProps) {
+  const [submitError, setSubmitError] = useState<string | null>(initialError);
   const [isPending, startTransition] = useTransition();
   const [activeKey, setActiveKey] = useState<string | null>(null);
 
