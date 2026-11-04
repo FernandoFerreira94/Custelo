@@ -15,6 +15,7 @@ import { Escala } from "../pz-escala/escala"
 import { Importar } from "../pz-importar/importar"
 import { Plataforma } from "../pz-plataforma/plataforma"
 import { Laranja } from "../pz-laranja/laranja"
+import { Escuro } from "../pz-escuro/escuro"
 import { Configuracoes } from "../pz-config/config"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/webcode/ui/tabs"
 
@@ -101,6 +102,7 @@ const ABAS = [
   { id: "config", label: "Configurações e organização", conteudo: <Configuracoes /> },
   { id: "plataforma", label: "Admin", conteudo: <Plataforma /> },
   { id: "laranja", label: "Paleta", conteudo: <Laranja /> },
+  { id: "escuro", label: "Modo escuro", conteudo: <Escuro /> },
 ]
 
 function lerHash() {

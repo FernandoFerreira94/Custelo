@@ -11,6 +11,7 @@ import {
   CircleHelpIcon,
   ClockIcon,
   CloudUploadIcon,
+  DownloadIcon,
   EyeOffIcon,
   GitMergeIcon,
   ImageIcon,
@@ -24,11 +25,14 @@ import {
   RefreshCwIcon,
   ShieldCheckIcon,
   UserIcon,
+  UsersIcon,
   WifiOffIcon,
   XIcon,
 } from "lucide-react"
 
 import { EstadoBadge, NEVOA, Prancha } from "../pranchas/pranchas"
+import { Busca, Moldura, Perfil, Trilho } from "../pz-dash/painel"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/webcode/ui/table"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/webcode/ui/alert"
 import { Badge } from "@/registry/webcode/ui/badge"
 import { Banner, BannerContent, BannerDescription, BannerTitle } from "@/registry/webcode/ui/banner"
@@ -595,6 +599,321 @@ function Comprovante() {
   )
 }
 
+/* ---------------- REC-005 · Escolher pessoa ---------------- */
+
+const PESSOAS = [
+  ["mariana", "Mariana Souza", "Moradora · WhatsApp ativo", "Parece com “Mariana S.” da etiqueta"],
+  ["pedro", "Pedro Souza", "Morador · WhatsApp ativo", ""],
+  ["ana", "Ana Souza", "Dependente · aviso vai para Mariana", ""],
+] as const
+
+function EscolherPessoa() {
+  return (
+    <Folha
+      fundo="Confirmar destino · B-304"
+      titulo="Quem recebe na B-304"
+      descricao="Só aparecem pessoas desta unidade. A etiqueta dizia “Mariana S.”."
+      rodape={<Button shape="pill" size="lg" className="w-full">Confirmar Mariana</Button>}
+    >
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4">
+        <SearchBar placeholder="Nome na B-304" aria-label="Buscar pessoa na unidade" inputClassName={BUSCA} />
+        <RadioGroup defaultValue="mariana" aria-label="Pessoa" className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
+          {PESSOAS.map(([v, nome, papel, dica]) => (
+            <RadioGroupCard key={v} value={v}>
+              <RadioGroupCardContent>
+                <RadioGroupCardTitle>{nome}</RadioGroupCardTitle>
+                <RadioGroupCardDescription>{papel}</RadioGroupCardDescription>
+                {dica && <RadioGroupCardDescription className="text-xs">{dica}</RadioGroupCardDescription>}
+              </RadioGroupCardContent>
+            </RadioGroupCard>
+          ))}
+        </RadioGroup>
+        <Button variant="outline" shape="pill" className="justify-self-start"><UsersIcon aria-hidden />Avisar a unidade toda</Button>
+        <p className="text-xs text-muted-foreground">Não achou a pessoa? A administração recebe a sugestão de cadastro. Ninguém é cadastrado sozinho.</p>
+      </div>
+    </Folha>
+  )
+}
+
+/* ---------------- REC-007 · Local físico ---------------- */
+
+const LOCAIS = [
+  ["A1", 11, 24, ""],
+  ["B2", 9, 24, ""],
+  ["C2", 21, 24, "Quase cheia"],
+  ["VG", 5, 8, "Volumes grandes"],
+] as const
+
+function LocalFisico() {
+  return (
+    <div className="flex h-full flex-col bg-muted">
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <NavigationBar title="Onde guardou?" leading={<Voltar label="Voltar para a etiqueta" />} trailing={<span className="pe-3 text-sm text-muted-foreground">3 de 8</span>} />
+        <div className="grid gap-4 px-4">
+          <Card className="gap-1 rounded-3xl py-4">
+            <CardContent className="flex items-center gap-3 px-4">
+              <PackageIcon aria-hidden className="size-5 text-muted-foreground" />
+              <div className="grid flex-1 gap-0.5">
+                <p className="font-mono font-semibold">B-304 · Mariana Souza</p>
+                <p className="text-sm text-muted-foreground">Mercado Livre · caixa média</p>
+              </div>
+            </CardContent>
+          </Card>
+          <RadioGroup defaultValue="B2" aria-label="Prateleira" className="grid grid-cols-2 gap-2">
+            {LOCAIS.map(([id, usado, total, dica]) => (
+              <RadioGroupCard key={id} value={id}>
+                <RadioGroupCardContent className="w-full">
+                  <RadioGroupCardTitle className="font-mono text-lg">{id}</RadioGroupCardTitle>
+                  <RadioGroupCardDescription>{usado} de {total}</RadioGroupCardDescription>
+                  <Progress value={(usado / total) * 100} aria-label={`${id} com ${usado} de ${total}`} className="mt-1" />
+                  {dica && (
+                    <RadioGroupCardDescription className="flex items-center gap-1 text-xs">
+                      {dica === "Quase cheia" && <AlertTriangleIcon aria-hidden className="size-3.5" />}
+                      {dica}
+                    </RadioGroupCardDescription>
+                  )}
+                </RadioGroupCardContent>
+              </RadioGroupCard>
+            ))}
+          </RadioGroup>
+          <p className="text-xs text-muted-foreground">A última prateleira usada vem marcada. O local vira passo na linha do tempo.</p>
+        </div>
+      </div>
+      <Rodape>
+        <Button shape="pill" size="lg"><MapPinIcon aria-hidden />Guardar na B2</Button>
+        <Button variant="ghost" shape="pill">Pular por agora</Button>
+      </Rodape>
+    </div>
+  )
+}
+
+/* ---------------- CUS-005 · Movimentação interna ---------------- */
+
+function Mover() {
+  return (
+    <Folha
+      fundo="B-304 · Mariana Souza"
+      titulo="Mover de lugar"
+      descricao="Está na C2. O morador não recebe aviso de mudança interna."
+      rodape={<Button shape="pill" size="lg" className="w-full"><ArrowRightLeftIcon aria-hidden />Mover para VG</Button>}
+    >
+      <form className="grid gap-5" onSubmit={(e) => e.preventDefault()}>
+        <RadioGroup defaultValue="VG" aria-label="Novo local" className="grid grid-cols-3 gap-2">
+          {[["A1", "11/24"], ["B2", "9/24"], ["VG", "5/8"]].map(([id, uso]) => (
+            <RadioGroupCard key={id} value={id}>
+              <RadioGroupCardContent>
+                <RadioGroupCardTitle className="font-mono text-lg">{id}</RadioGroupCardTitle>
+                <RadioGroupCardDescription className="text-xs">{uso}</RadioGroupCardDescription>
+              </RadioGroupCardContent>
+            </RadioGroupCard>
+          ))}
+        </RadioGroup>
+        <div className="grid gap-2">
+          <p className="text-sm font-medium">Por quê? (opcional)</p>
+          <ToggleGroup type="single" defaultValue="cheia" aria-label="Motivo" className="w-full min-w-0 flex-wrap justify-start gap-2" spacing={2}>
+            {[["cheia", "Prateleira cheia"], ["grande", "Volume grande"], ["org", "Reorganização"]].map(([v, l]) => (
+              <ToggleGroupItem key={v} value={v} className="rounded-full px-4">{l}</ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+        <p className="flex items-start gap-2 text-xs text-muted-foreground"><ShieldCheckIcon aria-hidden className="mt-0.5 size-4 shrink-0" />Fica na linha do tempo: “Movida de C2 para VG por Carlos às 15:02”.</p>
+      </form>
+    </Folha>
+  )
+}
+
+/* ---------------- CUS-008 · Etiqueta e QR ---------------- */
+
+function Etiqueta() {
+  return (
+    <div className="flex h-full flex-col bg-muted">
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <NavigationBar title="Etiqueta" leading={<Voltar label="Voltar para a encomenda" />} />
+        <div className="grid gap-4 px-4">
+          <Card className="gap-3 rounded-3xl py-6">
+            <CardContent className="grid justify-items-center gap-3 px-4">
+              <QRCode value="pz:loc:7F3A-B304" size={176} label="Código para achar o volume B-304" />
+              <p className="font-mono text-2xl font-bold">B-304 · VG</p>
+              <p className="font-mono text-sm text-muted-foreground">PZ-7F3A · 03/11 11:42</p>
+            </CardContent>
+          </Card>
+          <Alert variant="info">
+            <QrCodeIcon aria-hidden />
+            <AlertTitle>O QR só acha o volume</AlertTitle>
+            <AlertDescription>Não libera retirada e não reabre encomenda entregue.</AlertDescription>
+          </Alert>
+          <p className="text-xs text-muted-foreground">A etiqueta não leva nome nem telefone do morador. Cada reimpressão fica registrada.</p>
+        </div>
+      </div>
+      <Rodape>
+        <Button shape="pill" size="lg"><PrinterIcon aria-hidden />Imprimir etiqueta</Button>
+        <Button variant="ghost" shape="pill">Mostrar em tela cheia</Button>
+      </Rodape>
+    </div>
+  )
+}
+
+/* ---------------- RET-005 · Histórico de retiradas (celular) ---------------- */
+
+const RETIRADAS = [
+  ["14:32", "B-304", "Lúcia Ferreira", "em nome de Mariana Souza", "2 volumes", "Carlos", false],
+  ["13:42", "B-304", "Mariana Souza", "", "1 volume", "Carlos", false],
+  ["11:05", "A-112", "João Pereira", "", "1 volume", "Rita", true],
+  ["09:48", "D-410", "Lucas Martins", "", "3 volumes", "Rita", false],
+] as const
+
+function HistoricoCelular() {
+  return (
+    <div className="flex h-full flex-col bg-muted">
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <NavigationBar title="Retiradas" large leading={<Voltar label="Voltar" />} />
+        <div className="grid gap-4 px-4">
+          <SearchBar placeholder="Unidade, nome ou comprovante" aria-label="Buscar retirada" inputClassName={BUSCA} />
+          <ToggleGroup type="single" defaultValue="hoje" aria-label="Período" className="w-full min-w-0 flex-wrap justify-start gap-2" spacing={2}>
+            {[["hoje", "Hoje"], ["7", "7 dias"], ["30", "30 dias"]].map(([v, l]) => (
+              <ToggleGroupItem key={v} value={v} className="rounded-full px-4">{l}</ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          <p className="text-sm font-medium">Hoje · 4 retiradas</p>
+          <ItemGroup className="gap-2">
+            {RETIRADAS.map(([h, u, quem, nome, vol, por, corr]) => (
+              <Item key={h} variant="outline" className="rounded-2xl bg-card">
+                <ItemContent>
+                  <ItemTitle><span className="font-mono">{u}</span> · {quem}</ItemTitle>
+                  <ItemDescription>{[nome, vol, `entregou ${por}`].filter(Boolean).join(" · ")}</ItemDescription>
+                  {corr && <Badge variant="warning" className="mt-1 w-fit"><PencilIcon aria-hidden />Corrigida</Badge>}
+                </ItemContent>
+                <ItemActions><span className="text-sm text-muted-foreground">{h}</span></ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ---------------- RET-005 · Histórico de retiradas (web) ---------------- */
+
+const RETIRADAS_WEB = [
+  ["03/11 14:32", "B-304", "Lúcia Ferreira", "Mariana Souza", "2", "Carlos", "RT-2611-0432", false],
+  ["03/11 13:42", "B-304", "Mariana Souza", "Mariana Souza", "1", "Carlos", "RT-2611-0431", false],
+  ["03/11 11:05", "A-112", "João Pereira", "João Pereira", "1", "Rita", "RT-2611-0429", true],
+  ["03/11 09:48", "D-410", "Lucas Martins", "Lucas Martins", "3", "Rita", "RT-2611-0427", false],
+  ["02/11 19:20", "C-021", "Ana Lima", "Ana Lima", "1", "Carlos", "RT-2611-0418", false],
+  ["02/11 17:02", "B-305", "Helena Prado", "Helena Prado", "2", "Rita", "RT-2611-0415", false],
+] as const
+
+function HistoricoWeb() {
+  return (
+    <div className="grid grid-cols-[56px_1fr] gap-6">
+      <Trilho ativo="Encomendas" />
+      <div className="grid min-w-0 content-start gap-6">
+        <header className="flex items-center justify-between gap-4">
+          <Busca placeholder="Unidade, nome ou comprovante" />
+          <Perfil />
+        </header>
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 className="font-display text-4xl font-bold">Retiradas</h2>
+            <p className="text-muted-foreground">Quem levou, em nome de quem e quem entregou. Só leitura; correção pede permissão.</p>
+          </div>
+          <Button variant="outline" shape="pill"><DownloadIcon aria-hidden />Exportar</Button>
+        </div>
+        <ToggleGroup type="single" defaultValue="7" aria-label="Período" className="justify-start gap-2" spacing={2}>
+          {[["hoje", "Hoje"], ["7", "7 dias"], ["30", "30 dias"], ["mes", "Este mês"]].map(([v, l]) => (
+            <ToggleGroupItem key={v} value={v} className="rounded-full px-4">{l}</ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <Card className="rounded-3xl py-2">
+          <CardContent className="px-4">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Quando</TableHead>
+                  <TableHead>Unidade</TableHead>
+                  <TableHead>Retirou</TableHead>
+                  <TableHead>Em nome de</TableHead>
+                  <TableHead className="text-right">Volumes</TableHead>
+                  <TableHead>Entregou</TableHead>
+                  <TableHead>Comprovante</TableHead>
+                  <TableHead><span className="sr-only">Situação</span></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {RETIRADAS_WEB.map(([q, u, r, n, v, e, c, corr]) => (
+                  <TableRow key={c}>
+                    <TableCell>{q}</TableCell>
+                    <TableCell className="font-mono font-semibold">{u}</TableCell>
+                    <TableCell>{r}</TableCell>
+                    <TableCell className="text-muted-foreground">{n}</TableCell>
+                    <TableCell className="text-right">{v}</TableCell>
+                    <TableCell>{e}</TableCell>
+                    <TableCell className="font-mono text-sm">{c}</TableCell>
+                    <TableCell>{corr && <Badge variant="warning"><PencilIcon aria-hidden />Corrigida</Badge>}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+        <p className="text-sm text-muted-foreground">Mostrando 6 de 281 nos últimos 7 dias.</p>
+      </div>
+    </div>
+  )
+}
+
+/* ---------------- RET-006 · Corrigir retirada ---------------- */
+
+function CorrigirRetirada() {
+  return (
+    <div className="flex h-full flex-col bg-muted">
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <NavigationBar title="Corrigir retirada" leading={<Voltar label="Voltar para a retirada" />} />
+        <form className="grid gap-4 px-4" onSubmit={(e) => e.preventDefault()}>
+          <Alert variant="warning">
+            <ShieldCheckIcon aria-hidden />
+            <AlertTitle>Só síndico ou administradora</AlertTitle>
+            <AlertDescription>Precisa de motivo e fica na auditoria. O registro original continua guardado.</AlertDescription>
+          </Alert>
+          <Card className="gap-2 rounded-3xl py-4">
+            <CardContent className="px-4">
+              <DescriptionList layout="horizontal">
+                <DescriptionItem label="Comprovante">RT-2611-0429</DescriptionItem>
+                <DescriptionItem label="Unidade">A-112 · 1 volume</DescriptionItem>
+                <DescriptionItem label="Retirou">João Pereira</DescriptionItem>
+                <DescriptionItem label="Quando">03/11 11:05 · Rita</DescriptionItem>
+              </DescriptionList>
+            </CardContent>
+          </Card>
+          <RadioGroup defaultValue="quem" aria-label="O que corrigir" className="grid gap-2">
+            {[["quem", "Quem retirou", "Nome ou documento anotado errado"], ["nome", "Em nome de quem", "Era para outra pessoa da unidade"]].map(([v, t, d]) => (
+              <RadioGroupCard key={v} value={v}>
+                <RadioGroupCardContent>
+                  <RadioGroupCardTitle>{t}</RadioGroupCardTitle>
+                  <RadioGroupCardDescription>{d}</RadioGroupCardDescription>
+                </RadioGroupCardContent>
+              </RadioGroupCard>
+            ))}
+          </RadioGroup>
+          <Field>
+            <FieldLabel htmlFor="rc-nome">Quem retirou de verdade</FieldLabel>
+            <Input id="rc-nome" defaultValue="Joana Pereira" autoComplete="off" />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="rc-motivo">Motivo (obrigatório)</FieldLabel>
+            <Textarea id="rc-motivo" rows={3} defaultValue="Porteira anotou o nome do marido; quem assinou foi a Joana." />
+            <FieldDescription>Retirada não volta para a fila: encomenda entregue não reabre.</FieldDescription>
+          </Field>
+        </form>
+      </div>
+      <Rodape>
+        <Button shape="pill" size="lg">Salvar correção</Button>
+      </Rodape>
+    </div>
+  )
+}
+
 /* ---------------- Montagem ---------------- */
 
 function Grupo({ id, titulo, texto, children }: { id: string; titulo: string; texto: string; children: React.ReactNode }) {
@@ -620,7 +939,9 @@ export function Fluxo() {
         </header>
         <Grupo id="g-rec" titulo="Recebimento" texto="Unidade primeiro, nome depois. Sem câmera ou sem rede o recebimento continua.">
           <Prancha id="REC-004" titulo="Escolher unidade"><EscolherUnidade /></Prancha>
+          <Prancha id="REC-005" titulo="Escolher pessoa"><EscolherPessoa /></Prancha>
           <Prancha id="REC-006" titulo="Registrar sem foto"><EntradaManual /></Prancha>
+          <Prancha id="REC-007" titulo="Onde guardou"><LocalFisico /></Prancha>
           <Prancha id="REC-008" titulo="Lote concluído e QR"><LoteConcluido /></Prancha>
           <Prancha id="REC-009" titulo="Pendências no aparelho"><Pendencias /></Prancha>
           <Prancha id="REC-010" titulo="Resolver conflito"><Conflito /></Prancha>
@@ -628,14 +949,21 @@ export function Fluxo() {
         <Grupo id="g-cus" titulo="Custódia" texto="Tudo vira passo na linha do tempo. Correção cria passo novo e não revela o destino certo ao contato errado.">
           <Prancha id="CUS-002 + 003" titulo="Detalhe e linha do tempo"><Detalhe /></Prancha>
           <Prancha id="CUS-004" titulo="Correção depois do aviso"><Correcao /></Prancha>
+          <Prancha id="CUS-005" titulo="Mover de lugar"><Mover /></Prancha>
           <Prancha id="CUS-007" titulo="Não identificadas"><NaoIdentificadas /></Prancha>
+          <Prancha id="CUS-008" titulo="Etiqueta e QR"><Etiqueta /></Prancha>
         </Grupo>
         <Grupo id="g-ret" titulo="Retirada" texto="Três passos: o que sai, quem leva e a assinatura. O QR só localiza o volume.">
           <Prancha id="RET-001" titulo="Escolher encomendas"><SelecionarRetirada /></Prancha>
           <Prancha id="RET-002" titulo="Quem retira"><QuemRecebe /></Prancha>
           <Prancha id="RET-003" titulo="Assinatura"><Assinatura /></Prancha>
           <Prancha id="RET-004" titulo="Comprovante"><Comprovante /></Prancha>
+          <Prancha id="RET-005" titulo="Histórico no celular"><HistoricoCelular /></Prancha>
+          <Prancha id="RET-006" titulo="Corrigir retirada"><CorrigirRetirada /></Prancha>
         </Grupo>
+        <Moldura id="RET-005" titulo="Histórico de retiradas na web" nota="Gestor: período, busca e comprovante. Corrigida aparece marcada.">
+          <HistoricoWeb />
+        </Moldura>
       </div>
     </div>
   )

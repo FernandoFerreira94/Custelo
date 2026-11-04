@@ -26,6 +26,7 @@ As pranchas são as telas aprovadas pelo Fernando, feitas com a WebCode UI.
 | `#importar` | `pz-importar/importar.tsx` | IMP-010..015 | `telas/importar/` |
 | `#config` | `pz-config/config.tsx` | CFG-001/005/006/007, AUD-002, ORG-001..004 | `telas/config/` |
 | `#plataforma` | `pz-plataforma/plataforma.tsx` | SAAS-001..006, BIL-003 | `telas/plataforma/` |
+| `#escuro` | `pz-escuro/escuro.tsx` | Modo escuro (Dash A + Mob C), **aguarda revisão do Fernando**: não implementar ainda | — |
 | `#laranja` | `pz-laranja/laranja.tsx` | paleta e logos | — |
 
 `telas/index.json` lista cada foto com aba, ID e título. As fotos são de 04/11/2026.

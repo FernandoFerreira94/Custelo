@@ -300,7 +300,7 @@ it("define a paleta Névoa + Brasa aprovada em 03/11/2026", () => {
     "--pz-brasa-hover: #B9321F",
     "--pz-brasa-clara: #FF6B4F",
   ]) {
-    expect(css).toContain(token);
+    expect(css.toLowerCase()).toContain(token.toLowerCase());
   }
 });
 
@@ -310,7 +310,7 @@ it("define as sombras de flutuar", () => {
     "--pz-sombra-card:",
     "--pz-sombra-primaria:",
   ]) {
-    expect(css).toContain(token);
+    expect(css.toLowerCase()).toContain(token.toLowerCase());
   }
 });
 ```
@@ -372,6 +372,15 @@ No fim de `src/app/globals.css`, cole:
   --accent-foreground: var(--wc-fg);
 }
 ```
+
+**Valores mais novos vencem.** Os valores acima são de 04/11. Antes de colar, compare com `PALETAS[0]` e `vars()` da versão atual de `docs/pranchas/pz-dash/painel.tsx` e com `docs/pranchas/pz-todas/todas.tsx`. Se a prancha mudou, vale a prancha (ajuste também o teste do Step 1).
+
+Decisões de 04/11 que ainda podem não estar no código da prancha:
+
+- **Urgente em vinho `#8F1D4A`:** troque `--state-urgente` no `:root`.
+- **Borda de input `#C6CFDA`:** a sombra compensa o contraste.
+
+Se a prancha já trouxer esses valores, use os dela. Se não trouxer, pergunte ao Fernando antes de aplicar.
 
 Depois, copie **sem alterar** o conteúdo da constante `FLUTUAR` de `docs/pranchas/pz-todas/todas.tsx`: tudo entre as crases, do primeiro `[data-wc-theme="custelo"] {` até o `}` que fecha o `@media (prefers-reduced-motion: no-preference)`. Cole logo abaixo, envolvido em:
 
