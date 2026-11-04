@@ -24,6 +24,16 @@
   --font-brand: var(--font-brand);
   --font-mono: var(--font-mono);
   --font-heading: var(--font-brand);
+
+  /* --- ponte @webcode: utilitarios que os componentes da biblioteca usam -- */
+  --color-brand: var(--wc-accent);
+  --color-brand-hover: var(--wc-accent-hover);
+  --color-control-border: var(--wc-control-border);
+  --radius-button: var(--wc-radius-button);
+  --shadow-wc-xs: var(--wc-shadow-xs);
+  --shadow-wc: var(--wc-shadow);
+  --shadow-wc-md: var(--wc-shadow-md);
+  --ease-wc-out: var(--wc-motion-ease-out);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -296,6 +306,51 @@
   --state-devolvida-fg: #0a1b33;
   --state-offline: #a8b3d4;
   --state-offline-fg: #0a1b33;
+}
+
+/* =============================================================================
+   Ponte @webcode -> Nevoa + Brasa (ADR-021). Os componentes da biblioteca leem
+   --wc-*; aqui cada um aponta para o token do Custelo. Este arquivo continua a
+   fonte canonica: nao instalar @webcode/theme-custelo por cima (paleta antiga).
+   Sem glass: --wc-glass-highlight e so um filete solido de 1px no topo do card.
+   ========================================================================== */
+:root {
+  --wc-bg: var(--background);
+  --wc-fg: var(--foreground);
+  --wc-fg-muted: var(--muted-foreground);
+  --wc-border-strong: #c6cfda;
+  --wc-control-border: #8795a8;
+  --wc-accent: var(--brasa);
+  --wc-accent-hover: var(--brasa-hover);
+  --wc-accent-solid: var(--primary);
+  --wc-danger: var(--destructive);
+  --wc-danger-solid: var(--destructive);
+  --wc-success: var(--state-retirada);
+  --wc-warning: var(--state-aguardando);
+  --wc-color-white: #ffffff;
+  --wc-glass-highlight: #ffffff;
+
+  --wc-radius-button: var(--radius-field);
+  --wc-density-control-xs: 28px;
+  --wc-density-control-sm: 36px;
+  --wc-density-control-md: 44px;
+  --wc-density-control-lg: 52px;
+
+  --wc-shadow-xs: var(--shadow-elevation-1);
+  --wc-shadow: var(--shadow-elevation-1);
+  --wc-shadow-md: var(--shadow-elevation-2);
+
+  --wc-motion-duration-fast: 150ms;
+  --wc-motion-duration-base: 220ms;
+  --wc-motion-ease-out: var(--ease-custelo);
+  --wc-motion-spring-snappy: var(--ease-custelo);
+  --wc-motion-spring-snappy-duration: 250ms;
+}
+
+.dark {
+  --wc-border-strong: #2a4a6e;
+  --wc-control-border: #6f86a6;
+  --wc-glass-highlight: #163a5c;
 }
 
 @layer base {

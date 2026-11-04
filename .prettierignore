@@ -12,3 +12,7 @@ Imagen
 *.csv
 .serena
 docs/pranchas
+
+# biblioteca @webcode: sobrescrita a cada sync, formato vem do registry
+src/components/ui
+src/lib/glass.ts
