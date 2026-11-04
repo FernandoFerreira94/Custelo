@@ -546,3 +546,14 @@
     filter: none;
   }
 }
+
+.pz-splash-tag {
+  opacity: 0;
+  animation: pz-foco 0.8s ease 3.6s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pz-splash-tag {
+    animation: none;
+    opacity: 1;
+  }
+}

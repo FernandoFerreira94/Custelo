@@ -1,16 +1,12 @@
 "use client";
 
-import { useRef } from "react";
-
-import { AuthCardStage } from "@/components/auth/auth-card-stage";
-import type { AuthCardView } from "@/components/auth/auth-card-stage";
-import { LoginHero } from "@/components/auth/login-hero";
-import { LoginIntroParcel } from "@/components/auth/login-intro-parcel";
-import { LoginOrbs } from "@/components/auth/login-orbs";
-import { useLoginMotion } from "@/components/auth/use-login-motion";
-import { PzMarca } from "@/components/brand/marca";
-
+import {
+  AuthCardStage,
+  type AuthCardView,
+} from "@/components/auth/auth-card-stage";
+import { EntrarLayout } from "@/components/auth/entrar-layout";
 import type { PendingInvitePreview } from "@/components/auth/request-accept-invite";
+import { SplashSessao } from "@/components/auth/splash-sessao";
 
 type LoginDesktopProps = {
   initialInvite?: PendingInvitePreview | null;
@@ -23,47 +19,16 @@ export function LoginDesktop({
   initialView = "entrar",
   initialError = null,
 }: LoginDesktopProps) {
-  const root = useRef<HTMLDivElement>(null);
-  useLoginMotion({ root });
-
   return (
-    <div
-      ref={root}
-      className="relative min-h-dvh overflow-hidden bg-background"
-    >
-      <LoginHero />
-      <div
-        data-login-right
-        inert
-        className="relative z-10 flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-12 lg:ml-auto lg:w-1/2 lg:px-10"
-      >
-        <LoginOrbs />
+    <>
+      <EntrarLayout>
         <AuthCardStage
           initialInvite={initialInvite}
           initialView={initialView}
           initialError={initialError}
         />
-      </div>
-
-      <div
-        data-login-veil
-        aria-hidden="true"
-        className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-primary opacity-0"
-      >
-        <div className="relative flex flex-col items-center justify-center gap-7">
-          <span
-            data-login-glow
-            className="absolute size-[22rem] rounded-full bg-[radial-gradient(circle_at_center,var(--secondary)_0%,color-mix(in_oklch,var(--secondary)_42%,transparent)_38%,transparent_72%)] sm:size-[28rem]"
-          />
-          <LoginIntroParcel />
-          <PzMarca
-            data-login-mark
-            escuro
-            texto="text-4xl sm:text-5xl"
-            className="relative z-10"
-          />
-        </div>
-      </div>
-    </div>
+      </EntrarLayout>
+      <SplashSessao />
+    </>
   );
 }
