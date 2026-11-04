@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { TelaDeEstado } from "@/components/feedback/tela-de-estado";
 import { Button } from "@/components/ui/button";
 
+import { fontesClassName } from "./fontes";
 import "./globals.css";
 
 // Último recurso: o layout raiz quebrou e este arquivo o substitui, então
@@ -22,12 +23,12 @@ export default function ErroGeral({
   }, [error]);
 
   return (
-    <html lang="pt-BR" data-wc-theme="custelo">
+    <html lang="pt-BR" data-wc-theme="custelo" className={fontesClassName}>
       <body>
         <TelaDeEstado
           status="500"
           titulo="O PacoteZap não abriu"
-          descricao="Já fomos avisados. Tente de novo; se continuar, fale com o suporte."
+          descricao="Já fomos avisados. Tente de novo; se continuar, avise a administração e informe o código."
           codigo={error.digest}
           acoes={
             <Button type="button" shape="pill" size="lg" onClick={reset}>

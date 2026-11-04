@@ -20,16 +20,34 @@ export default function ErroDaPagina({
 
   const offline = typeof navigator !== "undefined" && !navigator.onLine;
 
+  // Sem internet nunca bloqueia o recebimento (invariante 5): a tela offline
+  // leva de volta ao fluxo, que abre do cache.
+  if (offline) {
+    return (
+      <TelaDeEstado
+        status="info"
+        titulo="Você está sem internet"
+        descricao="Dá para receber e entregar normalmente. Tudo vai sozinho quando a rede voltar."
+        acoes={
+          <>
+            <Button asChild shape="pill" size="lg">
+              <Link href="/receber">Continuar sem internet</Link>
+            </Button>
+            <Button type="button" variant="ghost" shape="pill" onClick={reset}>
+              Tentar conectar
+            </Button>
+          </>
+        }
+      />
+    );
+  }
+
   return (
     <TelaDeEstado
-      status={offline ? "warning" : "500"}
-      titulo={offline ? "Sem conexão" : "Algo deu errado do nosso lado"}
-      descricao={
-        offline
-          ? "Verifique a internet e tente de novo."
-          : "Já fomos avisados. Tente de novo; se continuar, fale com o suporte."
-      }
-      codigo={offline ? undefined : error.digest}
+      status="500"
+      titulo="Algo deu errado do nosso lado"
+      descricao="Já fomos avisados. Tente de novo; se continuar, avise a administração e informe o código."
+      codigo={error.digest}
       acoes={
         <>
           <Button type="button" shape="pill" size="lg" onClick={reset}>

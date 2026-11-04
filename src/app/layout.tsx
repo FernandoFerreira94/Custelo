@@ -1,27 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
 import { NotificationBannerHost } from "@/components/ui/notification-banner";
 import { Toaster } from "@/components/ui/sonner";
 
+import { fontesClassName } from "./fontes";
 import "./globals.css";
-
-/**
- * Tipografia — Inter no corpo; Plus Jakarta Sans nos titulos e na wordmark
- * PacoteZap (ADR-021, substitui Poppins e Bodoni Moda).
- */
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-brand",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -57,7 +40,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       data-wc-theme="custelo"
-      className={`${inter.variable} ${plusJakarta.variable}`}
+      className={fontesClassName}
       suppressHydrationWarning
     >
       <body className="antialiased">

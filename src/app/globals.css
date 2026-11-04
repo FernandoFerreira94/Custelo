@@ -28,6 +28,15 @@
   /* --- ponte @webcode: utilitarios que os componentes da biblioteca usam -- */
   --color-brand: var(--wc-accent);
   --color-brand-hover: var(--wc-accent-hover);
+  /* tons de estado dos componentes @webcode (Result, Banner, Alert): texto na cor cheia,
+     fundo "soft" = a mesma cor diluida sobre o card, sempre solido (sem transparencia). */
+  --color-danger: var(--wc-danger);
+  --color-danger-soft: color-mix(in srgb, var(--wc-danger) 12%, var(--card));
+  --color-success: var(--wc-success);
+  --color-success-soft: color-mix(in srgb, var(--wc-success) 12%, var(--card));
+  --color-warning: var(--wc-warning);
+  --color-warning-soft: color-mix(in srgb, var(--wc-warning) 12%, var(--card));
+  --color-accent-soft: color-mix(in srgb, var(--wc-accent) 12%, var(--card));
   --color-control-border: var(--wc-control-border);
   --radius-button: var(--wc-radius-button);
   --shadow-wc-xs: var(--wc-shadow-xs);
