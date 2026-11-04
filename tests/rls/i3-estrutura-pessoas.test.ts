@@ -14,12 +14,20 @@ describe("I3 estrutura fisica — isolamento de tenant", () => {
   });
 
   it("le unidades apenas do tenant ativo", async () => {
-    await sql`
-      insert into unidades (org_id, empreendimento_id, codigo, nome)
-      values
-        (${FIXTURE_ORG_A.orgId}::uuid, ${FIXTURE_ORG_A.empreendimentoId}::uuid, '101', 'Unidade Alpha'),
-        (${FIXTURE_ORG_B.orgId}::uuid, ${FIXTURE_ORG_B.empreendimentoId}::uuid, '201', 'Unidade Beta')
-    `;
+    await withRls(sql, FIXTURE_ORG_A, async (tx) => {
+      await tx`
+        insert into unidades (org_id, empreendimento_id, codigo, nome)
+        values (${FIXTURE_ORG_A.orgId}::uuid, ${FIXTURE_ORG_A.empreendimentoId}::uuid, '101', 'Unidade Alpha')
+        on conflict (empreendimento_id, codigo) do nothing
+      `;
+    });
+    await withRls(sql, FIXTURE_ORG_B, async (tx) => {
+      await tx`
+        insert into unidades (org_id, empreendimento_id, codigo, nome)
+        values (${FIXTURE_ORG_B.orgId}::uuid, ${FIXTURE_ORG_B.empreendimentoId}::uuid, '201', 'Unidade Beta')
+        on conflict (empreendimento_id, codigo) do nothing
+      `;
+    });
 
     const rows = await withRls(
       sql,
@@ -32,10 +40,18 @@ describe("I3 estrutura fisica — isolamento de tenant", () => {
   });
 
   it("rejeita leitura cross-tenant de pessoas", async () => {
-    await sql`
-      insert into pessoas (org_id, empreendimento_id, nome)
-      values (${FIXTURE_ORG_B.orgId}::uuid, ${FIXTURE_ORG_B.empreendimentoId}::uuid, 'Pessoa Beta')
-    `;
+    await withRls(sql, FIXTURE_ORG_B, async (tx) => {
+      await tx`
+        insert into pessoas (org_id, empreendimento_id, nome)
+        select ${FIXTURE_ORG_B.orgId}::uuid, ${FIXTURE_ORG_B.empreendimentoId}::uuid, 'Pessoa Beta'
+        where not exists (
+          select 1 from pessoas
+          where org_id = ${FIXTURE_ORG_B.orgId}::uuid
+            and empreendimento_id = ${FIXTURE_ORG_B.empreendimentoId}::uuid
+            and nome = 'Pessoa Beta'
+        )
+      `;
+    });
 
     const rows = await withRls(
       sql,

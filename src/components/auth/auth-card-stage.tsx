@@ -14,17 +14,23 @@ import type { PendingInvitePreview } from "@/components/auth/request-accept-invi
 
 gsap.registerPlugin(useGSAP);
 
-type AuthCardView = "entrar" | "recuperar" | "senha" | "convite";
+export type AuthCardView = "entrar" | "recuperar" | "senha" | "convite";
 
 type AuthCardStageProps = {
   initialInvite?: PendingInvitePreview | null;
+  initialView?: AuthCardView;
+  initialError?: string | null;
 };
 
-export function AuthCardStage({ initialInvite = null }: AuthCardStageProps) {
+export function AuthCardStage({
+  initialInvite = null,
+  initialView = "entrar",
+  initialError = null,
+}: AuthCardStageProps) {
   const router = useRouter();
   const root = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState<AuthCardView>("entrar");
+  const [view, setView] = useState<AuthCardView>(initialView);
   const isFirstView = useRef(true);
 
   useAuthHashView((detected) => {
@@ -82,6 +88,7 @@ export function AuthCardStage({ initialInvite = null }: AuthCardStageProps) {
             <LoginForm
               onInvite={() => go("convite")}
               onRecover={() => go("recuperar")}
+              initialError={initialError}
             />
           ) : null}
           {view === "recuperar" ? (

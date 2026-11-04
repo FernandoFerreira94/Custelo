@@ -13,9 +13,7 @@ const mocks = vi.hoisted(() => ({
   persistScopeRevocation: vi.fn(),
   persistUserDeactivation: vi.fn(),
   revokeUserSessions: vi.fn(),
-  inviteUserByEmail: vi.fn(),
-  deleteUser: vi.fn(),
-  isSupabaseAdminConfigured: vi.fn(),
+  sendInviteByEmail: vi.fn(),
 }));
 
 vi.mock("@/infrastructure/auth/access-management-repository", () => ({
@@ -31,16 +29,8 @@ vi.mock("@/infrastructure/auth/session-revocation", () => ({
   revokeUserSessions: mocks.revokeUserSessions,
 }));
 
-vi.mock("@/infrastructure/auth/supabase-admin", () => ({
-  isSupabaseAdminConfigured: mocks.isSupabaseAdminConfigured,
-  createSupabaseAdminClient: vi.fn(() => ({
-    auth: {
-      admin: {
-        inviteUserByEmail: mocks.inviteUserByEmail,
-        deleteUser: mocks.deleteUser,
-      },
-    },
-  })),
+vi.mock("@/infrastructure/auth/invite-service", () => ({
+  sendInviteByEmail: mocks.sendInviteByEmail,
 }));
 
 import {
@@ -105,7 +95,7 @@ const scopeInOrgB: ManagedScope = {
 
 beforeEach(() => {
   vi.resetAllMocks();
-  mocks.isSupabaseAdminConfigured.mockReturnValue(true);
+  mocks.sendInviteByEmail.mockResolvedValue({ ok: true });
   mocks.loadAccessActor.mockResolvedValue(orgAdmin);
   mocks.persistScopeGrant.mockResolvedValue({ ok: true });
   mocks.persistScopeRevocation.mockResolvedValue({ ok: true });
@@ -116,12 +106,6 @@ beforeEach(() => {
 
 describe("inviteUser — I2.3", () => {
   it("convida usuario apos autorizacao e persistencia", async () => {
-    mocks.inviteUserByEmail.mockResolvedValue({
-      data: { user: { id: "new-user" } },
-      error: null,
-    });
-    mocks.persistInviteRegistration.mockResolvedValue({ ok: true });
-
     await expect(
       inviteUser({
         actorUserId: orgAdmin.userId,
@@ -130,7 +114,13 @@ describe("inviteUser — I2.3", () => {
       }),
     ).resolves.toEqual({ ok: true });
 
-    expect(mocks.persistInviteRegistration).toHaveBeenCalledOnce();
+    expect(mocks.sendInviteByEmail).toHaveBeenCalledWith({
+      actorUserId: orgAdmin.userId,
+      actorOrgId: orgAdmin.scopes[0]?.orgId,
+      actorEmpreendimentoId: orgAdmin.scopes[0]?.empreendimentoId,
+      email: "novo@example.test",
+      scope: scopeInEmpA,
+    });
   });
 
   it("recusa convite com papel org_admin antes do Supabase", async () => {
@@ -147,19 +137,14 @@ describe("inviteUser — I2.3", () => {
       }),
     ).resolves.toEqual({ ok: false, code: "ROLE_ESCALATION" });
 
-    expect(mocks.inviteUserByEmail).not.toHaveBeenCalled();
+    expect(mocks.sendInviteByEmail).not.toHaveBeenCalled();
   });
 
-  it("remove usuario Auth quando persistencia falha", async () => {
-    mocks.inviteUserByEmail.mockResolvedValue({
-      data: { user: { id: "orphan-user" } },
-      error: null,
-    });
-    mocks.persistInviteRegistration.mockResolvedValue({
+  it("propaga falha de persistencia do convite", async () => {
+    mocks.sendInviteByEmail.mockResolvedValue({
       ok: false,
       code: "INVALID_SCOPE",
     });
-    mocks.deleteUser.mockResolvedValue({ error: null });
 
     await expect(
       inviteUser({
@@ -169,7 +154,7 @@ describe("inviteUser — I2.3", () => {
       }),
     ).resolves.toEqual({ ok: false, code: "INVALID_SCOPE" });
 
-    expect(mocks.deleteUser).toHaveBeenCalledWith("orphan-user");
+    expect(mocks.sendInviteByEmail).toHaveBeenCalledOnce();
   });
 
   it("recusa convite sem ator", async () => {
@@ -183,17 +168,11 @@ describe("inviteUser — I2.3", () => {
       }),
     ).resolves.toEqual({ ok: false, code: "UNAUTHORIZED" });
 
-    expect(mocks.inviteUserByEmail).not.toHaveBeenCalled();
+    expect(mocks.sendInviteByEmail).not.toHaveBeenCalled();
   });
 
   it("permite gestor convidar no proprio empreendimento", async () => {
     mocks.loadAccessActor.mockResolvedValue(gestorEmpA);
-    mocks.inviteUserByEmail.mockResolvedValue({
-      data: { user: { id: "new-user" } },
-      error: null,
-    });
-    mocks.persistInviteRegistration.mockResolvedValue({ ok: true });
-
     await expect(
       inviteUser({
         actorUserId: gestorEmpA.userId,
@@ -227,8 +206,11 @@ describe("inviteUser — I2.3", () => {
     ).resolves.toEqual({ ok: false, code: "UNAUTHORIZED" });
   });
 
-  it("recusa quando Supabase admin nao esta configurado", async () => {
-    mocks.isSupabaseAdminConfigured.mockReturnValue(false);
+  it("recusa quando o servico de convite nao esta configurado", async () => {
+    mocks.sendInviteByEmail.mockResolvedValue({
+      ok: false,
+      code: "UNAVAILABLE",
+    });
 
     await expect(
       inviteUser({
@@ -240,9 +222,9 @@ describe("inviteUser — I2.3", () => {
   });
 
   it("recusa quando convite Supabase falha", async () => {
-    mocks.inviteUserByEmail.mockResolvedValue({
-      data: { user: null },
-      error: { message: "failed" },
+    mocks.sendInviteByEmail.mockResolvedValue({
+      ok: false,
+      code: "INVITE_FAILED",
     });
 
     await expect(

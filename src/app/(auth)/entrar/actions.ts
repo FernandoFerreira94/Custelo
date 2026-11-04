@@ -11,11 +11,8 @@ import {
   type PendingInviteMetadata,
 } from "@/infrastructure/auth/invite-service";
 import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-server";
-import {
-  createSupabaseAdminClient,
-  isSupabaseAdminConfigured,
-} from "@/infrastructure/auth/supabase-admin";
 import { getAuthenticatedSession } from "@/infrastructure/auth/session";
+import { env } from "@/lib/env";
 
 export async function fetchPendingInviteAction(): Promise<
   { ok: true; metadata: PendingInviteMetadata } | { ok: false; code: string }
@@ -43,12 +40,28 @@ export async function requestRecoveryAction(
   }
 
   const supabase = await createSupabaseServerClient();
-  const origin = (await headers()).get("origin") ?? "http://localhost:3000";
+  const requestOrigin = (await headers()).get("origin");
+  const origin =
+    env.NEXT_PUBLIC_SITE_URL ??
+    (env.NODE_ENV === "production"
+      ? null
+      : (requestOrigin ?? "http://localhost:3000"));
+
+  if (!origin) {
+    return {
+      ok: false,
+      message:
+        "Não foi possível enviar o link agora. Tente novamente em instantes.",
+    };
+  }
+
+  const callbackUrl = new URL("/auth/confirm", origin);
+  callbackUrl.searchParams.set("view", "senha");
 
   const { error } = await supabase.auth.resetPasswordForEmail(
     parsed.data.email,
     {
-      redirectTo: `${origin}/entrar`,
+      redirectTo: callbackUrl.toString(),
     },
   );
 
@@ -95,18 +108,9 @@ export async function setPasswordAction(
     };
   }
 
-  if (!isSupabaseAdminConfigured()) {
-    return {
-      ok: false,
-      message: "Não foi possível concluir a alteração agora. Tente novamente.",
-    };
-  }
-
-  const admin = createSupabaseAdminClient();
-  const { error: signOutError } = await admin.auth.admin.signOut(
-    session.userId,
-    "others",
-  );
+  const { error: signOutError } = await supabase.auth.signOut({
+    scope: "others",
+  });
 
   if (signOutError) {
     return {

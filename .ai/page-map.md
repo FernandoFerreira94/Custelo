@@ -18,14 +18,17 @@ CSV + pages-roadmap (F/B/T).
   no mesmo palco**, sem rotas `/recuperar` `/senha` `/convite`.
 - User/permission: anonimo.
 - Module: `auth-rbac` / `tenancy`.
-- Data/API: `requestSession()` real (I2.2). Recuperacao/convite ainda stub
-  (`RECOVERY_ACCEPTED`; nao vaza se e-mail existe).
-- Actions: entrar · esqueci senha · enviar link · aceitar convite (preview).
+- Data/API: `requestSession()` real; callback SSR `/auth/confirm` valida
+  token-hash ou codigo PKCE; recovery e convite reais via Supabase Auth.
+- Actions: entrar · esqueci senha · enviar link · definir senha · aceitar
+  convite e ativar usuario/escopo.
 - States: validacao · loading · erro de credencial · sucesso (redirect
   `/contexto`) · reduced-motion (pula intro GSAP).
 - Connects to: `/contexto` · `/sem-acesso`.
-- Notes: GSAP so nesta tela. Bola `primary` atras do card. Senha min 10 no
-  palco de nova senha.
+- Notes: GSAP so nesta tela. A intro bloqueia interacao ate o palco estar
+  hidratado. Bola `primary` atras do card. Senha min 10. AUTH-001..004 REVIEW:
+  RLS e E2E desktop/OPS revalidados; fechamento formal aguarda `pnpm verify`,
+  a11y global e configuracao de Auth no Supabase.
 
 ### `/(auth)/contexto` — AUTH-005
 
@@ -49,6 +52,7 @@ CSV + pages-roadmap (F/B/T).
 - States: mensagem + CTA. Encaminhamento de sessao invalida, desativada ou
   convite pendente validado no fluxo server-side de `/contexto`.
 - Connects to: `/entrar`.
+- Status repo: frontend/backend/testes DONE; recovery sem escopo cai aqui.
 
 ### AUTH-007 MFA
 

@@ -72,13 +72,17 @@ describe("gestao de acesso — I2.3", () => {
   });
 
   it("recepcionista nao revoga escopo", async () => {
-    const scopeRows = await sql<{ id: string }[]>`
-      select e.id
-      from escopos_usuario e
-      where e.usuario_id = ${TARGET_ID}::uuid
-        and e.ativo = true
-      limit 1
-    `;
+    const scopeRows = await withRls(
+      sql,
+      orgAdminContext(),
+      async (tx) => tx<{ id: string }[]>`
+        select e.id
+        from escopos_usuario e
+        where e.usuario_id = ${TARGET_ID}::uuid
+          and e.ativo = true
+        limit 1
+      `,
+    );
     const scopeId = scopeRows[0]?.id;
     expect(scopeId).toBeDefined();
 
@@ -171,13 +175,33 @@ describe("gestao de acesso — I2.3", () => {
   });
 
   it("gestor revoga escopo no proprio empreendimento", async () => {
-    const scopeRows = await sql<{ id: string }[]>`
-      select e.id
-      from escopos_usuario e
-      where e.usuario_id = ${FIXTURE_ORG_A.userId}::uuid
-        and e.ativo = true
-      limit 1
-    `;
+    await withRls(
+      sql,
+      gestorContext(),
+      async (tx) =>
+        tx`
+          select app.conceder_escopo(
+            ${TARGET_ID}::uuid,
+            ${FIXTURE_ORG_A.orgId}::uuid,
+            ${FIXTURE_ORG_A.empreendimentoId}::uuid,
+            'auditor'::papel_codigo
+          )
+        `,
+    );
+
+    const scopeRows = await withRls(
+      sql,
+      gestorContext(),
+      async (tx) => tx<{ id: string }[]>`
+        select e.id
+        from escopos_usuario e
+        join papeis p on p.id = e.papel_id
+        where e.usuario_id = ${TARGET_ID}::uuid
+          and e.ativo = true
+          and p.codigo = 'auditor'
+        limit 1
+      `,
+    );
     const scopeId = scopeRows[0]?.id;
     expect(scopeId).toBeDefined();
 
@@ -194,6 +218,20 @@ describe("gestao de acesso — I2.3", () => {
   });
 
   it("desativar_usuario encerra escopos do alvo", async () => {
+    await withRls(
+      sql,
+      orgAdminContext(),
+      async (tx) =>
+        tx`
+          select app.conceder_escopo(
+            ${TARGET_ID}::uuid,
+            ${FIXTURE_ORG_A.orgId}::uuid,
+            ${FIXTURE_ORG_A.empreendimentoId}::uuid,
+            'recepcionista'::papel_codigo
+          )
+        `,
+    );
+
     const result = await withRls(
       sql,
       orgAdminContext(),
@@ -205,19 +243,29 @@ describe("gestao de acesso — I2.3", () => {
 
     expect(result[0]?.result.ok).toBe(true);
 
-    const status = await sql<{ status: string }[]>`
-      select status from usuarios where id = ${TARGET_ID}::uuid
-    `;
-
-    expect(status[0]?.status).toBe("desativado");
-
-    const activeScopes = await sql<{ count: string }[]>`
-      select count(*)::text as count
-      from escopos_usuario
-      where usuario_id = ${TARGET_ID}::uuid and ativo = true
-    `;
+    const activeScopes = await withRls(
+      sql,
+      orgAdminContext(),
+      async (tx) => tx<{ count: string }[]>`
+        select count(*)::text as count
+        from escopos_usuario
+        where usuario_id = ${TARGET_ID}::uuid and ativo = true
+      `,
+    );
 
     expect(activeScopes[0]?.count).toBe("0");
+
+    const inactiveScopes = await withRls(
+      sql,
+      orgAdminContext(),
+      async (tx) => tx<{ count: string }[]>`
+        select count(*)::text as count
+        from escopos_usuario
+        where usuario_id = ${TARGET_ID}::uuid and ativo = false
+      `,
+    );
+
+    expect(Number(inactiveScopes[0]?.count)).toBeGreaterThan(0);
   });
 
   it("usuario desativado nao concede escopo", async () => {

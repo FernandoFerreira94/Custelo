@@ -2,7 +2,7 @@
  * Convida um usuario via Supabase Auth + tenancy.
  *
  * Uso:
- *   node --env-file=.env scripts/invite-user.mjs email@dominio.com recepcionista
+ *   node --env-file=.env --env-file=.env.local scripts/invite-user.mjs email@dominio.com recepcionista
  */
 import { createClient } from "@supabase/supabase-js";
 import postgres from "postgres";
@@ -28,10 +28,11 @@ if (!email) {
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const databaseUrl = process.env.DATABASE_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-if (!url || !serviceKey || !databaseUrl) {
+if (!url || !serviceKey || !databaseUrl || !siteUrl) {
   console.error(
-    "Faltam NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY ou DATABASE_URL.",
+    "Faltam NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DATABASE_URL ou NEXT_PUBLIC_SITE_URL.",
   );
   process.exit(1);
 }
@@ -68,8 +69,10 @@ async function main() {
       );
     }
 
+    const callbackUrl = new URL("/auth/confirm", siteUrl);
+    callbackUrl.searchParams.set("view", "convite");
     const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/entrar`,
+      redirectTo: callbackUrl.toString(),
     });
 
     if (error || !data.user) {

@@ -15,12 +15,42 @@
 - Fase: I1 codigo feito. I2 (tenancy+RLS+auth) fechado no repo (commit `30b5379`).
   **I3 iniciado:** migration `0007` + schema `areas`/`unidades`/`pessoas`/`vinculos`.
 - AUTH `/entrar`: convite, recuperacao e senha reais via Supabase.
+- AUTH-001..004: REVIEW com callbacks SSR token-hash/PKCE e E2E real desktop +
+  OPS verdes. AUTH-005/006: DONE. Configuracao de e-mail/redirects de
+  staging/producao continua humana e o `pnpm verify` global esta bloqueado por
+  arquivos paralelos de I3/config de testes.
 - Roadmap de paginas: `docs/product/pages-roadmap.md` + CSV.
 - Notion pagina-mae alinhada ao repo em 21/08 (PWA; RN/Expo 17/08 SUPERSEDED).
 
 ---
 
 ## Log
+
+[2026-09-01] Fechamento formal AUTH-001..004 revalidado sem alterar codigo:
+`pnpm test:rls` passou (20 testes) e o E2E Auth passou (14 testes reais em
+desktop e OPS, incluindo login, recovery/callback e convite/ativacao). O a11y
+de `/entrar` passou, mas o gate global falhou na raiz por contraste serio do
+texto "Zap" (1.5:1, minimo 3:1). `pnpm verify` continua bloqueado por mudancas
+paralelas: tipo de `TransactionSql` em `src/infrastructure/db/tenant-db.ts:21`
+e `fileParallelism` invalido em `vitest.config.ts:55`. Advisor remoto consultado
+sem DDL: 5 avisos de `search_path` mutavel em funcoes `app`, 2 de
+`public.rls_auto_enable()` SECURITY DEFINER executavel e leaked-password
+protection desabilitada. O projeto esta saudavel, mas nao havia CLI do Supabase,
+token de Management API nem acesso ao dashboard para conferir/aplicar Site URL,
+allowlist, templates, SMTP ou essa protecao. AUTH-001..004 permanecem REVIEW.
+
+[2026-09-01] AUTH-001..004 implementado e validado em escopo Auth —
+`/auth/confirm` valida convite e recovery por token hash ou PKCE antes de abrir
+o card correto em `/entrar`.
+Recovery troca senha e encerra outras sessoes sem `service_role` em request.
+Convite mostra papel/escopo server-side, valida pendencia antes de alterar Auth,
+ativa `usuarios` via `app.aceitar_convite()` e entra em `/receber`. O caso de uso
+de gestao foi centralizado em `sendInviteByEmail()` com `NEXT_PUBLIC_SITE_URL`.
+Intro GSAP deixa o palco `inert` ate concluir para impedir preenchimento antes
+da hidratacao. Evidencia: 120 unit/UI, 20 RLS, 14 E2E desktop+OPS e 1 a11y.
+Status formal REVIEW: pendem redirects/templates/SMTP, leaked-password
+protection, warnings do advisor e o `pnpm verify` global (bloqueado por arquivos
+paralelos fora de Auth).
 
 [2026-08-21] Notion alinhado ao repo — pagina-mae Custelo deixou de citar
 React Native/Expo e monorepo `web`+`mobile`. Fonte operacional = repo

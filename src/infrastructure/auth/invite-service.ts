@@ -12,6 +12,7 @@ import {
   isSupabaseAdminConfigured,
 } from "@/infrastructure/auth/supabase-admin";
 import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-server";
+import { env } from "@/lib/env";
 
 export type { PendingInviteMetadata };
 
@@ -50,6 +51,14 @@ export async function acceptInviteForSession(input: {
     };
   }
 
+  const pendingInvite = await fetchPendingInviteMetadata(user.id);
+  if (!pendingInvite.ok) {
+    return {
+      ok: false,
+      message: "Convite inválido ou já utilizado.",
+    };
+  }
+
   const { error: passwordError } = await supabase.auth.updateUser({
     password: input.password,
     data: { nome: input.fullName.trim() },
@@ -82,15 +91,17 @@ export async function sendInviteByEmail(input: {
   email: string;
   scope: ManagedScope;
 }): Promise<{ ok: true } | { ok: false; code: string }> {
-  if (!isSupabaseAdminConfigured()) {
+  if (!isSupabaseAdminConfigured() || !env.NEXT_PUBLIC_SITE_URL) {
     return { ok: false, code: "UNAVAILABLE" };
   }
 
   const admin = createSupabaseAdminClient();
+  const callbackUrl = new URL("/auth/confirm", env.NEXT_PUBLIC_SITE_URL);
+  callbackUrl.searchParams.set("view", "convite");
   const { data, error } = await admin.auth.admin.inviteUserByEmail(
     input.email,
     {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/entrar`,
+      redirectTo: callbackUrl.toString(),
     },
   );
 

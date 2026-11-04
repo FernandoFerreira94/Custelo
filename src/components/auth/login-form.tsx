@@ -32,10 +32,15 @@ import { Spinner } from "@/components/ui/spinner";
 type LoginFormProps = {
   onInvite: () => void;
   onRecover: () => void;
+  initialError?: string | null;
 };
 
-export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
-  const [submitError, setSubmitError] = useState<string | null>(null);
+export function LoginForm({
+  onInvite,
+  onRecover,
+  initialError = null,
+}: LoginFormProps) {
+  const [submitError, setSubmitError] = useState<string | null>(initialError);
 
   const {
     register,
@@ -43,11 +48,6 @@ export function LoginForm({ onInvite, onRecover }: LoginFormProps) {
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    // TODO(dev): remover defaults antes de staging/producao
-    defaultValues: {
-      email: "colinas@colinas.com.br",
-      password: "colinas123",
-    },
   });
 
   async function onSubmit(values: LoginInput) {

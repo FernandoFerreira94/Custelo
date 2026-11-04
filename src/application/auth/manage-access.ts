@@ -9,16 +9,12 @@ import {
 import {
   loadAccessActor,
   loadTargetScopes,
-  persistInviteRegistration,
   persistScopeGrant,
   persistScopeRevocation,
   persistUserDeactivation,
 } from "@/infrastructure/auth/access-management-repository";
+import { sendInviteByEmail } from "@/infrastructure/auth/invite-service";
 import { revokeUserSessions } from "@/infrastructure/auth/session-revocation";
-import {
-  createSupabaseAdminClient,
-  isSupabaseAdminConfigured,
-} from "@/infrastructure/auth/supabase-admin";
 
 export type ManageAccessErrorCode =
   | "UNAUTHORIZED"
@@ -93,37 +89,17 @@ export async function inviteUser(input: {
     return { ok: false, code: "ROLE_ESCALATION" };
   }
 
-  if (!isSupabaseAdminConfigured()) {
-    return { ok: false, code: "UNAVAILABLE" };
-  }
+  const sent = await sendInviteByEmail({
+    actorUserId: resolved.context.actorUserId,
+    actorOrgId: resolved.context.actorOrgId,
+    actorEmpreendimentoId: resolved.context.actorEmpreendimentoId,
+    email: input.email,
+    scope: input.initialScope,
+  });
 
-  const admin = createSupabaseAdminClient();
-  const { data, error } = await admin.auth.admin.inviteUserByEmail(
-    input.email,
-    {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/entrar`,
-    },
-  );
-
-  if (error || !data.user) {
-    return { ok: false, code: "INVITE_FAILED" };
-  }
-
-  const persisted = await persistInviteRegistration(
-    resolved.context.actorUserId,
-    resolved.context.actorOrgId,
-    resolved.context.actorEmpreendimentoId,
-    data.user.id,
-    input.email,
-    input.initialScope,
-  );
-
-  if (!persisted.ok) {
-    await admin.auth.admin.deleteUser(data.user.id);
-    return { ok: false, code: persisted.code as ManageAccessErrorCode };
-  }
-
-  return { ok: true };
+  return sent.ok
+    ? { ok: true }
+    : { ok: false, code: sent.code as ManageAccessErrorCode };
 }
 
 export async function changeScope(input: {

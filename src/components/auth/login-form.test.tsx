@@ -24,6 +24,27 @@ vi.mock("next/image", () => ({
 }));
 
 describe("LoginForm", () => {
+  it("nao preenche credenciais de desenvolvimento", () => {
+    render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);
+
+    expect(screen.getByLabelText("E-mail")).toHaveValue("");
+    expect(screen.getByLabelText("Senha")).toHaveValue("");
+  });
+
+  it("explica quando o link de autenticacao e invalido", () => {
+    render(
+      <LoginForm
+        onInvite={vi.fn()}
+        onRecover={vi.fn()}
+        initialError="Link inválido ou expirado. Solicite um novo link."
+      />,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Link inválido ou expirado. Solicite um novo link.",
+    );
+  });
+
   it("mostra erros de validacao quando o envio esta vazio", async () => {
     render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);
 

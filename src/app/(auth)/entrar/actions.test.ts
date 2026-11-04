@@ -5,8 +5,6 @@ const mocks = vi.hoisted(() => ({
   getPendingInviteForSession: vi.fn(),
   getAuthenticatedSession: vi.fn(),
   createSupabaseServerClient: vi.fn(),
-  createSupabaseAdminClient: vi.fn(),
-  isSupabaseAdminConfigured: vi.fn(),
   headers: vi.fn(),
   resetPasswordForEmail: vi.fn(),
   updateUser: vi.fn(),
@@ -16,6 +14,13 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("next/headers", () => ({
   headers: mocks.headers,
+}));
+
+vi.mock("@/lib/env", () => ({
+  env: {
+    NODE_ENV: "test",
+    NEXT_PUBLIC_SITE_URL: "https://custelo.example",
+  },
 }));
 
 vi.mock("@/infrastructure/auth/invite-service", () => ({
@@ -29,11 +34,6 @@ vi.mock("@/infrastructure/auth/session", () => ({
 
 vi.mock("@/infrastructure/auth/supabase-server", () => ({
   createSupabaseServerClient: mocks.createSupabaseServerClient,
-}));
-
-vi.mock("@/infrastructure/auth/supabase-admin", () => ({
-  isSupabaseAdminConfigured: mocks.isSupabaseAdminConfigured,
-  createSupabaseAdminClient: mocks.createSupabaseAdminClient,
 }));
 
 import {
@@ -53,11 +53,12 @@ function mockSupabaseClient() {
       refreshSession: mocks.refreshSession,
     },
   });
-  mocks.createSupabaseAdminClient.mockReturnValue({
+  mocks.createSupabaseServerClient.mockResolvedValue({
     auth: {
-      admin: {
-        signOut: mocks.signOut,
-      },
+      resetPasswordForEmail: mocks.resetPasswordForEmail,
+      updateUser: mocks.updateUser,
+      refreshSession: mocks.refreshSession,
+      signOut: mocks.signOut,
     },
   });
 }
@@ -68,7 +69,6 @@ beforeEach(() => {
   mocks.headers.mockResolvedValue(
     new Headers({ origin: "http://localhost:3000" }),
   );
-  mocks.isSupabaseAdminConfigured.mockReturnValue(true);
 });
 
 describe("fetchPendingInviteAction — AUTH-002", () => {
@@ -133,7 +133,9 @@ describe("requestRecoveryAction — AUTH-003", () => {
 
     expect(mocks.resetPasswordForEmail).toHaveBeenCalledWith(
       "usuario@example.test",
-      { redirectTo: "http://localhost:3000/entrar" },
+      {
+        redirectTo: "https://custelo.example/auth/confirm?view=senha",
+      },
     );
   });
 
@@ -179,28 +181,6 @@ describe("setPasswordAction — AUTH-004", () => {
     });
   });
 
-  it("recusa quando admin Supabase nao esta configurado", async () => {
-    mocks.getAuthenticatedSession.mockResolvedValue({
-      userId: "user-id",
-      email: "usuario@example.test",
-      claims: { user_status: "ativo" },
-    });
-    mocks.updateUser.mockResolvedValue({ error: null });
-    mocks.isSupabaseAdminConfigured.mockReturnValue(false);
-
-    await expect(
-      setPasswordAction({
-        password: validPassword,
-        confirmPassword: validPassword,
-      }),
-    ).resolves.toEqual({
-      ok: false,
-      message: "Não foi possível concluir a alteração agora. Tente novamente.",
-    });
-
-    expect(mocks.signOut).not.toHaveBeenCalled();
-  });
-
   it("atualiza senha e redireciona para contexto", async () => {
     mocks.getAuthenticatedSession.mockResolvedValue({
       userId: "user-id",
@@ -218,7 +198,7 @@ describe("setPasswordAction — AUTH-004", () => {
       }),
     ).resolves.toEqual({ ok: true, redirectTo: "/contexto" });
 
-    expect(mocks.signOut).toHaveBeenCalledWith("user-id", "others");
+    expect(mocks.signOut).toHaveBeenCalledWith({ scope: "others" });
     expect(mocks.refreshSession).toHaveBeenCalledOnce();
   });
 });

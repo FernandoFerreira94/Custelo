@@ -3,6 +3,7 @@
 import { useRef } from "react";
 
 import { AuthCardStage } from "@/components/auth/auth-card-stage";
+import type { AuthCardView } from "@/components/auth/auth-card-stage";
 import { LoginHero } from "@/components/auth/login-hero";
 import { LoginIntroParcel } from "@/components/auth/login-intro-parcel";
 import { LoginOrbs } from "@/components/auth/login-orbs";
@@ -13,9 +14,15 @@ import type { PendingInvitePreview } from "@/components/auth/request-accept-invi
 
 type LoginDesktopProps = {
   initialInvite?: PendingInvitePreview | null;
+  initialView?: AuthCardView;
+  initialError?: string | null;
 };
 
-export function LoginDesktop({ initialInvite = null }: LoginDesktopProps) {
+export function LoginDesktop({
+  initialInvite = null,
+  initialView = "entrar",
+  initialError = null,
+}: LoginDesktopProps) {
   const root = useRef<HTMLDivElement>(null);
   useLoginMotion({ root });
 
@@ -27,16 +34,21 @@ export function LoginDesktop({ initialInvite = null }: LoginDesktopProps) {
       <LoginHero />
       <div
         data-login-right
+        inert
         className="relative z-10 flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-12 lg:ml-auto lg:w-1/2 lg:px-10"
       >
         <LoginOrbs />
-        <AuthCardStage initialInvite={initialInvite} />
+        <AuthCardStage
+          initialInvite={initialInvite}
+          initialView={initialView}
+          initialError={initialError}
+        />
       </div>
 
       <div
         data-login-veil
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center bg-primary opacity-0"
+        className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-primary opacity-0"
       >
         <div className="relative flex flex-col items-center justify-center gap-7">
           <span
