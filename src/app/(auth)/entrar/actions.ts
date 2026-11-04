@@ -12,6 +12,7 @@ import {
 } from "@/infrastructure/auth/invite-service";
 import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-server";
 import { getAuthenticatedSession } from "@/infrastructure/auth/session";
+import { log } from "@/infrastructure/observability/logger";
 import { env } from "@/lib/env";
 
 export async function fetchPendingInviteAction(): Promise<
@@ -108,15 +109,13 @@ export async function setPasswordAction(
     };
   }
 
+  // A senha já mudou. Se encerrar as outras sessões falhar, não dizemos que
+  // a troca falhou (a pessoa tentaria de novo à toa): registramos e seguimos.
   const { error: signOutError } = await supabase.auth.signOut({
     scope: "others",
   });
-
   if (signOutError) {
-    return {
-      ok: false,
-      message: "Não foi possível concluir a alteração agora. Tente novamente.",
-    };
+    log("warn", { msg: "senha_alterada_sem_encerrar_outras_sessoes" });
   }
 
   await supabase.auth.refreshSession();

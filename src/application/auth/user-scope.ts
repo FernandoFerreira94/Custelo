@@ -11,7 +11,10 @@ export type UserScope = {
 
 export type SelectContextResult =
   | { ok: true; redirectTo: string }
-  | { ok: false; code: "INVALID_SCOPE" | "UNAUTHORIZED" };
+  | {
+      ok: false;
+      code: "INVALID_SCOPE" | "UNAUTHORIZED" | "SESSION_REFRESH_FAILED";
+    };
 
 /** Rota inicial por papel apos contexto selecionado. */
 export function resolveSurfaceRedirect(papelCodigo: string): string {

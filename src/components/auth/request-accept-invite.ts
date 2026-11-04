@@ -3,6 +3,7 @@ import {
   acceptInviteAction,
   fetchPendingInviteAction,
 } from "@/app/(auth)/entrar/actions";
+import { comMensagemDeFalha } from "@/lib/mensagens";
 
 export type PendingInvitePreview = {
   inviter: string;
@@ -22,7 +23,7 @@ export async function fetchPendingInvite(): Promise<PendingInvitePreview | null>
 export async function requestAcceptInvite(
   input: AcceptInviteInput,
 ): Promise<{ ok: true; redirectTo?: string } | { ok: false; message: string }> {
-  const result = await acceptInviteAction(input);
+  const result = await comMensagemDeFalha(() => acceptInviteAction(input));
   if (!result.ok) {
     return result;
   }
