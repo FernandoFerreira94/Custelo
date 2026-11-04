@@ -39,7 +39,11 @@ export default defineConfig({
     {
       name: "a11y",
       testDir: "./tests/a11y",
-      use: { ...devices["Desktop Chrome"] },
+      // Ilustração decorativa anima opacidade: o axe mediria o contraste no meio do fade.
+      use: {
+        ...devices["Desktop Chrome"],
+        contextOptions: { reducedMotion: "reduce" },
+      },
     },
   ],
   webServer: process.env.CI
