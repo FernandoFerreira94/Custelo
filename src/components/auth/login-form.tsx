@@ -64,13 +64,13 @@ export function LoginForm({
   return (
     <Card
       data-login-card
-      className="w-full max-w-[420px] font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
+      className="w-full max-w-[460px] overflow-hidden rounded-3xl pb-0 font-sans shadow-[var(--shadow-elevation-3)] [--card-spacing:--spacing(8)]"
     >
       <CardHeader>
         <PzMarca data-login-card-item className="mb-4 lg:hidden" />
         <CardTitle
           data-login-card-item
-          className="font-sans text-2xl font-semibold tracking-tight"
+          className="font-brand text-4xl font-extrabold tracking-tight"
         >
           <h1 className="contents">Entrar</h1>
         </CardTitle>
@@ -163,7 +163,7 @@ export function LoginForm({
         </form>
       </CardContent>
 
-      <CardFooter className="bg-muted">
+      <CardFooter className="bg-muted py-4">
         <p
           data-login-card-item
           className="flex gap-2 text-xs leading-relaxed text-muted-foreground"
