@@ -49,3 +49,13 @@ system faltou. Levar ao repo `webcode-design`.
 - **Sem escolha inicial:** nenhum empreendimento vem marcado; o botão diz
   "Escolha um empreendimento" até a pessoa marcar um, para o registro não ir
   ao primeiro da lista por inércia.
+
+## Tarefa 11 — sem acesso
+
+- **Prancha × backend:** o botão primário "Pedir acesso ao gestor" não entra,
+  porque não existe pedido de acesso no backend; um botão sem efeito seria
+  silêncio (invariante 11). Fica só "Entrar com outra conta".
+- **Título da tela:** a página passa a chamar "Você ainda não tem acesso aqui"
+  (h1). O e2e `auth-callbacks.spec.ts` foi ajustado para esse título.
+- **Casca do card:** `authCardClass` tem `pb-0` (pensado para rodapé); a tela
+  devolve o respiro de baixo com `pb-(--card-spacing)`.

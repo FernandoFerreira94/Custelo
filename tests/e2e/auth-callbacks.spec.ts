@@ -99,7 +99,9 @@ test.describe("callbacks reais de autenticacao", () => {
 
       await expect(page).toHaveURL(/\/sem-acesso$/, { timeout: 15_000 });
       await expect(
-        page.getByRole("heading", { name: "Sem acesso" }),
+        page.getByRole("heading", {
+          name: "Você ainda não tem acesso aqui",
+        }),
       ).toBeVisible();
 
       const verifier = createClient(supabaseUrl, anonKey, {
