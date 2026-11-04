@@ -2,15 +2,27 @@ import {
   type AuthenticatedSession,
   canWriteWithStatus,
 } from "@/application/auth/session-context";
+import {
+  AuthTimeoutError,
+  comTimeoutDeAuth,
+} from "@/infrastructure/auth/com-timeout";
 import { decodeJwtPayload, readCusteloClaims } from "@/infrastructure/auth/jwt";
 import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-server";
 
 export async function getAuthenticatedSession(): Promise<AuthenticatedSession | null> {
   const supabase = await createSupabaseServerClient();
+  let resultado;
+  try {
+    resultado = await comTimeoutDeAuth(supabase.auth.getUser());
+  } catch (error) {
+    // Sem resposta do Supabase = sem sessao verificavel (nega, nunca libera).
+    if (error instanceof AuthTimeoutError) return null;
+    throw error;
+  }
   const {
     data: { user },
     error,
-  } = await supabase.auth.getUser();
+  } = resultado;
 
   if (error || !user?.email) {
     return null;
