@@ -8,7 +8,8 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 ## IN PROGRESS
 
 - **Migracao das telas para a WebCode UI + limpeza de codigo morto** — plano
-  passo a passo em `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md` (base `@webcode`,
+  passo a passo em `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`
+  (spec: `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md`) (base `@webcode`,
   tema Nevoa + Brasa, marca final, estados, AUTH-001..006 nas pranchas, cascas
   das superficies, limpeza). Pranchas versionadas em `docs/pranchas/`.
 

@@ -4,6 +4,8 @@
 > Base: `main` em `a941cf6` (PRs #12, #13 e #14 mergeados). Os testes passam (139/139 unit e UI, 20/20 RLS) e o build passa.
 > Pranchas (referência visual): artifact https://claude.ai/artifact/62ToCCANhT2uCNvvi4eWoD. O código-fonte delas está em `docs/pranchas/`.
 
+> **Plano executável (superpowers):** `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`. Ele manda na ordem, no código e nos comandos. Este arquivo vira o **Spec**: guarda as decisões, o mapa tela × prancha × fase (Apêndice A) e a cola da API. Em conflito, vale o plano superpowers.
+
 ---
 
 ## 0. Regras para o executor (ler antes de tudo)
@@ -267,11 +269,7 @@ Instale: `checkbox dialog radio-group textarea description-list password-strengt
 
 ### 5.4 Testes
 
-Atualize os testes UI/E2E que buscam textos que mudaram:
-
-- `tests/e2e/auth-entrar.spec.ts`: "Recuperar acesso" vira "Recuperar senha", "Voltar para o login" vira "Voltar", "Enviar link de recuperação" vira "Enviar link".
-- `*.test.tsx` de `src/components/auth`.
-- Mude **o texto esperado**, nunca o comportamento testado. Não apague teste sem trocar por equivalente.
+Os rótulos de botão e campo que os testes usam **não mudam** (lista nas Global Constraints do plano superpowers). Só a aparência muda, então os testes UI e E2E passam sem editar asserções.
 
 **Gate 5:**
 

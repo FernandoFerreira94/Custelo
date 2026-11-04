@@ -8,7 +8,8 @@ Este arquivo e um **roteador**. Detalhe vive em `.ai/` e `docs/`.
 - **Produto:** Custelo — SaaS B2B de recebimento e cadeia de custodia para portarias.
 - **Dono:** Webcodeff. Brasil, LGPD.
 - **Status:** I2 entregue (tenancy, auth, RLS, contexto, guard). Em andamento:
-  migracao das telas para a WebCode UI (`docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md`).
+  migracao das telas para a WebCode UI
+  (`docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`).
 - **Fonte canonica de produto:** este repo (`.ai/` + `docs/` + codigo). A pagina
   Notion do projeto pode estar atras do Architecture Freeze — nao reabrir
   React Native/Expo nem monorepo multi-app.
@@ -40,7 +41,8 @@ pnpm db:generate    # migration a partir do schema Drizzle
 | Telas, rotas, estados            | `.ai/page-map.md`                           |
 | Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)               |
 | Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente) |
-| Pranchas aprovadas (visual)      | `docs/pranchas/` + plano `docs/plano/`      |
+| Pranchas aprovadas (visual)      | `docs/pranchas/README.md` (fonte + fotos)   |
+| Plano de execucao (superpowers)  | `docs/superpowers/plans/`                   |
 | Regra de stack                   | `.ai/rules/`                                |
 | Feature complexa                 | `.ai/specs/<feature>.md`                    |
 | Decisao que evolui               | `.ai/memory.md` (Summary no boot)           |

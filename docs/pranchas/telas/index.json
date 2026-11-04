@@ -1,0 +1,488 @@
+[
+ {
+  "aba": "entrada",
+  "id": "SPLASH",
+  "titulo": "Abertura",
+  "file": "entrada/splash-abertura.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-001",
+  "titulo": "Entrar (celular)",
+  "file": "entrada/auth-001-entrar-celular.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-001",
+  "titulo": "Entrar (desktop)",
+  "file": "entrada/auth-001-entrar-desktop.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-006",
+  "titulo": "Sem acesso",
+  "file": "entrada/auth-006-sem-acesso.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "SPLASH",
+  "titulo": "Abertura no computador",
+  "file": "entrada/splash-abertura-no-computador.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-AJUDA",
+  "titulo": "Ajuda para entrar (aberta)",
+  "file": "entrada/auth-ajuda-ajuda-para-entrar-aberta.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-002 + AUTH-004",
+  "titulo": "Convite e criar senha",
+  "file": "entrada/auth-002-auth-004-convite-e-criar-senha.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-003",
+  "titulo": "Recuperar senha",
+  "file": "entrada/auth-003-recuperar-senha.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "AUTH-001",
+  "titulo": "Entrar",
+  "file": "portaria/auth-001-entrar.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "AUTH-005",
+  "titulo": "Escolher empreendimento",
+  "file": "portaria/auth-005-escolher-empreendimento.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "REC-002",
+  "titulo": "Fotografar etiqueta",
+  "file": "portaria/rec-002-fotografar-etiqueta.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "REC-003",
+  "titulo": "Confirmar destino",
+  "file": "portaria/rec-003-confirmar-destino.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "CUS-001",
+  "titulo": "Fila (offline)",
+  "file": "portaria/cus-001-fila-offline.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "RET-004",
+  "titulo": "Retirada com assinatura",
+  "file": "portaria/ret-004-retirada-com-assinatura.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-004",
+  "titulo": "Escolher unidade",
+  "file": "fluxo/rec-004-escolher-unidade.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-006",
+  "titulo": "Registrar sem foto",
+  "file": "fluxo/rec-006-registrar-sem-foto.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-008",
+  "titulo": "Lote concluído e QR",
+  "file": "fluxo/rec-008-lote-concluido-e-qr.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-009",
+  "titulo": "Pendências no aparelho",
+  "file": "fluxo/rec-009-pendencias-no-aparelho.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-010",
+  "titulo": "Resolver conflito",
+  "file": "fluxo/rec-010-resolver-conflito.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-002 + 003",
+  "titulo": "Detalhe e linha do tempo",
+  "file": "fluxo/cus-002-003-detalhe-e-linha-do-tempo.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-004",
+  "titulo": "Correção depois do aviso",
+  "file": "fluxo/cus-004-correcao-depois-do-aviso.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-007",
+  "titulo": "Não identificadas",
+  "file": "fluxo/cus-007-nao-identificadas.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-001",
+  "titulo": "Escolher encomendas",
+  "file": "fluxo/ret-001-escolher-encomendas.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-002",
+  "titulo": "Quem retira",
+  "file": "fluxo/ret-002-quem-retira.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-003",
+  "titulo": "Assinatura",
+  "file": "fluxo/ret-003-assinatura.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-004",
+  "titulo": "Comprovante",
+  "file": "fluxo/ret-004-comprovante.webp"
+ },
+ {
+  "aba": "painel",
+  "id": "DASH-A",
+  "titulo": "Bento",
+  "file": "painel/dash-a-bento.webp"
+ },
+ {
+  "aba": "painel",
+  "id": "MOB-C",
+  "titulo": "Portaria",
+  "file": "painel/mob-c-portaria.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "UNI-002",
+  "titulo": "Unidades",
+  "file": "cadastros/uni-002-unidades.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "PES-001 + PES-003",
+  "titulo": "Pessoas e detalhe",
+  "file": "cadastros/pes-001-pes-003-pessoas-e-detalhe.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "NOT-001 + NOT-002",
+  "titulo": "Avisos e tentativas",
+  "file": "cadastros/not-001-not-002-avisos-e-tentativas.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "DEV-001 + DEV-002",
+  "titulo": "Registrar devolução",
+  "file": "cadastros/dev-001-dev-002-registrar-devolucao.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "DEV-003",
+  "titulo": "Confirmação",
+  "file": "cadastros/dev-003-confirmacao.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "UNI-001",
+  "titulo": "Estrutura do condomínio",
+  "file": "estrutura/uni-001-estrutura-do-condominio.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "UNI-003 + UNI-004",
+  "titulo": "Áreas e pontos de recebimento",
+  "file": "estrutura/uni-003-uni-004-areas-e-pontos-de-recebimento.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "PES-002",
+  "titulo": "Vínculos da pessoa",
+  "file": "estrutura/pes-002-vinculos-da-pessoa.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "USR-001 + USR-003",
+  "titulo": "Equipe e convite",
+  "file": "gestao/usr-001-usr-003-equipe-e-convite.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "USR-002",
+  "titulo": "Papéis e permissões",
+  "file": "gestao/usr-002-papeis-e-permissoes.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-002 + CFG-003",
+  "titulo": "Janela de envio e modelos",
+  "file": "gestao/cfg-002-cfg-003-janela-de-envio-e-modelos.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-004 + NOT-003",
+  "titulo": "WhatsApp e falhas",
+  "file": "gestao/cfg-004-not-003-whatsapp-e-falhas.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "AUD-001",
+  "titulo": "Auditoria",
+  "file": "gestao/aud-001-auditoria.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-008",
+  "titulo": "Retenção e dados",
+  "file": "gestao/cfg-008-retencao-e-dados.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-SESSAO",
+  "titulo": "Sessão expirada",
+  "file": "estados/err-sessao-sessao-expirada.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-OFFLINE",
+  "titulo": "Sem internet ao abrir",
+  "file": "estados/err-offline-sem-internet-ao-abrir.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-MANUT",
+  "titulo": "Manutenção",
+  "file": "estados/err-manut-manutencao.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-DASH",
+  "titulo": "Painel carregando",
+  "file": "estados/load-dash-painel-carregando.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-FILA",
+  "titulo": "Fila carregando",
+  "file": "estados/load-fila-fila-carregando.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-1A-VEZ",
+  "titulo": "Preparando o aparelho",
+  "file": "estados/load-1a-vez-preparando-o-aparelho.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-001",
+  "titulo": "Enviar planilha",
+  "file": "importacao/imp-001-enviar-planilha.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-002",
+  "titulo": "Conferir",
+  "file": "importacao/imp-002-conferir.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-003",
+  "titulo": "Corrigir",
+  "file": "importacao/imp-003-corrigir.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-004",
+  "titulo": "Resultado do lote",
+  "file": "importacao/imp-004-resultado-do-lote.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-001",
+  "titulo": "Operação",
+  "file": "importacao/rel-001-operacao.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-002",
+  "titulo": "Avisos",
+  "file": "importacao/rel-002-avisos.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-003 + REL-004",
+  "titulo": "Retiradas e exceções",
+  "file": "importacao/rel-003-rel-004-retiradas-e-excecoes.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-005",
+  "titulo": "Exportar período",
+  "file": "importacao/rel-005-exportar-periodo.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-010",
+  "titulo": "Botão em todo cadastro",
+  "file": "importar/imp-010-botao-em-todo-cadastro.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-011",
+  "titulo": "Enviar arquivo",
+  "file": "importar/imp-011-enviar-arquivo.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-012",
+  "titulo": "Conferir e corrigir por linha",
+  "file": "importar/imp-012-conferir-e-corrigir-por-linha.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-013",
+  "titulo": "PDF assistido",
+  "file": "importar/imp-013-pdf-assistido.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-014",
+  "titulo": "Confirmar",
+  "file": "importar/imp-014-confirmar.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-015",
+  "titulo": "Concluir",
+  "file": "importar/imp-015-concluir.webp"
+ },
+ {
+  "aba": "config",
+  "id": "CFG-001",
+  "titulo": "Dados do empreendimento",
+  "file": "config/cfg-001-dados-do-empreendimento.webp"
+ },
+ {
+  "aba": "config",
+  "id": "CFG-005",
+  "titulo": "Prazos",
+  "file": "config/cfg-005-prazos.webp"
+ },
+ {
+  "aba": "config",
+  "id": "CFG-006",
+  "titulo": "Preferências da portaria",
+  "file": "config/cfg-006-preferencias-da-portaria.webp"
+ },
+ {
+  "aba": "config",
+  "id": "CFG-007",
+  "titulo": "Plano e limites",
+  "file": "config/cfg-007-plano-e-limites.webp"
+ },
+ {
+  "aba": "config",
+  "id": "AUD-002",
+  "titulo": "Acessos e exportações",
+  "file": "config/aud-002-acessos-e-exportacoes.webp"
+ },
+ {
+  "aba": "config",
+  "id": "ORG-001",
+  "titulo": "Visão da organização",
+  "file": "config/org-001-visao-da-organizacao.webp"
+ },
+ {
+  "aba": "config",
+  "id": "ORG-002",
+  "titulo": "Empreendimentos",
+  "file": "config/org-002-empreendimentos.webp"
+ },
+ {
+  "aba": "config",
+  "id": "ORG-003",
+  "titulo": "Usuários da organização",
+  "file": "config/org-003-usuarios-da-organizacao.webp"
+ },
+ {
+  "aba": "config",
+  "id": "ORG-004",
+  "titulo": "Encerrar conta",
+  "file": "config/org-004-encerrar-conta.webp"
+ },
+ {
+  "aba": "plataforma",
+  "id": "SAAS-001",
+  "titulo": "Contas",
+  "file": "plataforma/saas-001-contas.webp"
+ },
+ {
+  "aba": "plataforma",
+  "id": "SAAS-002 + SAAS-003",
+  "titulo": "Planos e limites",
+  "file": "plataforma/saas-002-saas-003-planos-e-limites.webp"
+ },
+ {
+  "aba": "plataforma",
+  "id": "SAAS-004",
+  "titulo": "Acesso de suporte",
+  "file": "plataforma/saas-004-acesso-de-suporte.webp"
+ },
+ {
+  "aba": "plataforma",
+  "id": "SAAS-005",
+  "titulo": "Saúde das integrações",
+  "file": "plataforma/saas-005-saude-das-integracoes.webp"
+ },
+ {
+  "aba": "plataforma",
+  "id": "SAAS-006 + BIL-003",
+  "titulo": "Consumo",
+  "file": "plataforma/saas-006-bil-003-consumo.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-avisos",
+  "titulo": "Avisos e alertas",
+  "file": "estados/bloco-e-avisos.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-erros",
+  "titulo": "Páginas de erro",
+  "file": "estados/bloco-e-erros.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-carregar",
+  "titulo": "Carregamento e esqueleto",
+  "file": "estados/bloco-e-carregar.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-vazio",
+  "titulo": "Telas vazias",
+  "file": "estados/bloco-e-vazio.webp"
+ },
+ {
+  "aba": "formularios",
+  "id": "FORMS",
+  "titulo": "Formulários de cadastro (página inteira)",
+  "file": "formularios/formularios-completo.webp"
+ }
+]
