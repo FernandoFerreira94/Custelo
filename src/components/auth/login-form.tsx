@@ -41,6 +41,8 @@ export function LoginForm({
   initialError = null,
 }: LoginFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(initialError);
+  // Segue true após o sucesso até a página trocar: evita clique duplo.
+  const [saindo, setSaindo] = useState(false);
 
   const {
     register,
@@ -58,6 +60,7 @@ export function LoginForm({
       return;
     }
 
+    setSaindo(true);
     window.location.assign(result.redirectTo);
   }
 
@@ -138,10 +141,10 @@ export function LoginForm({
               data-login-cta
               data-login-card-item
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || saindo}
               className="h-12 min-h-[var(--size-touch-primary)] w-full"
             >
-              {isSubmitting ? (
+              {isSubmitting || saindo ? (
                 <>
                   <Spinner data-icon="inline-start" aria-label="Carregando" />
                   Entrando…
