@@ -107,27 +107,28 @@ Também não assume a custódia física e não promete acabar com extravio.
 
 Continuam dependendo de algo de fora: D4 (resultado do benchmark), D9 (conta Asaas), D12 (contatos reais de suporte), D17 (prazos do jurídico) e D19 (contratar o backup de arquivos).
 
-| #   | Decisão                                                                                                                           | Recomendação (o plano já segue)                                                                                                                                                          | Alternativa                                                               | Afeta             |
-| --- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------- |
-| D1  | Importar Excel/CSV já na I3 (pranchas `#importar` IMP-010..015)                                                                   | **Sim.** CSV nativo + leitura de `.xlsx` com `read-excel-file` (só leitura, leve). PDF assistido fica na I10.                                                                            | Tudo na I10. O onboarding da I3 fica manual.                              | I3 Tasks 3.9–3.12 |
-| D2  | "Autorizado a retirar" (prancha PES-002 `Autorizado`)                                                                             | **Entra como tipo de vínculo `autorizado`, com validade.** Usado na retirada (I8).                                                                                                       | Pós-MVP, como estava no Notion ("autorização de terceiros").              | I3, I8            |
-| D3  | Contato (WhatsApp/e-mail) e consentimento já no cadastro do morador (prancha `Morador`)                                           | **Sim:** tabela `contatos` com consentimento na I3. O envio só existe na I7.                                                                                                             | Contatos só na I7. A prancha PES-001 fica incompleta.                     | I3, I7            |
-| D4  | Leitura da etiqueta: ADR-014 (OCR de texto + matching local) × Notion 17/08 (LLM com visão, Gemini)                               | **Benchmark na I5 com etiquetas reais, os dois adaptadores atrás da porta `LabelExtractor`.** Troca do padrão só com ADR-023. O matching continua nosso, determinístico, nos dois casos. | Seguir só o ADR-014.                                                      | I5                |
-| D5  | Papéis por superfície (`PAPEIS_POR_SUPERFICIE`, PR #14)                                                                           | ops: recepcionista, gestor, org_admin · web: gestor, org_admin, auditor · saas: super admin. **Confirmar.**                                                                              | Outro mapeamento.                                                         | Fase 0            |
-| D6  | Rotas canônicas                                                                                                                   | Gestão em `/gestao/*`, organização em `/organizacao/*`, plataforma em `/plataforma/*`, portaria na raiz (`/receber`, `/fila`…). Seção 5.1.                                               | Rotas do `screen-tracker.csv` antigo, que colidem entre grupos.           | Todas             |
-| D7  | Campo "Turno" no convite de funcionário (prancha `Funcionario`)                                                                   | **Fora do MVP:** nenhuma regra usa turno. Vai para `DESIGN-NOTAS.md`.                                                                                                                    | Coluna texto em `escopos_usuario`.                                        | Fase 0            |
-| D8  | Telas sem prancha (seção 6.3)                                                                                                     | **O Fernando desenha.** Até lá a tela fica "aguarda prancha" e não é implementada.                                                                                                       | Montar com a receita, sem prancha.                                        | I11, I12          |
-| D9  | Cobrança no Asaas (excedente avulso)                                                                                              | I11 entrega planos, limites e consumo; a cobrança no Asaas é uma task separada, que só roda com conta e ok.                                                                              | Sem cobrança automática no MVP (manual).                                  | I11               |
-| D10 | `#importacao` (IMP-001..004, antiga) × `#importar` (IMP-010..015, 04/11)                                                          | **`#importar` substitui a parte de importação.** IMP-001→011, 002/003→012, 004→015. A aba `#importacao` vale só para REL-001..005.                                                       | Manter as duas.                                                           | I3, I10           |
-| D11 | Modo escuro (`#escuro`)                                                                                                           | **Não implementar** até a revisão do Fernando.                                                                                                                                           | —                                                                         | —                 |
-| D12 | WhatsApp e e-mail reais de suporte (`src/lib/suporte.ts`)                                                                         | Preencher antes do piloto.                                                                                                                                                               | —                                                                         | I13               |
-| D13 | Perguntas de produto abertas: encomenda perecível, volume grande, troca de turno, morador que se muda com encomenda pendente      | O plano cobre só o último (alerta na I8). Os outros ficam como "excepcional" com motivo (I5).                                                                                            | —                                                                         | I5, I8            |
-| D14 | Meta de segundos por registro (KPI principal; hoje são 5 a 10 minutos no caderno)                                                 | **≤ 15 s por item com a leitura ligada e ≤ 25 s sem ela**, medidos do toque em "Fotografar" ao registro salvo.                                                                           | Outra meta depois da linha de base do piloto (13.2).                      | I5, I13           |
-| D15 | Relatório e pacote em PDF                                                                                                         | **Página de impressão (`@media print`)**; o navegador salva em PDF. Sem dependência.                                                                                                     | `pdf-lib` gerando no servidor (dependência nova, com ok).                 | I10, I12          |
-| D16 | A prancha trava "Relatórios e exportação" no Essencial, mas exportação de evidência existe em todo plano (`billing-entitlements`) | **O plano trava só os relatórios de gestão (REL-001..005) e a visão de organização.** Exportar período da auditoria, cópia do titular e pacote de saída ficam em todo plano.             | Liberar relatórios em todos os planos e diferenciar só por volume.        | I11               |
-| D17 | Prazos de retenção, controlador × operador, DPA e subprocessadores                                                                | **Vêm do jurídico.** O motor nasce na I12 com prazo vazio = não expurga. **Sem os prazos, não há piloto** (stop-ship).                                                                   | — (o módulo proíbe prazo inventado)                                       | I12, I13          |
-| D18 | Chave "Assinatura na retirada" na prancha CFG-006 × regra "retirada exige assinatura"                                             | **Assinatura fixa**, no card "Sempre ligado" com o selo "Fixo".                                                                                                                          | Chave que permite retirar sem assinatura com motivo (enfraquece a prova). | I8, I11           |
-| D19 | Backup dos arquivos de evidência (assinaturas, fotos), se o Storage não entrar no PITR                                            | **Cópia diária das assinaturas e fotos de devolução para outra região/provedor** (custo a aprovar).                                                                                      | Aceitar o risco, documentado no runbook e no contrato.                    | I12               |
+| #   | Decisão                                                                                                                                                                             | Recomendação (o plano já segue)                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Alternativa                                                                                               | Afeta               |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------- |
+| D1  | Importar Excel/CSV já na I3 (pranchas `#importar` IMP-010..015)                                                                                                                     | **Sim.** CSV nativo + leitura de `.xlsx` com `read-excel-file` (só leitura, leve). PDF assistido fica na I10.                                                                                                                                                                                                                                                                                                                                                                                       | Tudo na I10. O onboarding da I3 fica manual.                                                              | I3 Tasks 3.9–3.12   |
+| D2  | "Autorizado a retirar" (prancha PES-002 `Autorizado`)                                                                                                                               | **Entra como tipo de vínculo `autorizado`, com validade.** Usado na retirada (I8).                                                                                                                                                                                                                                                                                                                                                                                                                  | Pós-MVP, como estava no Notion ("autorização de terceiros").                                              | I3, I8              |
+| D3  | Contato (WhatsApp/e-mail) e consentimento já no cadastro do morador (prancha `Morador`)                                                                                             | **Sim:** tabela `contatos` com consentimento na I3. O envio só existe na I7.                                                                                                                                                                                                                                                                                                                                                                                                                        | Contatos só na I7. A prancha PES-001 fica incompleta.                                                     | I3, I7              |
+| D4  | Leitura da etiqueta: ADR-014 (OCR de texto + matching local) × Notion 17/08 (LLM com visão, Gemini)                                                                                 | **Benchmark na I5 com etiquetas reais, os dois adaptadores atrás da porta `LabelExtractor`.** Troca do padrão só com ADR-023. O matching continua nosso, determinístico, nos dois casos.                                                                                                                                                                                                                                                                                                            | Seguir só o ADR-014.                                                                                      | I5                  |
+| D5  | Papéis por superfície (`PAPEIS_POR_SUPERFICIE`, PR #14)                                                                                                                             | ops: recepcionista, gestor, org_admin · web: gestor, org_admin, auditor · saas: super admin. **Confirmar.**                                                                                                                                                                                                                                                                                                                                                                                         | Outro mapeamento.                                                                                         | Fase 0              |
+| D6  | Rotas canônicas                                                                                                                                                                     | Gestão em `/gestao/*`, organização em `/organizacao/*`, plataforma em `/plataforma/*`, portaria na raiz (`/receber`, `/fila`…). Seção 5.1.                                                                                                                                                                                                                                                                                                                                                          | Rotas do `screen-tracker.csv` antigo, que colidem entre grupos.                                           | Todas               |
+| D7  | Campo "Turno" no convite de funcionário (prancha `Funcionario`)                                                                                                                     | **Fora do MVP:** nenhuma regra usa turno. Vai para `DESIGN-NOTAS.md`.                                                                                                                                                                                                                                                                                                                                                                                                                               | Coluna texto em `escopos_usuario`.                                                                        | Fase 0              |
+| D8  | Telas sem prancha (seção 6.3)                                                                                                                                                       | **O Fernando desenha.** Até lá a tela fica "aguarda prancha" e não é implementada.                                                                                                                                                                                                                                                                                                                                                                                                                  | Montar com a receita, sem prancha.                                                                        | I11, I12            |
+| D9  | Cobrança no Asaas (excedente avulso)                                                                                                                                                | I11 entrega planos, limites e consumo; a cobrança no Asaas é uma task separada, que só roda com conta e ok.                                                                                                                                                                                                                                                                                                                                                                                         | Sem cobrança automática no MVP (manual).                                                                  | I11                 |
+| D10 | `#importacao` (IMP-001..004, antiga) × `#importar` (IMP-010..015, 04/11)                                                                                                            | **`#importar` substitui a parte de importação.** IMP-001→011, 002/003→012, 004→015. A aba `#importacao` vale só para REL-001..005.                                                                                                                                                                                                                                                                                                                                                                  | Manter as duas.                                                                                           | I3, I10             |
+| D11 | Modo escuro (`#escuro`)                                                                                                                                                             | **Não implementar** até a revisão do Fernando.                                                                                                                                                                                                                                                                                                                                                                                                                                                      | —                                                                                                         | —                   |
+| D12 | WhatsApp e e-mail reais de suporte (`src/lib/suporte.ts`)                                                                                                                           | Preencher antes do piloto.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | —                                                                                                         | I13                 |
+| D13 | Perguntas de produto abertas: encomenda perecível, volume grande, troca de turno, morador que se muda com encomenda pendente                                                        | O plano cobre só o último (alerta na I8). Os outros ficam como "excepcional" com motivo (I5).                                                                                                                                                                                                                                                                                                                                                                                                       | —                                                                                                         | I5, I8              |
+| D14 | Meta de segundos por registro (KPI principal; hoje são 5 a 10 minutos no caderno)                                                                                                   | **≤ 15 s por item com a leitura ligada e ≤ 25 s sem ela**, medidos do toque em "Fotografar" ao registro salvo.                                                                                                                                                                                                                                                                                                                                                                                      | Outra meta depois da linha de base do piloto (13.2).                                                      | I5, I13             |
+| D15 | Relatório e pacote em PDF                                                                                                                                                           | **Página de impressão (`@media print`)**; o navegador salva em PDF. Sem dependência.                                                                                                                                                                                                                                                                                                                                                                                                                | `pdf-lib` gerando no servidor (dependência nova, com ok).                                                 | I10, I12            |
+| D16 | A prancha trava "Relatórios e exportação" no Essencial, mas exportação de evidência existe em todo plano (`billing-entitlements`)                                                   | **O plano trava só os relatórios de gestão (REL-001..005) e a visão de organização.** Exportar período da auditoria, cópia do titular e pacote de saída ficam em todo plano.                                                                                                                                                                                                                                                                                                                        | Liberar relatórios em todos os planos e diferenciar só por volume.                                        | I11                 |
+| D17 | Prazos de retenção, controlador × operador, DPA e subprocessadores                                                                                                                  | **Vêm do jurídico.** O motor nasce na I12 com prazo vazio = não expurga. **Sem os prazos, não há piloto** (stop-ship).                                                                                                                                                                                                                                                                                                                                                                              | — (o módulo proíbe prazo inventado)                                                                       | I12, I13            |
+| D18 | Chave "Assinatura na retirada" na prancha CFG-006 × regra "retirada exige assinatura"                                                                                               | **Assinatura fixa**, no card "Sempre ligado" com o selo "Fixo".                                                                                                                                                                                                                                                                                                                                                                                                                                     | Chave que permite retirar sem assinatura com motivo (enfraquece a prova).                                 | I8, I11             |
+| D19 | Backup dos arquivos de evidência (assinaturas, fotos), se o Storage não entrar no PITR                                                                                              | **Cópia diária das assinaturas e fotos de devolução para outra região/provedor** (custo a aprovar).                                                                                                                                                                                                                                                                                                                                                                                                 | Aceitar o risco, documentado no runbook e no contrato.                                                    | I12                 |
+| D20 | Prestadora (ex.: Selva) que atende condomínios de outras contas, login por local e contexto por aparelho (análise `docs/superpowers/plans/2026-11-04-analise-acesso-prestadora.md`) | **Aprovado pelo Fernando em 04/11 e entra no piloto.** Dado é do condomínio; `organizacoes.tipo`, `contratos_servico`, `escopos_usuario.via_contrato_id`; o condomínio encerra o contrato quando quiser. Local por **código curto/QR de pareamento** (sem busca pública por nome); lista de condomínios da prestadora só após login; lista de funcionários só no aparelho; senha sempre; sem biometria no MVP; contexto ativo por aparelho (cookie validado). Cobrança continua por empreendimento. | Busca por nome com rate limit (pior segurança) · PIN por aparelho · visão consolidada da Selva (pós-MVP). | Fase 0, IP, I6, I11 |
 
 Registradas em `.ai/memory.md` (04/11/2026).
 
@@ -341,7 +342,7 @@ export type Resultado<T> =
 ### 4.5 Páginas de sistema
 
 | Página                                    | Rota / arquivo                                                | Prancha             | Fase                                 |
-| ----------------------------------------- | ------------------------------------------------------------- | ------------------- | ------------------------------------ |
+| ----------------------------------------- | ------------------------------------------------------------- | ------------------- | ------------------------------------ | -------------------------------------------- | ----------------- |
 | 404 global                                | `src/app/not-found.tsx`                                       | `Erros` (#estados)  | Parte 1                              |
 | 500 global                                | `src/app/error.tsx`, `global-error.tsx`                       | `Erros`             | Parte 1                              |
 | Carregando global                         | `src/app/loading.tsx`                                         | `EsqueletoDesktop`  | Parte 1                              |
@@ -1388,8 +1389,9 @@ vi.mock("@/lib/env", () => ({
 
 describe("createSupabaseMiddlewareClient", () => {
   it("cookie renovado vai para a request repassada e para a resposta", async () => {
-    const { createSupabaseMiddlewareClient } =
-      await import("./supabase-middleware");
+    const { createSupabaseMiddlewareClient } = await import(
+      "./supabase-middleware"
+    );
     const req = new NextRequest("http://localhost/gestao", {
       headers: { cookie: "sb=velho" },
     });
@@ -1566,13 +1568,13 @@ O campo "Turno" não entra (D7): anote em `DESIGN-NOTAS.md`.
 
 **Casos de teste da action `convidarAction`:**
 
-| Entrada                      | Resultado                                                                |
-| ---------------------------- | ------------------------------------------------------------------------ |
-| recepcionista convida        | `SEM_PERMISSAO`, sem chamar o caso de uso                                |
-| e-mail inválido              | `ENTRADA_INVALIDA` com `campos.email = "Informe um e-mail válido."`      |
-| gestor convida recepcionista | `ok`, toast "Convite enviado para a***@x.com. O link vale por 24 horas." |
-| e-mail que já tem acesso     | `DUPLICADO`, "Esta pessoa já tem acesso a este empreendimento."          |
-| Supabase fora                | `INDISPONIVEL` com `MSG.instavel`                                        |
+| Entrada                      | Resultado                                                                   |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| recepcionista convida        | `SEM_PERMISSAO`, sem chamar o caso de uso                                   |
+| e-mail inválido              | `ENTRADA_INVALIDA` com `campos.email = "Informe um e-mail válido."`         |
+| gestor convida recepcionista | `ok`, toast "Convite enviado para a\*\*\*@x.com. O link vale por 24 horas." |
+| e-mail que já tem acesso     | `DUPLICADO`, "Esta pessoa já tem acesso a este empreendimento."             |
+| Supabase fora                | `INDISPONIVEL` com `MSG.instavel`                                           |
 
 - [ ] Steps 1–4 (TDD action + componentes), Step 5 Design Review (`/gestao/equipe`, com o Sheet de convite aberto, e `/gestao/equipe/papeis`), Step 6 e2e (convidar → aparece "Convite pendente" na lista).
 - [ ] **Step 7:** Ligue "Equipe" no menu do perfil da casca web. Item novo no trilho só com o ok do Fernando (seção 6.3).
@@ -2051,7 +2053,12 @@ describe("gerarUnidades", () => {
 ```ts
 // src/domain/estrutura/unidade.ts
 export type TipoUnidade =
-  "apartamento" | "casa" | "sala" | "loja" | "area_comum" | "outro";
+  | "apartamento"
+  | "casa"
+  | "sala"
+  | "loja"
+  | "area_comum"
+  | "outro";
 
 /** Mesma regra da coluna gerada unidades.codigo_normalizado (0011). */
 export function normalizarCodigo(texto: string): string {
@@ -5053,7 +5060,10 @@ O teste falha se uma propriedade fora da allowlist for enviada (ADR-017). A cons
 ```ts
 // src/domain/sync/saida.ts
 export type EstadoItem =
-  "LOCAL" | "SINCRONIZANDO" | "SINCRONIZADO" | "CONFLITO";
+  | "LOCAL"
+  | "SINCRONIZANDO"
+  | "SINCRONIZADO"
+  | "CONFLITO";
 export type RespostaItem =
   | { status: "ok" | "repetido" }
   | { status: "conflito"; conflitoId: string }
@@ -7205,6 +7215,92 @@ O SQL de `app.anonimizar` usa a mesma regra. O teste RLS da Task 12.1 confere os
 
 ---
 
+## 17b. Fase IP — Prestadora, contratos e login por local (D20)
+
+**Objetivo:** a Selva (prestadora) atende condomínios de outras contas. Cadeia Prestadora > Condomínio > Funcionário, sem mudar a RLS das tabelas de domínio. O dado continua do condomínio (LOCKED: unidade é destino primário, eventos append-only).
+
+**Decisões do Fernando (04/11):** o condomínio pode cancelar o contrato quando quiser; a PacoteZap ganha de qualquer forma (cobrança por empreendimento); a Selva usa celular da empresa fixo no local e desktop; código/QR no lugar da busca por nome; a Selva entra no piloto.
+
+**Pré-requisito na Fase 0 (obrigatório antes desta fase):**
+
+- **Task 0.2:** o `contextoDaSessao()` passa a ler o empreendimento ativo de um cookie assinado `pz-emp` validado a cada requisição contra `escopos_usuario` para QUALQUER usuário com mais de um escopo (hoje só org_admin). O claim do JWT não carrega o local no multi-escopo.
+- **Task 0.3:** `contexto_ativo` (uma linha por usuário) deixa de decidir o contexto; fica só como "último usado" sugerido. Teste: o mesmo usuário em dois aparelhos com locais diferentes não se mistura.
+
+**Branch:** `feat/ip-prestadora`. **Roda depois da I3 e antes da I6** (o cache offline já nasce particionado).
+
+### Task IP.1: Migration de prestadora e contratos
+
+**Files:** `src/db/migrations/00NN_ip_prestadora.sql` (próximo número livre); journal; `src/db/schema/contratos.ts`; `tests/rls/ip-prestadora.test.ts`
+
+**Conteúdo:**
+
+- `organizacoes.tipo` (`contratante` · `prestadora`, padrão `contratante`).
+- `contratos_servico`: `id`, `prestadora_org_id`, `local_org_id`, `empreendimento_id`, `servico` (`portaria` · `vigilancia`), `papeis_permitidos` (subconjunto de `recepcionista`, `auditor`; check proíbe `org_admin` e `empreendimento_gestor`), `status` (`proposto` · `ativo` · `suspenso` · `encerrado`), `inicio`, `fim`, `encerrado_por`, `encerrado_em`, `motivo`. FK composta `(local_org_id, empreendimento_id)` para `empreendimentos(org_id, id)`.
+- `escopos_usuario.via_contrato_id` (nulo = vínculo direto), FK para `contratos_servico`.
+- Funções `SECURITY DEFINER`, presas ao usuário da sessão (padrão da Task 0.3), com `REVOKE ALL FROM PUBLIC` e `GRANT` função por função:
+  - `app.propor_contrato(...)`: gestor da prestadora propõe; o gestor do condomínio aceita em `app.aceitar_contrato(id)`. Só o gestor do condomínio (dono do dado) ativa.
+  - `app.atribuir_funcionario_contrato(contrato_id, usuario_id, papel)`: gestor da prestadora; papel dentro de `papeis_permitidos`; cria o escopo na org do condomínio com `via_contrato_id`.
+  - `app.suspender_funcionario_no_local(contrato_id, usuario_id, motivo)`: gestor do condomínio.
+  - `app.encerrar_contrato(id, motivo)`: gestor do condomínio OU gestor da prestadora. Na mesma transação desativa todos os escopos com esse `via_contrato_id`.
+- RLS de `contratos_servico`: visível às duas pontas (`local_org_id` ou `prestadora_org_id` do contexto); escrita só pelas funções.
+- `audit_log` ganha `prestadora_org_id` e `contrato_id` (nulos fora de contrato); todo evento de custódia feito por funcionário via contrato grava os dois.
+- `list_escopos_acessiveis` devolve `via_contrato`, `prestadora_nome`, `contrato_status`.
+
+**Testes RLS (negativos primeiro):**
+
+| Caso                                                                                                | Esperado                                                                    |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| prestadora A lê contrato da prestadora B                                                            | 0 linhas                                                                    |
+| recepcionista ou funcionário via contrato chama `propor_contrato` / `atribuir_funcionario_contrato` | `SEM_PERMISSAO`                                                             |
+| atribuir `empreendimento_gestor` por contrato                                                       | erro de check                                                               |
+| prestadora ativa contrato sozinha (sem aceite do condomínio)                                        | `SEM_PERMISSAO`                                                             |
+| `encerrar_contrato`                                                                                 | todos os escopos `via_contrato_id` ficam `ativo = false` na mesma transação |
+| funcionário via contrato lê encomenda de OUTRO condomínio da mesma prestadora                       | 0 linhas (só o local do escopo ativo)                                       |
+| evento criado por funcionário via contrato                                                          | `audit_log` com `prestadora_org_id` e `contrato_id`                         |
+
+- [ ] Steps TDD. Commit `feat(tenancy): prestadora, contratos de serviço e escopo via contrato`. Peça o ok do Fernando para aplicar no remoto.
+
+### Task IP.2: Casos de uso de contrato
+
+**Files:** `src/application/contratos/{propor,aceitar,atribuir-funcionario,suspender-funcionario,encerrar}.ts` + testes; `src/domain/contratos/situacao.ts` + teste
+
+- Domínio puro: transições válidas (`proposto > ativo > suspenso/encerrado`), papéis permitidos, contrato encerrado não reabre (cria outro).
+- Toda ação grava auditoria (`CONTRATO_PROPOSTO`, `CONTRATO_ACEITO`, `FUNCIONARIO_ATRIBUIDO`, `FUNCIONARIO_SUSPENSO`, `CONTRATO_ENCERRADO`) e usa o catálogo `src/lib/mensagens.ts`.
+- Encerrar pede motivo e mostra o efeito: "Os funcionários da Selva saem deste condomínio agora. O histórico fica com o condomínio."
+- Tests: papel proibido, aceite ausente, motivo vazio, encerramento derruba escopos, mensagens de estado.
+
+### Task IP.3: Pareamento do aparelho e login por local
+
+**Files:** `src/infrastructure/auth/pareamento.ts`, `src/app/(auth)/entrar/**`, `src/app/(auth)/contexto/**`, `src/db/schema/dispositivos.ts` + testes
+
+- **Tabela `locais_codigo`:** `empreendimento_id`, `codigo` (6 caracteres, sem 0/O/1/I, único), `expira_em`, `revogado_em`. Gerado pelo gestor do condomínio (QR + código impresso). Revogável.
+- **Pareamento:** o aparelho informa o código, o servidor devolve só o nome público do local e um token de aparelho (httpOnly), nunca lista de outros locais nem de clientes. Rate limit por IP e por código; resposta igual para código inválido ou expirado ("Código não encontrado ou vencido.").
+- **Aparelho pareado** lembra o local (cookie + armazenamento local). A etapa de local some.
+- **Prestadora:** o funcionário entra com e-mail e senha; a lista de condomínios vem de `list_escopos_acessiveis` (só os contratos DELE), nunca antes do login. Escolha grava o cookie `pz-emp` e é lembrada por aparelho.
+- **Lista de funcionários do aparelho:** só no aparelho (IndexedDB). Guarda nome e e-mail mascarado de quem já entrou ali; senha sempre obrigatória; "Remover deste aparelho"; expira após 30 dias sem uso; limpa em "Sair de todos os aparelhos". O servidor nunca devolve lista de usuários e responde igual para e-mail existente ou não.
+- **`dispositivos_conhecidos`** (I11) passa a ser por `(usuario_id, empreendimento_id, aparelho_sha256)`.
+- Tests: código inválido/expirado/revogado, rate limit, nenhuma lista de usuários ou locais vem do servidor antes do login, lista local respeita expiração e remoção, trocar de local não vaza dados do anterior.
+- Telas novas **sem prancha** (D8): "Entrar com código do local", "Lista de funcionários do aparelho", "Contratos" e "Atribuir funcionário". O Fernando desenha; até lá ficam como "aguarda prancha" e a fase só entrega banco e casos de uso.
+
+### Task IP.4: Telas de gestão de contratos (aguarda prancha)
+
+`/gestao/contratos` (condomínio: aceitar, suspender funcionário, encerrar) e `/prestadora` (gestor da prestadora: contratos, atribuir funcionários). Rota nova `(web)` com superfície própria para o papel de gestor da prestadora, a definir com o Fernando junto com a prancha.
+
+### Task IP.5: Cache offline por local (I6)
+
+- Dexie particionada por `(empreendimento_id, usuario_id)`; cadastro baixado por local; trocar de local com fila pendente é bloqueado até sincronizar; sair apaga o cache do usuário; contrato encerrado apaga o cache do local no próximo sync.
+- Tests: dois locais no mesmo aparelho não se misturam; fila de um usuário não sobe na sessão de outro (já coberto na 6.3).
+
+### Fora do MVP
+
+Biometria/passkey; visão consolidada da Selva em todos os condomínios; cobrança direta à prestadora (D9 muda só o pagador).
+
+### Riscos de produto/jurídico
+
+A prestadora tende a ser operadora ou suboperadora dos dados do condomínio. O contrato entre as partes e o DPA entram no jurídico (D17). Sem isso, a Selva não vai para o piloto.
+
+---
+
 ## 18. Fase I13 — Piloto e go-live (um empreendimento real, sem caderno paralelo)
 
 **Por quê:** o fracasso declarado é o porteiro voltar ao caderno. O piloto prova, num empreendimento real, que:
@@ -7320,27 +7416,28 @@ Esta seção é a conferência do plano inteiro. Ao mudar uma fase, atualize a l
 
 ### 19.1 Telas do `screen-tracker.csv` → task
 
-| Telas                                                              | Task                                        | Observação                                             |
-| ------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------ |
-| AUTH-001..006                                                      | Parte 1 + Fase 0 (0.5, 0.7)                 | AUTH-007 pós-MVP                                       |
-| USR-001..003                                                       | 0.8                                         | backend da I2                                          |
-| UNI-001 · UNI-002 · UNI-003/004                                    | 3.7 · 3.8 · 3.9 (+ 4.5 prateleiras)         | —                                                      |
-| PES-001/003 · PES-002                                              | 3.10                                        | autorizado (D2) e contatos (D3)                        |
-| IMP-001..004                                                       | substituídas por IMP-010..015 (D10)         | tracker atualizado na Task 0.9                         |
-| IMP-010/011/012/014/015 · IMP-013                                  | 3.13 · 10.4                                 | —                                                      |
-| CUS-001 · CUS-002/003 · CUS-005                                    | 4.6 · 4.7 · 4.8                             | —                                                      |
-| REC-001 · REC-002..007 · REC-008 + CUS-008 · CUS-007               | 5.8 · 5.9 · 5.10 · 5.11                     | —                                                      |
-| REC-009/010                                                        | 6.5                                         | —                                                      |
-| CFG-002/003 · CFG-004 + NOT-003 + NOT-004 · NOT-001/002            | 7.6 · 7.7 · 7.8                             | —                                                      |
-| RET-001..004 · RET-005/006 · DEV-001..003                          | 8.4 · 8.5 · 8.6                             | —                                                      |
-| CUS-004 · AUD-001/002                                              | 9.2 · 9.3 (+ 11.8 suporte e acesso incomum) | —                                                      |
-| DASH-001 · REL-001..005                                            | 10.2 · 10.3                                 | —                                                      |
-| CFG-001/005/006 · CFG-007                                          | 11.3 · 11.4                                 | —                                                      |
-| ORG-001..003 · ORG-004                                             | 11.5 · 12.6                                 | ORG-004 foi para a I12, junto do motor de encerramento |
-| SAAS-001 · SAAS-002/003 · SAAS-004 · SAAS-005 · SAAS-006 + BIL-003 | 11.6 · 11.7 · 11.8 · 11.9 · 11.10           | —                                                      |
-| CFG-008                                                            | 12.5                                        | —                                                      |
-| Páginas de sistema e estados                                       | Parte 1 + 0.6 + 6.6                         | seção 4.5                                              |
-| CUS-006, DASH-002, SAAS-007, BIL-001, BIL-002                      | —                                           | pós-MVP (6.2)                                          |
+| Telas                                                              | Task                                        | Observação                                                |
+| ------------------------------------------------------------------ | ------------------------------------------- | --------------------------------------------------------- |
+| AUTH-001..006                                                      | Parte 1 + Fase 0 (0.5, 0.7)                 | AUTH-007 pós-MVP                                          |
+| Prestadora, contratos e login por local (D20)                      | Fase 0 (0.2, 0.3) + Fase IP (IP.1 a IP.5)   | Telas de contrato e login por local aguardam prancha (D8) |
+| USR-001..003                                                       | 0.8                                         | backend da I2                                             |
+| UNI-001 · UNI-002 · UNI-003/004                                    | 3.7 · 3.8 · 3.9 (+ 4.5 prateleiras)         | —                                                         |
+| PES-001/003 · PES-002                                              | 3.10                                        | autorizado (D2) e contatos (D3)                           |
+| IMP-001..004                                                       | substituídas por IMP-010..015 (D10)         | tracker atualizado na Task 0.9                            |
+| IMP-010/011/012/014/015 · IMP-013                                  | 3.13 · 10.4                                 | —                                                         |
+| CUS-001 · CUS-002/003 · CUS-005                                    | 4.6 · 4.7 · 4.8                             | —                                                         |
+| REC-001 · REC-002..007 · REC-008 + CUS-008 · CUS-007               | 5.8 · 5.9 · 5.10 · 5.11                     | —                                                         |
+| REC-009/010                                                        | 6.5                                         | —                                                         |
+| CFG-002/003 · CFG-004 + NOT-003 + NOT-004 · NOT-001/002            | 7.6 · 7.7 · 7.8                             | —                                                         |
+| RET-001..004 · RET-005/006 · DEV-001..003                          | 8.4 · 8.5 · 8.6                             | —                                                         |
+| CUS-004 · AUD-001/002                                              | 9.2 · 9.3 (+ 11.8 suporte e acesso incomum) | —                                                         |
+| DASH-001 · REL-001..005                                            | 10.2 · 10.3                                 | —                                                         |
+| CFG-001/005/006 · CFG-007                                          | 11.3 · 11.4                                 | —                                                         |
+| ORG-001..003 · ORG-004                                             | 11.5 · 12.6                                 | ORG-004 foi para a I12, junto do motor de encerramento    |
+| SAAS-001 · SAAS-002/003 · SAAS-004 · SAAS-005 · SAAS-006 + BIL-003 | 11.6 · 11.7 · 11.8 · 11.9 · 11.10           | —                                                         |
+| CFG-008                                                            | 12.5                                        | —                                                         |
+| Páginas de sistema e estados                                       | Parte 1 + 0.6 + 6.6                         | seção 4.5                                                 |
+| CUS-006, DASH-002, SAAS-007, BIL-001, BIL-002                      | —                                           | pós-MVP (6.2)                                             |
 
 ### 19.2 As 12 invariantes → onde o plano garante e onde testa
 
