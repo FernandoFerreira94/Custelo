@@ -6,6 +6,8 @@ referencia visual, nao fonte de valor.
 - **Proibido** `blur`, `backdrop-filter`, superficie translucida e "frosted".
   Glass effect revogado em 15/08/2026 por custo de performance no Android real
   do porteiro. Profundidade vem de tom solido + borda 1px + `--shadow-elevation-*`.
+  **Unica excecao (ADR-022):** a `TabBar` inferior do `(ops)` com
+  `material="glass"`, com fallback solido. Em qualquer outro lugar e bug.
 - Cor sempre por token semantico. Nunca hex literal, nunca `bg-blue-500`.
 - Estado operacional **nunca** depende so de cor: cor + label + icone.
 - Raio: pill/botao `--radius-pill` · card/superficie `--radius-surface` · campo

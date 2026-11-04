@@ -10,6 +10,10 @@
 - Jobs: Inngest (`JobScheduler`); WhatsApp Cloud API (`MessagingProvider`)
 - Offline: PWA (Serwist + Dexie), sync append, UUIDv7, sem last-write-wins
 - Design: glass REVOGADO; cache em `DESIGN.md`; tokens em `globals.css`
+- Identidade Nevoa + Brasa (ADR-021, 04/11/2026): navy na acao principal,
+  `variant="brasa"` em botao pequeno, erro carmim, Plus Jakarta Sans nos
+  titulos e wordmark (Poppins e Bodoni aposentadas). Escuro aprovado em prancha.
+- Vidro: so a `TabBar` inferior do `(ops)` (ADR-022), com fallback solido.
 - Contexto de agentes: `.ai/` e canonico (Boot Protocol ago/2026). `CLAUDE.md`
   e `.cursor/` so adaptam. Nao ha memoria paralela por ferramenta.
 - Fase: I1 codigo feito. I2 (tenancy+RLS+auth) fechado no repo (commit `30b5379`).

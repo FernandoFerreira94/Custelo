@@ -5,12 +5,12 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 ## Projeto
 
 - Tipo de produto (blueprint): `field-service` na superfície `(ops)` (PWA da portaria), `saas` na `(web)` (gestão) e `admin` na `(saas)` → siga `blueprints/<id>.md` pela skill `webcode-ui-patterns`.
-- Tema: `custelo` no DS (`@webcode/theme-custelo`), feito a partir do `src/app/globals.css` (Deep Blue, Floral White, Powder Blue no escuro, Bodoni Moda nos títulos, Inter no corpo). O `globals.css` continua sendo a fonte canônica: antes de instalar o tema, compare os dois e mantenha os estados de encomenda (`--state-*`) e a elevação sólida do projeto.
+- Tema: `custelo` no DS (`@webcode/theme-custelo`), feito a partir do `src/app/globals.css` (Névoa + Brasa, ADR-021: navy, fundo Névoa, brasa nas ações pequenas, erro carmim, Plus Jakarta Sans nos títulos, Inter no corpo). O `globals.css` continua sendo a fonte canônica: antes de instalar o tema, compare os dois e mantenha os estados de encomenda (`--state-*`) e a elevação sólida do projeto.
 - Stack: Next.js App Router + Tailwind v4 + shadcn (`radix-nova`). Componentes em `src/components/ui/`, import por `@/components/ui/<nome>`.
 
 ## O que continua valendo do Custelo (LOCK)
 
-- **Sem vidro**: nada de blur, `backdrop-filter`, superfície translúcida nem `variant="glass"`/`material="glass"` dos componentes `@webcode`. Profundidade = tom sólido + borda 1px + `--shadow-elevation-0..3`.
+- **Sem vidro**: nada de blur, `backdrop-filter`, superfície translúcida nem `variant="glass"`/`material="glass"` dos componentes `@webcode` (única exceção: `TabBar` inferior do `(ops)` com `material="glass"`, ADR-022). Profundidade = tom sólido + borda 1px + `--shadow-elevation-0..3`.
 - Estado nunca só por cor: cor + label + ícone. Alvo de toque ≥ 44px; ação primária 48–56px.
 - Conflito entre o DS WebCode e o LOCK do Custelo: o LOCK vence até um ADR novo.
 

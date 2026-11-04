@@ -2,8 +2,9 @@
 
 ## Produto
 
-**Inter**, carregada via `next/font/google` em `src/app/layout.tsx` e exposta
-como `--font-sans`.
+**Inter** no corpo (`--font-sans`) e **Plus Jakarta Sans** nos titulos
+(`--font-display`, ADR-021), ambas via `next/font/google` em
+`src/app/layout.tsx`. Bodoni Moda foi aposentada.
 
 | Peso | Uso                                       |
 | ---- | ----------------------------------------- |
@@ -14,11 +15,8 @@ como `--font-sans`.
 
 ## Marca
 
-O wordmark "Custelo" usa a direcao serifada aprovada no conceito visual.
-E **arte de marca**, nao texto de interface. Nao reproduzir com fonte de
-sistema.
-
-Confirmacao da fonte serifada e da licenca continua pendente com o cliente.
+O wordmark "PacoteZap" usa Plus Jakarta Sans extra-bold: "Pacote" navy, "Zap"
+brasa. Os arquivos da logo sao a referencia; nao recompor o wordmark a mao.
 
 ## PrincIpios
 

@@ -16,11 +16,13 @@ decoracao que compete com o dado.
 
 ## Tokens
 
-Marca LOCKED: Deep Blue `#182350` · Powder Blue `#AFD2FA` · Floral White
-`#FEFAEF` · Pale Brown `#B9915E` (accent, nao texto pequeno).
+Marca LOCKED (ADR-021, Nevoa + Brasa): navy `#0C2C55` · brasa `#D23B26` ·
+Nevoa `#EEF1F5` · ocean `#629FAD` · erro carmim `#B4123F`.
 
-Light: background Floral White, foreground Deep Blue, primary Deep Blue.
-Dark: **nao e inversao** — base mais escura que `#182350`; Powder Blue no foco.
+Light: fundo Nevoa, cards brancos, foreground e primary navy. Botao grande e
+card de destaque navy; botao pequeno de acao `variant="brasa"`. Nunca brasa em
+todos os botoes. Sobre navy, brasa clara `#F4826D`.
+Dark: aprovado em prancha (04/11/2026) — base `#0A1B33`.
 
 Estados operacionais (cor + label + icone, sempre): recebida, aguardando,
 nao identificada, falha, urgente, pronta, retirada, devolvida, offline.
@@ -32,17 +34,19 @@ Scrim de overlay: `--scrim` solido, sem blur.
 ## Layout
 
 Base 4px (4/8/12/16/24/32/40). Raios: pill 999 · surface 16 · field 12 ·
-chip 8 · sheet 20. Elevacao 0–3 (`--shadow-elevation-*`) + borda 1px.
+chip 8 · sheet 20. Elevacao 0–3 (`--shadow-elevation-*`, navy em camadas) + borda 1px;
+`--shadow-primary` e `--shadow-brasa` nos botoes.
 OPS 390×908. WEB/SAAS 1440 / sidebar 240 / conteudo 1200.
 
-**Proibido:** `blur`, `backdrop-filter`, superficie translucida.
+**Proibido:** `blur`, `backdrop-filter`, superficie translucida. Unica excecao:
+a `TabBar` inferior do `(ops)` em vidro (ADR-022), com fallback solido.
 
 ## Typography
 
 Produto: Inter 400/500/600/700 via `next/font`. Minimo operacional 14px.
 Numeros da fila em 600. Hierarquia por peso/tamanho/espaco — cor ja significa
-estado. Wordmark: Bodoni Moda (`--font-heading`) ate a didone licenciada
-chegar; e arte de marca, nao texto de UI.
+estado. Titulos e wordmark: Plus Jakarta Sans (`--font-brand`, `--font-heading`).
+Wordmark: "Pacote" navy + "Zap" brasa, extra-bold.
 
 ## Components
 
