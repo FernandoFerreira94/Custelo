@@ -15,3 +15,11 @@ contrato universal.
 - Diagnostico de sessao: hook `boot-check.sh` (nao carrega o protocolo inteiro)
 
 Nao duplique invariantes, stack ou roadmap aqui. Canonico: `AGENTS.md` + `.ai/`.
+
+## Biblioteca de UI
+
+- Biblioteca de componentes e padroes de tela: WebCode Design System
+  (`@webcode`, decisao do Fernando em 30/10/2026). Regras em `WEBCODE-DS.md`,
+  importado abaixo. O LOCK de stack vence em conflito.
+
+@WEBCODE-DS.md

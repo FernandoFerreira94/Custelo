@@ -38,6 +38,7 @@ pnpm db:generate    # migration a partir do schema Drizzle
 | Done / now / next / blocked      | `.ai/roadmap.md`                           |
 | Telas, rotas, estados            | `.ai/page-map.md`                          |
 | Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)              |
+| Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente) |
 | Regra de stack                   | `.ai/rules/`                               |
 | Feature complexa                 | `.ai/specs/<feature>.md`                   |
 | Decisao que evolui               | `.ai/memory.md` (Summary no boot)          |
