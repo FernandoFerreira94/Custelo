@@ -101,7 +101,11 @@ Também não assume a custódia física e não promete acabar com extravio.
 
 ---
 
-## 1. Decisões do Fernando (o plano segue com a recomendação até ele responder)
+## 1. Decisões do Fernando
+
+**04/11/2026: o Fernando aprovou todas as recomendações abaixo (coluna "Recomendação").** Elas valem como decisão. Também ficam aprovadas as recomendações anotadas para `DESIGN-NOTAS.md` ao longo do plano: "próximo ciclo" = mês civil, "Síndica (só ver)" = papel `auditor`, Equipe/Auditoria/Dados no menu do perfil e o item Relatórios da organização desabilitado até ter prancha.
+
+Continuam dependendo de algo de fora: D4 (resultado do benchmark), D9 (conta Asaas), D12 (contatos reais de suporte), D17 (prazos do jurídico) e D19 (contratar o backup de arquivos).
 
 | #   | Decisão                                                                                                                           | Recomendação (o plano já segue)                                                                                                                                                          | Alternativa                                                               | Afeta             |
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------- |
@@ -125,7 +129,7 @@ Também não assume a custódia física e não promete acabar com extravio.
 | D18 | Chave "Assinatura na retirada" na prancha CFG-006 × regra "retirada exige assinatura"                                             | **Assinatura fixa**, no card "Sempre ligado" com o selo "Fixo".                                                                                                                          | Chave que permite retirar sem assinatura com motivo (enfraquece a prova). | I8, I11           |
 | D19 | Backup dos arquivos de evidência (assinaturas, fotos), se o Storage não entrar no PITR                                            | **Cópia diária das assinaturas e fotos de devolução para outra região/provedor** (custo a aprovar).                                                                                      | Aceitar o risco, documentado no runbook e no contrato.                    | I12               |
 
-Registre cada resposta em `.ai/memory.md` e risque a linha aqui.
+Registradas em `.ai/memory.md` (04/11/2026).
 
 ---
 
