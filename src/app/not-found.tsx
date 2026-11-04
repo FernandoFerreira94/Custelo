@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 export default function PaginaNaoEncontrada() {
   return (
     <TelaDeEstado
+      status="404"
       titulo="Página não encontrada"
-      descricao="O endereço não existe ou foi movido. Confira o link ou volte para o início."
+      descricao="O endereço mudou ou não existe. Nada foi perdido."
       acoes={
-        <Button
-          asChild
-          className="h-12 min-h-[var(--size-touch-primary)] w-full"
-        >
+        <Button asChild shape="pill" size="lg">
           <Link href="/">Ir para o início</Link>
         </Button>
       }

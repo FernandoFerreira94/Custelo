@@ -22,29 +22,20 @@ export default function ErroDaPagina({
 
   return (
     <TelaDeEstado
-      titulo={offline ? "Sem conexão" : "Não conseguimos carregar esta página"}
+      status={offline ? "warning" : "500"}
+      titulo={offline ? "Sem conexão" : "Algo deu errado do nosso lado"}
       descricao={
         offline
           ? "Verifique a internet e tente de novo."
-          : "Tente de novo. Se continuar, fale com o suporte e informe o código abaixo."
+          : "Já fomos avisados. Tente de novo; se continuar, fale com o suporte."
       }
-      detalhe={
-        !offline && error.digest ? (
-          <p>
-            Código: <span className="font-mono">{error.digest}</span>
-          </p>
-        ) : undefined
-      }
+      codigo={offline ? undefined : error.digest}
       acoes={
         <>
-          <Button
-            type="button"
-            onClick={reset}
-            className="h-12 min-h-[var(--size-touch-primary)] w-full"
-          >
+          <Button type="button" shape="pill" size="lg" onClick={reset}>
             Tentar de novo
           </Button>
-          <Button asChild variant="link" className="w-full underline">
+          <Button asChild variant="ghost" shape="pill">
             <Link href="/">Ir para o início</Link>
           </Button>
         </>

@@ -54,8 +54,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" data-wc-theme="custelo" suppressHydrationWarning>
-      <body className={`${inter.variable} ${plusJakarta.variable} antialiased`}>
+    <html
+      lang="pt-BR"
+      data-wc-theme="custelo"
+      className={`${inter.variable} ${plusJakarta.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased">
         {children}
         <Toaster />
         <NotificationBannerHost />
