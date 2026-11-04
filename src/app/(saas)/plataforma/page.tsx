@@ -1,15 +1,20 @@
-import { PzMarca } from "@/components/brand/marca";
+import { LayersIcon } from "lucide-react";
 
-/** Placeholder SAAS — plataforma Webcodeff. */
+import { ContextoAtivo } from "@/components/shell/contexto-ativo";
+import { EmptyState } from "@/components/ui/empty";
+
+/** SAAS — plataforma Webcodeff. Sem número falso até haver dado. */
 export default function PlataformaPage() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-8 text-center">
-      <PzMarca texto="text-2xl" />
-      <h1 className="text-lg font-semibold">Plataforma</h1>
-      <p className="max-w-md text-sm text-muted-foreground">
-        Superfície SaaS para administração da plataforma. Telas SAAS-* virão nas
-        fases correspondentes.
-      </p>
+    <main className="grid gap-6">
+      <h1 className="sr-only">Plataforma</h1>
+      <ContextoAtivo />
+      <EmptyState
+        icon={<LayersIcon aria-hidden />}
+        title="Plataforma pronta"
+        description="Organizações e planos aparecem aqui na fase de administração."
+        headingLevel="h2"
+      />
     </main>
   );
 }

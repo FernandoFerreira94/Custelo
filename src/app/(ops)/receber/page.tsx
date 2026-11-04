@@ -1,15 +1,20 @@
-import { PzMarca } from "@/components/brand/marca";
+import { ScanLineIcon } from "lucide-react";
 
-/** Placeholder REC-001 — inicio OPS para recepcionista. */
+import { ContextoAtivo } from "@/components/shell/contexto-ativo";
+import { EmptyState } from "@/components/ui/empty";
+
+/** REC-001 — início OPS para a recepção. Sem número falso até haver dado. */
 export default function ReceberPage() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-8 text-center">
-      <PzMarca texto="text-2xl" />
-      <h1 className="text-lg font-semibold">Recebimento</h1>
-      <p className="max-w-md text-sm text-muted-foreground">
-        Superfície operacional (OPS). Fluxo de captura será implementado na fase
-        I5.
-      </p>
+    <main className="grid gap-6 p-6">
+      <h1 className="sr-only">Recebimento</h1>
+      <ContextoAtivo />
+      <EmptyState
+        icon={<ScanLineIcon aria-hidden />}
+        title="Turno pronto"
+        description="O registro de encomendas chega na próxima fase. Esta tela já funciona no celular."
+        headingLevel="h2"
+      />
     </main>
   );
 }

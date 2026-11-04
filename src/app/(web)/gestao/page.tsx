@@ -1,14 +1,20 @@
-import { PzMarca } from "@/components/brand/marca";
+import { PackageCheckIcon } from "lucide-react";
 
-/** Placeholder DASH-001 — gestao WEB para gestor/admin/auditor. */
+import { ContextoAtivo } from "@/components/shell/contexto-ativo";
+import { EmptyState } from "@/components/ui/empty";
+
+/** DASH-001 — gestão WEB para gestor/admin/auditor. Sem número falso até haver dado. */
 export default function GestaoPage() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-8 text-center">
-      <PzMarca texto="text-2xl" />
-      <h1 className="text-lg font-semibold">Gestão</h1>
-      <p className="max-w-md text-sm text-muted-foreground">
-        Painel de gestão (WEB). Dashboard será implementado nas fases seguintes.
-      </p>
+    <main className="grid gap-6">
+      <h1 className="sr-only">Gestão</h1>
+      <ContextoAtivo />
+      <EmptyState
+        icon={<PackageCheckIcon aria-hidden />}
+        title="Tudo pronto para começar"
+        description="O painel do dia chega quando as encomendas começarem a ser registradas."
+        headingLevel="h2"
+      />
     </main>
   );
 }
