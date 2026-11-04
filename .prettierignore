@@ -16,3 +16,5 @@ docs/pranchas
 # biblioteca @webcode: sobrescrita a cada sync, formato vem do registry
 src/components/ui
 src/lib/glass.ts
+src/lib/gesture.ts
+src/lib/utils.ts

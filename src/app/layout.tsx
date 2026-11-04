@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
+import { NotificationBannerHost } from "@/components/ui/notification-banner";
+import { Toaster } from "@/components/ui/sonner";
+
 import "./globals.css";
 
 /**
@@ -27,6 +30,13 @@ export const metadata: Metadata = {
   },
   description:
     "Recebimento e cadeia de custodia para portarias e operacoes prediais.",
+  icons: {
+    icon: [
+      { url: "/brand/favicon/favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/favicon/favicon.ico", sizes: "any" },
+    ],
+    apple: "/brand/favicon/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -44,9 +54,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" data-wc-theme="custelo" suppressHydrationWarning>
       <body className={`${inter.variable} ${plusJakarta.variable} antialiased`}>
         {children}
+        <Toaster />
+        <NotificationBannerHost />
       </body>
     </html>
   );
