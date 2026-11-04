@@ -15,6 +15,7 @@ import {
   type PendingInvitePreview,
   requestAcceptInvite,
 } from "@/components/auth/request-accept-invite";
+import { mensagemDeFalha } from "@/lib/mensagens";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -75,6 +76,7 @@ export function AcceptInviteForm({
         }
         setInvite(metadata);
       })
+      .catch((falha: unknown) => setLoadError(mensagemDeFalha(falha)))
       .finally(() => setIsLoadingInvite(false));
   }, [initialInvite]);
 

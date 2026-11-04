@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { resolveContextLanding } from "@/app/(auth)/contexto/actions";
 import { ContextSelector } from "@/components/auth/context-selector";
 
+// Depende da sessão (cookies) em toda requisição; nunca pré-renderizar no build.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Selecionar contexto",
   description:

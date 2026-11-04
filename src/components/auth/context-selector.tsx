@@ -17,6 +17,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { MSG, mensagemDeFalha } from "@/lib/mensagens";
+
+const MENSAGEM_CONTEXTO = {
+  UNAUTHORIZED: MSG.sessaoExpirada,
+  INVALID_SCOPE:
+    "Seu acesso a este empreendimento mudou. Atualize a página para ver a lista atual.",
+  SESSION_REFRESH_FAILED:
+    "Não conseguimos abrir este empreendimento agora. Tente de novo.",
+} as const;
 
 type ContextSelectorProps = {
   scopes: UserScope[];
@@ -33,17 +42,20 @@ export function ContextSelector({ scopes }: ContextSelectorProps) {
     setSubmitError(null);
 
     startTransition(async () => {
-      const result = await selectContextAction({
-        orgId: scope.orgId,
-        empreendimentoId: scope.empreendimentoId,
-      });
+      let result: Awaited<ReturnType<typeof selectContextAction>>;
+      try {
+        result = await selectContextAction({
+          orgId: scope.orgId,
+          empreendimentoId: scope.empreendimentoId,
+        });
+      } catch (falha) {
+        setSubmitError(mensagemDeFalha(falha));
+        setActiveKey(null);
+        return;
+      }
 
       if (!result.ok) {
-        setSubmitError(
-          result.code === "UNAUTHORIZED"
-            ? "Sessão expirada. Entre novamente."
-            : "Não foi possível selecionar este contexto. Tente outro.",
-        );
+        setSubmitError(MENSAGEM_CONTEXTO[result.code]);
         setActiveKey(null);
         return;
       }

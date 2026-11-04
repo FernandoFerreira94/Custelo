@@ -55,7 +55,7 @@ export async function selectContextAction(
   const { error } = await supabase.auth.refreshSession();
 
   if (error) {
-    return { ok: false, code: "INVALID_SCOPE" };
+    return { ok: false, code: "SESSION_REFRESH_FAILED" };
   }
 
   return {

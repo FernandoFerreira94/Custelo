@@ -5,6 +5,7 @@ import {
   isSupabaseBrowserConfigured,
 } from "@/infrastructure/auth/supabase-browser";
 import { decodeJwtPayload, readCusteloClaims } from "@/infrastructure/auth/jwt";
+import { mensagemDeFalha } from "@/lib/mensagens";
 
 export const AUTH_UNAVAILABLE =
   "Não foi possível entrar. A sessão ainda não está disponível neste ambiente.";
@@ -16,6 +17,9 @@ export const LOGIN_DISABLED =
 
 export const LOGIN_PENDING =
   "Convite pendente. Conclua o primeiro acesso pelo link enviado por e-mail.";
+
+export const LOGIN_EMAIL_NAO_CONFIRMADO =
+  "E-mail ainda não confirmado. Abra o link que enviamos para o seu e-mail.";
 
 export const LOGIN_UNCONFIGURED =
   "Conta ainda não configurada. Fale com a administração.";
@@ -41,12 +45,29 @@ export async function requestSession(
   }
 
   const supabase = createSupabaseBrowserClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: input.email,
-    password: input.password,
-  });
+  let resposta: Awaited<ReturnType<typeof supabase.auth.signInWithPassword>>;
+  try {
+    resposta = await supabase.auth.signInWithPassword({
+      email: input.email,
+      password: input.password,
+    });
+  } catch (falha) {
+    return { ok: false, message: mensagemDeFalha(falha) };
+  }
 
-  if (error || !data.session) {
+  const { data, error } = resposta;
+  if (error) {
+    // Só credencial errada vira "senha incorreta". Rede, limite e servidor têm texto próprio.
+    if (error.code === "email_not_confirmed") {
+      return { ok: false, message: LOGIN_EMAIL_NAO_CONFIRMADO };
+    }
+    if (error.code === "invalid_credentials" || error.status === 400) {
+      return { ok: false, message: LOGIN_FAILED };
+    }
+    return { ok: false, message: mensagemDeFalha(error) };
+  }
+
+  if (!data.session) {
     return { ok: false, message: LOGIN_FAILED };
   }
 

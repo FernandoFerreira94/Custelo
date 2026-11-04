@@ -4,6 +4,9 @@ import { LoginDesktop } from "@/components/auth/login-desktop";
 import type { AuthCardView } from "@/components/auth/auth-card-stage";
 import { getPendingInviteForSession } from "@/infrastructure/auth/invite-service";
 
+// Depende da sessão (cookies) em toda requisição; nunca pré-renderizar no build.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Entrar",
   description:
