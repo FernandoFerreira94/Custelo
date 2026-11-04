@@ -25,7 +25,7 @@ export function TelaDeEstado({
       <PzMarca texto="text-xl" />
       <Card
         role={status === "500" || status === "warning" ? "alert" : undefined}
-        className="w-full max-w-lg rounded-3xl py-10"
+        className="w-full max-w-lg rounded-3xl py-0"
       >
         <CardContent>
           <Result
