@@ -562,3 +562,124 @@
     opacity: 1;
   }
 }
+
+/* =============================================================================
+   Ciclo do painel azul do login (AUTH-001): o pacote anda pelas estações em
+   10 s, 2,5 s por estado. Só transform/opacity. Cada fase i usa a mesma
+   keyframe com atraso negativo (0, -7.5s, -5s, -2.5s). Com movimento reduzido
+   para no primeiro estado.
+   ========================================================================== */
+@keyframes pz-quarto {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  4%,
+  21% {
+    opacity: 1;
+    transform: none;
+  }
+  25%,
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes pz-luz {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  4%,
+  21% {
+    opacity: 1;
+    transform: none;
+  }
+  25%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes pz-viagem {
+  0%,
+  21% {
+    transform: translateX(0);
+  }
+  25%,
+  46% {
+    transform: translateX(var(--pz-passo));
+  }
+  50%,
+  71% {
+    transform: translateX(calc(var(--pz-passo) * 2));
+  }
+  75%,
+  94% {
+    transform: translateX(calc(var(--pz-passo) * 3));
+    opacity: 1;
+  }
+  98% {
+    opacity: 0;
+    transform: translateX(calc(var(--pz-passo) * 3));
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+@keyframes pz-trilha {
+  0%,
+  21% {
+    transform: scaleX(0);
+  }
+  25%,
+  46% {
+    transform: scaleX(0.3333);
+  }
+  50%,
+  71% {
+    transform: scaleX(0.6666);
+  }
+  75%,
+  94% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+.pz-fase {
+  animation: pz-quarto 10s ease-in-out infinite both;
+}
+.pz-luz {
+  animation: pz-luz 10s ease-in-out infinite both;
+}
+.pz-viagem {
+  animation: pz-viagem 10s cubic-bezier(0.6, 0, 0.2, 1) infinite both;
+}
+.pz-trilha {
+  transform-origin: left;
+  animation: pz-trilha 10s cubic-bezier(0.6, 0, 0.2, 1) infinite both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pz-fase,
+  .pz-luz,
+  .pz-viagem,
+  .pz-trilha {
+    animation: none;
+  }
+  .pz-fase,
+  .pz-luz {
+    opacity: 0;
+  }
+  .pz-fase[data-fase="0"],
+  .pz-luz[data-fase="0"] {
+    opacity: 1;
+  }
+  .pz-trilha {
+    transform: scaleX(0);
+  }
+}

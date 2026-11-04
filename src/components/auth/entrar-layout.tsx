@@ -1,8 +1,8 @@
-import { CheckCircle2Icon, PackageIcon, ShieldCheckIcon } from "lucide-react";
+import { ShieldCheckIcon } from "lucide-react";
 
 import { BotaoAjuda } from "@/components/auth/botao-ajuda";
+import { CicloEstacoes } from "@/components/auth/ciclo-estacoes";
 import { PzMarca } from "@/components/brand/marca";
-import { Badge } from "@/components/ui/badge";
 
 /** Fundo sutil do painel azul: caixas em traço fino e a rota tracejada até a porta. */
 function Fundo() {
@@ -54,40 +54,7 @@ function PainelMarca() {
         <h2 className="max-w-[16ch] font-brand text-4xl leading-tight font-extrabold tracking-tight text-balance">
           A portaria registra. O morador fica sabendo.
         </h2>
-        {/* Ilustração com dados de exemplo: fora da árvore de acessibilidade. */}
-        <div aria-hidden className="relative h-48 max-w-md">
-          <div
-            className="absolute inset-x-10 top-0 h-24 rounded-2xl"
-            style={{
-              background:
-                "color-mix(in oklab, var(--primary-foreground) 12%, var(--primary))",
-            }}
-          />
-          <div
-            className="absolute inset-x-5 top-5 h-24 rounded-2xl"
-            style={{
-              background:
-                "color-mix(in oklab, var(--primary-foreground) 24%, var(--primary))",
-            }}
-          />
-          <div className="absolute inset-x-0 top-10 grid gap-3 rounded-2xl bg-card p-4 text-card-foreground shadow-[var(--shadow-elevation-3)]">
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-full bg-accent text-brand">
-                <PackageIcon className="size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-mono font-semibold">B-304 · C2</p>
-                <p className="text-sm text-muted-foreground">
-                  Mariana Souza · Mercado Livre
-                </p>
-              </div>
-              <Badge variant="success">
-                <CheckCircle2Icon aria-hidden />
-                Avisada 11:43
-              </Badge>
-            </div>
-          </div>
-        </div>
+        <CicloEstacoes />
       </div>
       <span className="inline-flex items-center gap-2 text-sm opacity-90">
         <ShieldCheckIcon aria-hidden className="size-4" />
