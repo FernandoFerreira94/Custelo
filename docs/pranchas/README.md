@@ -15,7 +15,7 @@ As pranchas são as telas aprovadas pelo Fernando, feitas com a WebCode UI.
 | --- | --- | --- | --- |
 | `#entrada` | `pz-entrada/entrada.tsx` | Splash, AUTH-001 (celular e desktop), AUTH-002/004, AUTH-003, AUTH-006, ajuda | `telas/entrada/` |
 | `#portaria` | `pranchas/pranchas.tsx` | AUTH-005, REC-002, REC-003, CUS-001, RET-004 | `telas/portaria/` |
-| `#fluxo` | `pz-fluxo/fluxo.tsx` | REC-004..010, CUS-002/003/004/005/007/008, RET-001..006 (REC-005/007, CUS-005/008, RET-005/006 são novas: **sem foto ainda**) | `telas/fluxo/` |
+| `#fluxo` | `pz-fluxo/fluxo.tsx` | REC-004..010, CUS-002/003/004/005/007/008, RET-001..006 | `telas/fluxo/` |
 | `#painel` | `pz-dash/painel.tsx` | DASH-001 (Dash A, trilho + aba de ações), REC-001 (Mob C, barra da portaria) | `telas/painel/` |
 | `#cadastros` | `pz-telas/telas.tsx` | UNI-002, PES-001/003, NOT-001/002, DEV-001..003 | `telas/cadastros/` |
 | `#estrutura` | `pz-estrutura/estrutura.tsx` | UNI-001, UNI-003/004, PES-002 | `telas/estrutura/` |
@@ -26,6 +26,8 @@ As pranchas são as telas aprovadas pelo Fernando, feitas com a WebCode UI.
 | `#importar` | `pz-importar/importar.tsx` | IMP-010..015 | `telas/importar/` |
 | `#config` | `pz-config/config.tsx` | CFG-001/005/006/007, AUD-002, ORG-001..004 | `telas/config/` |
 | `#plataforma` | `pz-plataforma/plataforma.tsx` | SAAS-001..006, BIL-003 | `telas/plataforma/` |
+| `#piloto` | `pz-faltam/faltam.tsx` | OPT-001..004, LGPD-001/002, LEG-001/002, IMP-016..020, SYS-001..003 e as demais telas do piloto | — (sem fotos ainda) |
+| `#prestadora` | `pz-prestadora/prestadora.tsx` | D20: LOC-001..003 (código do local, lista do aparelho, escolher condomínio), CTR-001/002 (contratos), PAR-001 (pareamento), PRE-001/002 (painel da prestadora) | `telas/prestadora/` |
 | `#escuro` | `pz-escuro/escuro.tsx` | Modo escuro (Dash A + Mob C), **aguarda revisão do Fernando**: não implementar ainda | — |
 | `#laranja` | `pz-laranja/laranja.tsx` | paleta e logos | — |
 

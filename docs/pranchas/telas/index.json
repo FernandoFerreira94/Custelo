@@ -484,5 +484,257 @@
   "id": "FORMS",
   "titulo": "Formulários de cadastro (página inteira)",
   "file": "formularios/formularios-completo.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-005",
+  "titulo": "Escolher pessoa",
+  "file": "fluxo/rec-005-escolher-pessoa.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-007",
+  "titulo": "Onde guardou",
+  "file": "fluxo/rec-007-onde-guardou.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-005",
+  "titulo": "Mover de lugar",
+  "file": "fluxo/cus-005-mover-de-lugar.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-008",
+  "titulo": "Etiqueta e QR",
+  "file": "fluxo/cus-008-etiqueta-e-qr.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-005",
+  "titulo": "Histórico no celular",
+  "file": "fluxo/ret-005-historico-no-celular.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-006",
+  "titulo": "Corrigir retirada",
+  "file": "fluxo/ret-006-corrigir-retirada.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-005",
+  "titulo": "Histórico de retiradas na web",
+  "file": "fluxo/ret-005-historico-de-retiradas-na-web.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Digitar o código",
+  "file": "prestadora/loc-001-digitar-o-codigo.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Conferindo",
+  "file": "prestadora/loc-001-conferindo.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Código inválido ou vencido",
+  "file": "prestadora/loc-001-codigo-invalido-ou-vencido.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Muitas tentativas",
+  "file": "prestadora/loc-001-muitas-tentativas.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Sem internet",
+  "file": "prestadora/loc-001-sem-internet.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-001",
+  "titulo": "Aparelho pareado",
+  "file": "prestadora/loc-001-aparelho-pareado.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Escolher a pessoa",
+  "file": "prestadora/loc-002-escolher-a-pessoa.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Pedir a senha",
+  "file": "prestadora/loc-002-pedir-a-senha.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Senha incorreta",
+  "file": "prestadora/loc-002-senha-incorreta.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Entrando",
+  "file": "prestadora/loc-002-entrando.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Remover do aparelho",
+  "file": "prestadora/loc-002-remover-do-aparelho.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-002",
+  "titulo": "Aparelho sem ninguém",
+  "file": "prestadora/loc-002-aparelho-sem-ninguem.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-003",
+  "titulo": "Lista de condomínios",
+  "file": "prestadora/loc-003-lista-de-condominios.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-003",
+  "titulo": "Carregando",
+  "file": "prestadora/loc-003-carregando.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-003",
+  "titulo": "Contrato suspenso",
+  "file": "prestadora/loc-003-contrato-suspenso.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-003",
+  "titulo": "Sem condomínio liberado",
+  "file": "prestadora/loc-003-sem-condominio-liberado.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "LOC-003",
+  "titulo": "Erro de conexão",
+  "file": "prestadora/loc-003-erro-de-conexao.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-001",
+  "titulo": "Contratos de serviço",
+  "file": "prestadora/ctr-001-contratos-de-servico.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-001 · carregando",
+  "titulo": "carregando · Carregando",
+  "file": "prestadora/ctr-001-carregando-carregando-carregando.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-001 · vazio",
+  "titulo": "vazio · Nenhuma empresa contratada",
+  "file": "prestadora/ctr-001-vazio-vazio-nenhuma-empresa-contratada.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-001 · erro",
+  "titulo": "erro · Erro ao carregar",
+  "file": "prestadora/ctr-001-erro-erro-erro-ao-carregar.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-002",
+  "titulo": "Detalhe do contrato",
+  "file": "prestadora/ctr-002-detalhe-do-contrato.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-002 · suspender",
+  "titulo": "suspender · Suspender funcionário",
+  "file": "prestadora/ctr-002-suspender-suspender-suspender-funcionario.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "CTR-002 · encerrar",
+  "titulo": "encerrar · Encerrar contrato",
+  "file": "prestadora/ctr-002-encerrar-encerrar-encerrar-contrato.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PAR-001",
+  "titulo": "Código e aparelhos pareados",
+  "file": "prestadora/par-001-codigo-e-aparelhos-pareados.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PAR-001 · gerando",
+  "titulo": "gerando · Gerando",
+  "file": "prestadora/par-001-gerando-gerando-gerando.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PAR-001 · vencido",
+  "titulo": "vencido · Código vencido",
+  "file": "prestadora/par-001-vencido-vencido-codigo-vencido.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-001",
+  "titulo": "Condomínios que a Selva atende",
+  "file": "prestadora/pre-001-condominios-que-a-selva-atende.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-001 · carregando",
+  "titulo": "carregando · Carregando",
+  "file": "prestadora/pre-001-carregando-carregando-carregando.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-001 · vazio",
+  "titulo": "vazio · Nenhum condomínio ainda",
+  "file": "prestadora/pre-001-vazio-vazio-nenhum-condominio-ainda.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-001 · erro",
+  "titulo": "erro · Erro ao carregar",
+  "file": "prestadora/pre-001-erro-erro-erro-ao-carregar.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-002",
+  "titulo": "Atribuir funcionário",
+  "file": "prestadora/pre-002-atribuir-funcionario.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-002 · enviando",
+  "titulo": "enviando · Atribuindo",
+  "file": "prestadora/pre-002-enviando-enviando-atribuindo.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-002 · erro",
+  "titulo": "erro · Papel não permitido",
+  "file": "prestadora/pre-002-erro-erro-papel-nao-permitido.webp"
+ },
+ {
+  "aba": "prestadora",
+  "id": "PRE-002 · pronto",
+  "titulo": "pronto · Funcionário atribuído",
+  "file": "prestadora/pre-002-pronto-pronto-funcionario-atribuido.webp"
  }
 ]
