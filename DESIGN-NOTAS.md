@@ -13,8 +13,12 @@ system faltou. Levar ao repo `webcode-design`.
   em `font-brand text-4xl font-extrabold`, ajustados na revisão de design. O
   `Card` do DS não tem variante para rodapé sangrando até a borda; o `pb-0` e o
   `py-4` no `CardFooter` cobrem a falta.
-- **Splash uma vez por navegador:** chave `pz-splash-visto` no localStorage,
-  duração 4000 ms.
+- **Splash uma vez por sessão:** chave `pz-splash-visto` no `sessionStorage`,
+  duração 4000 ms. O splash vive no layout de `(auth)` e nasce no HTML do
+  servidor; um script inline (`splash-sessao-script.ts`) o esconde nas visitas
+  seguintes e com movimento reduzido. O `loading.tsx` da raiz saiu para
+  `(web)`, `(ops)` e `(saas)`: ali ele cobria o layout de `(auth)` e o
+  esqueleto aparecia antes do splash.
 
 ## Tarefa 8 — recuperar, senha e convite
 
@@ -25,3 +29,23 @@ system faltou. Levar ao repo `webcode-design`.
 - **`PasswordStrength`:** a regra padrão pede 8 caracteres; o Custelo exige 10
   (`password-policy`). O app passa as regras próprias por prop.
 - **Casca dos cards de `/entrar`:** as classes vivem em `auth-card.ts`.
+
+## Tarefa 9 — ajuda para entrar
+
+- **Tokens que o `Dialog` pede e o tema não tinha:** `--color-scrim`
+  (`bg-scrim`), `--shadow-wc-lg` e `--ease-wc-spring` no `@theme inline`,
+  apontando para os `--wc-*` existentes. Sem o `--color-scrim` o fundo do
+  diálogo não escurecia.
+- **Prancha × backend:** o bloco "Vai junto com o pedido" não mostra e-mail
+  digitado, último aviso nem código, porque o pedido de ajuda não os leva. O
+  texto de privacidade fica "Seu e-mail e sua senha nunca são enviados." Sem
+  contato em `src/lib/suporte.ts`, os botões de envio ficam escondidos, e a
+  frase de horário da prancha não entra até haver contato real.
+- **Botão de ajuda × card:** a coluna do card reserva `pt-20` no topo. Em
+  1024×768 o card cobria o botão e interceptava o clique.
+
+## Tarefa 10 — escolher empreendimento
+
+- **Sem escolha inicial:** nenhum empreendimento vem marcado; o botão diz
+  "Escolha um empreendimento" até a pessoa marcar um, para o registro não ir
+  ao primeiro da lista por inércia.

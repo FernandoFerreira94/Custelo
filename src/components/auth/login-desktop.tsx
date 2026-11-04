@@ -6,7 +6,6 @@ import {
 } from "@/components/auth/auth-card-stage";
 import { EntrarLayout } from "@/components/auth/entrar-layout";
 import type { PendingInvitePreview } from "@/components/auth/request-accept-invite";
-import { SplashSessao } from "@/components/auth/splash-sessao";
 
 type LoginDesktopProps = {
   initialInvite?: PendingInvitePreview | null;
@@ -20,15 +19,12 @@ export function LoginDesktop({
   initialError = null,
 }: LoginDesktopProps) {
   return (
-    <>
-      <EntrarLayout>
-        <AuthCardStage
-          initialInvite={initialInvite}
-          initialView={initialView}
-          initialError={initialError}
-        />
-      </EntrarLayout>
-      <SplashSessao />
-    </>
+    <EntrarLayout>
+      <AuthCardStage
+        initialInvite={initialInvite}
+        initialView={initialView}
+        initialError={initialError}
+      />
+    </EntrarLayout>
   );
 }
