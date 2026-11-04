@@ -43,6 +43,15 @@
   - Sem rede para o registry: `WEBCODE_REGISTRY=<webcode-design>/site/public/r node scripts/webcode-add.mjs <nomes>` no lugar de `npx shadcn add`.
 - **CI do GitHub está parado por cobrança.** A evidência é a saída local dos comandos, colada no PR.
 
+## Dependência: PR #15 (ADR-021, tema Névoa + Brasa)
+
+Outra frente já abriu o [PR #15](https://github.com/FernandoFerreira94/Custelo/pull/15) (`feat/tema-nevoa-brasa`). Ele aplica ao app os tokens Névoa + Brasa, Plus Jakarta Sans, o urgente em vinho `#8F1D4A`, `--shadow-elevation-1..3`, `--shadow-primary`, `--shadow-brasa` e o `variant="brasa"` no botão atual. **Ele precisa estar mergeado antes de começar** (Task 0). Isso muda três tasks:
+
+- **Task 1 (base de componentes):** o CLI sobrescreve `button.tsx` e **apaga o `variant="brasa"`**. Depois de sobrescrever, reponha a variante (a regra do DS permite acrescentar props, nunca remover).
+- **Task 2 (tema):** vira **reconciliação**, não aplicação do zero. O tema `@webcode` já existe no `globals.css` do #15 pelo mecanismo dele (tokens do shadcn + `--shadow-*`). Só acrescente o que falta para os componentes `@webcode` funcionarem (`--wc-*`) apontando para os tokens do #15. **Não duplique valores:** `--wc-bg` = `var(--background)` e assim por diante.
+- **Task 3 (layout):** o #15 manteve o nome `--font-brand` para a Jakarta. **Mantenha `--font-brand`** (não renomeie para `--font-display`) e só acrescente `--font-display: var(--font-brand)` no `@theme inline` se um componente `@webcode` precisar.
+- **Urgente em vinho e borda de input:** já resolvidos pelo #15 (`--state-urgente: #8f1d4a`). Nada a perguntar ao Fernando.
+
 ## Pranchas de referência (o que cada task precisa igualar)
 
 As pranchas **ainda estão sendo construídas**. Sempre use a versão em `docs/pranchas/`; o índice está em `docs/pranchas/README.md`. A aba ao vivo do artifact (https://claude.ai/artifact/62ToCCANhT2uCNvvi4eWoD) é a que o Fernando abre. Se a prancha da task mudou depois de 04/11, atualize `docs/pranchas/` antes (README, seção "Atualizar").
@@ -206,6 +215,12 @@ pnpm install
 
 Expected: branch `feat/webcode-ui-base` a partir da `main` atual. O arquivo `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md` existe.
 
+- [ ] **Step 1b: Confirmar que o PR #15 (ADR-021) está mergeado**
+
+Run: `gh api repos/FernandoFerreira94/Custelo/pulls/15 --jq .merged`
+
+Expected: `true`. Se `false`: **PARE** e peça ao Fernando para mergear o #15. Depois repita o Step 1 (`git pull origin main`).
+
 - [ ] **Step 2: Confirmar a base verde**
 
 Run: `pnpm verify && pnpm build`
@@ -256,11 +271,23 @@ git checkout -- src/app/globals.css   # o tema é a Task 2; desfaz qualquer muda
 
 Expected: os 10 arquivos regravados. `git diff --stat` mostra `src/components/ui/*` e `src/lib/utils.ts`, além de possíveis arquivos novos de dependência (`src/lib/glass.ts`, `src/lib/gesture.ts`, `src/hooks/*`).
 
+- [ ] **Step 1b: Repor o `variant="brasa"` do ADR-021**
+
+O CLI apagou a variante que o PR #15 acrescentou. Em `src/components/ui/button.tsx`, dentro de `variants.variant` do `cva`, acrescente:
+
+```ts
+// ADR-021: brasa só na ação pequena (filtro, "+", identificar). Ação principal grande continua `default` (navy).
+brasa:
+  "bg-brasa text-brasa-foreground shadow-[var(--shadow-brasa)] hover:bg-brasa-hover focus-visible:outline-brasa",
+```
+
+Run: `grep -rn 'variant="brasa"' src | head` e confira que cada uso ainda tipa.
+
 - [ ] **Step 2: Rodar o gate**
 
 Run: `pnpm verify`
 
-Expected: `Tests 139 passed`, sem erro de tipo. (Validado em 04/11 com o mesmo conjunto de arquivos.)
+Expected: `Tests 139 passed` (ou o total atual da `main`), sem erro de tipo.
 
 - [ ] **Step 3: Commit**
 
@@ -271,6 +298,8 @@ git add -A && git commit -m "feat(ui): troca a base de componentes para a biblio
 ---
 
 ### Task 2: Tema Névoa + Brasa no `globals.css`
+
+> **Reconciliação com o PR #15.** Leia a seção "Dependência: PR #15" antes. Os Steps 3 a 5 abaixo foram escritos para o `globals.css` **antes** do #15. Com o #15 mergeado: pule o bloco `:root` de valores (já existem como `--background`, `--foreground` etc.) e o `FLUTUAR` (o #15 já tem as sombras em `@layer components`). Faça só: (a) instalar `theme-custelo` e **manter** os valores do #15 por cima; (b) mapear `--wc-*` para os tokens do #15; (c) ajustar o teste do guarda para os tokens que o #15 realmente define. Em dúvida, o valor do #15 vence.
 
 **Files:**
 
@@ -405,6 +434,8 @@ git add -A && git commit -m "feat(ui): aplica tema custelo com a paleta Névoa +
 ---
 
 ### Task 3: Layout raiz (fontes, tema, avisos e ícones)
+
+> **Reconciliação com o PR #15.** O #15 já trocou Poppins por Jakarta (`--font-brand`) e as `themeColor`. Aqui falta só: `data-wc-theme="custelo"` no `<html>`, `<Toaster />`, `<NotificationBannerHost />` e `metadata.icons`. Mantenha `--font-brand` e ignore o trecho de fontes do código abaixo.
 
 **Files:**
 
