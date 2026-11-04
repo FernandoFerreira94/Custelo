@@ -28,7 +28,7 @@
 - **Dados das pranchas são exemplo.** Nunca leve nomes, números ou contatos para o app.
 - **Rótulos de botão e campo que os testes usam não mudam.** Exemplos: "Entrar", "Esqueci minha senha", "Aceitar convite", "Voltar para o login", "Enviar link de recuperação", "Salvar senha", "Criar acesso e entrar", "E-mail", "Senha", "Nova senha", "Confirmar senha", "Nome completo", "Criar senha". Muda a aparência; o texto testado fica.
 - **LOCKs:**
-  - Sem vidro: nunca `variant="glass"`, `material="glass"` nem `backdrop-filter`.
+  - Sem vidro, exceto a barra inferior da portaria `(ops)` (ADR-022, Task 13): nunca `variant="glass"`, `material="glass"` nem `backdrop-filter` em qualquer outro lugar.
   - Estado sempre com cor + texto + ícone.
   - Alvo de toque de pelo menos 44 px.
   - Sem hex no TSX e sem `dark:`.
@@ -50,6 +50,7 @@ Outra frente já abriu o [PR #15](https://github.com/FernandoFerreira94/Custelo/
 - **Task 1 (base de componentes):** o CLI sobrescreve `button.tsx` e **apaga o `variant="brasa"`**. Depois de sobrescrever, reponha a variante (a regra do DS permite acrescentar props, nunca remover).
 - **Task 2 (tema):** vira **reconciliação**, não aplicação do zero. O tema `@webcode` já existe no `globals.css` do #15 pelo mecanismo dele (tokens do shadcn + `--shadow-*`). Só acrescente o que falta para os componentes `@webcode` funcionarem (`--wc-*`) apontando para os tokens do #15. **Não duplique valores:** `--wc-bg` = `var(--background)` e assim por diante.
 - **Task 3 (layout):** o #15 manteve o nome `--font-brand` para a Jakarta. **Mantenha `--font-brand`** (não renomeie para `--font-display`) e só acrescente `--font-display: var(--font-brand)` no `@theme inline` se um componente `@webcode` precisar.
+- **ADR-022 (vidro só na barra inferior do `(ops)`):** o #15 também libera `material="glass"` **apenas** na barra inferior da portaria, com fallback sólido. Em todo o resto o LOCK "sem vidro" continua. Na Task 13 use `material="glass"` na `BottomBar` e confira o fallback sólido (`prefers-reduced-transparency` e navegador sem `backdrop-filter`). Leia `docs/adr/022-*.md` do #15 para a regra exata.
 - **Urgente em vinho e borda de input:** já resolvidos pelo #15 (`--state-urgente: #8f1d4a`). Nada a perguntar ao Fernando.
 
 ## Pranchas de referência (o que cada task precisa igualar)
@@ -71,7 +72,7 @@ As pranchas **ainda estão sendo construídas**. Sempre use a versão em `docs/p
 | 13   | Barra da portaria                    | `pz-dash/painel.tsx` (`NavMobile`, `MobC`)                                                    | `painel/mob-c-portaria.webp` (só a barra inferior)                                                                                      | `#painel`              |
 | 14   | Páginas iniciais vazias              | `pz-estados/estados.tsx` (`Vazios`)                                                           | `estados/bloco-e-vazio.webp`                                                                                                            | `#estados`             |
 
-Telas das próximas fases: veja o Apêndice A do Spec e `docs/pranchas/README.md`.
+Telas das próximas fases: veja o Apêndice A do Spec e `docs/pranchas/README.md`. **Aba `#escuro` (modo escuro, `pz-escuro/`) ainda aguarda revisão do Fernando: não implementar.** Telas novas do `pz-fluxo` (REC-005/007, CUS-005/008, RET-005/006) têm fonte em `docs/pranchas/` mas ainda não têm foto em `telas/`; só entram em fases futuras.
 
 ## Protocolo de Design Review (obrigatório em toda task de tela)
 
@@ -1750,7 +1751,7 @@ git add -A && git commit -m "feat(web): trilho de navegação das superfícies w
 
 Fonte: `NavMobile` de `docs/pranchas/pz-dash/painel.tsx`.
 
-- Use `<BottomBar position="fixed" className="grid grid-cols-5 items-center gap-1 px-3">`, **sem fundo de vidro**: rodapé sem fundo, só os botões, como na prancha.
+- Use `<BottomBar position="fixed" material="glass" className="grid grid-cols-5 items-center gap-1 px-3">`. **ADR-022** libera vidro só aqui, com fallback sólido; confira o fallback com `prefers-reduced-transparency`. Se a prancha `#painel` (MobC) mostrar o rodapé sem fundo, siga a prancha e anote a divergência.
 - Abas:
   - "Hoje": `<Button asChild variant="secondary"><Link href="/receber" aria-current="page">…</Link></Button>`;
   - "Fila", "Avisos" e "Mais": `<Button variant="ghost" disabled>`.
@@ -1771,7 +1772,7 @@ Siga o Protocolo de Design Review (veja a tabela "Pranchas de referência", linh
 
 Run: `node scripts/capturar-telas.mjs task-13 /receber`
 
-Revisar: a barra inferior contra `painel/mob-c-portaria.webp`, sem fundo de vidro e com alvos de 44 px.
+Revisar: a barra inferior contra `painel/mob-c-portaria.webp`, vidro só conforme o ADR-022 (com fallback sólido) e alvos de 44 px.
 
 Expected: `rolagemHorizontal: 0` em todas as fotos e o revisor Sonnet com `VEREDITO: APROVADO`.
 
