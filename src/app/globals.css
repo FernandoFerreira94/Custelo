@@ -3,12 +3,13 @@
 @import "shadcn/tailwind.css";
 
 /* =============================================================================
-   Custelo — Design Tokens
-   Fonte canonica: Notion "Custelo — Brand & UI Foundation — 13-08-2026"
-   (revisada em 15-08-2026: glass effect REVOGADO) + "Roadmap Mestre de Telas"
-   (16-08-2026: padrao de raio fechado).
+   PacoteZap (ex-Custelo) — Design Tokens
+   Fonte canonica: ADR-021 (04-11-2026) — paleta Nevoa + Brasa, Plus Jakarta
+   Sans nos titulos e sombra navy em camadas, aprovados nas pranchas.
+   Supera a paleta/fonte/elevacao da "Brand & UI Foundation" (13-08 e 15-08);
+   raio, espacamento, alvo de toque, motion e a proibicao de glass continuam.
 
-   ESTES TOKENS SAO LOCKED. Nao alterar sem novo registro na fundacao de marca.
+   ESTES TOKENS SAO LOCKED. Nao alterar sem novo ADR.
    Regra dura: proibido blur, backdrop-filter e superficie translucida (§10).
    Profundidade vem de tom solido + borda 1px + escala de 3 sombras.
    ========================================================================== */
@@ -22,7 +23,7 @@
   --font-sans: var(--font-sans);
   --font-brand: var(--font-brand);
   --font-mono: var(--font-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-brand);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -53,11 +54,16 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
-  /* --- marca Custelo (§4) ------------------------------------------------- */
-  --color-brand-deep-blue: var(--brand-deep-blue);
-  --color-brand-powder-blue: var(--brand-powder-blue);
-  --color-brand-floral-white: var(--brand-floral-white);
-  --color-brand-pale-brown: var(--brand-pale-brown);
+  /* --- marca PacoteZap (ADR-021) ------------------------------------------ */
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-brasa: var(--brand-brasa);
+  --color-brand-brasa-clara: var(--brand-brasa-clara);
+  --color-brand-ocean: var(--brand-ocean);
+  --color-brand-nevoa: var(--brand-nevoa);
+  /* Brasa = acao pequena e logo. Botao grande e card de destaque ficam navy. */
+  --color-brasa: var(--brasa);
+  --color-brasa-hover: var(--brasa-hover);
+  --color-brasa-foreground: var(--brasa-foreground);
 
   /* --- estados operacionais (§7) ------------------------------------------ */
   --color-state-recebida: var(--state-recebida);
@@ -105,11 +111,27 @@
   --size-touch-primary: 3rem; /* 48px */
   --size-touch-hero: 3.5rem; /* 56px */
 
-  /* --- elevacao (§10) — substitui o glass effect --------------------------- */
+  /* --- elevacao (ADR-021) — sombra navy em camadas, sem glass ------------- */
+  /* 1 = controle (botao, campo, card de opcao) · 2 = card · 3 = overlay      */
   --shadow-elevation-0: none;
-  --shadow-elevation-1: 0 1px 2px rgb(24 35 80 / 0.06);
-  --shadow-elevation-2: 0 4px 12px rgb(24 35 80 / 0.1);
-  --shadow-elevation-3: 0 12px 32px rgb(24 35 80 / 0.16);
+  --shadow-elevation-1:
+    0 1px 1px rgb(12 44 85 / 0.1), 0 3px 6px -1px rgb(12 44 85 / 0.12),
+    0 10px 20px -8px rgb(12 44 85 / 0.3);
+  --shadow-elevation-2:
+    0 1px 2px rgb(12 44 85 / 0.08), 0 6px 12px -4px rgb(12 44 85 / 0.1),
+    0 20px 40px -12px rgb(12 44 85 / 0.28),
+    0 36px 64px -24px rgb(12 44 85 / 0.22);
+  --shadow-elevation-3:
+    0 2px 4px rgb(12 44 85 / 0.08), 0 12px 24px -6px rgb(12 44 85 / 0.16),
+    0 32px 64px -16px rgb(12 44 85 / 0.32);
+  /* botao primario: sombra mais funda + brilho interno de 1px */
+  --shadow-primary:
+    0 1px 1px rgb(12 44 85 / 0.14), 0 4px 8px -2px rgb(12 44 85 / 0.22),
+    0 12px 24px -8px rgb(12 44 85 / 0.45), inset 0 1px 0 rgb(255 255 255 / 0.18);
+  --shadow-brasa:
+    0 1px 1px rgb(210 59 38 / 0.3), 0 4px 8px -2px rgb(210 59 38 / 0.35),
+    0 12px 24px -8px rgb(210 59 38 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.18);
 
   /* --- motion (§18) — comunica estado, nao decora -------------------------- */
   --ease-custelo: cubic-bezier(0.2, 0, 0, 1);
@@ -118,56 +140,63 @@
 }
 
 /* =============================================================================
-   Light Mode (§5)
+   Light Mode — Nevoa (ADR-021)
+   Fundo cinza-azulado frio, cartao branco, navy no texto e na acao,
+   brasa so na acao pequena e na logo, ocean nos destaques de grafico.
    ========================================================================== */
 :root {
   /* marca */
-  --brand-deep-blue: #182350;
-  --brand-powder-blue: #afd2fa;
-  --brand-floral-white: #fefaef;
-  --brand-pale-brown: #b9915e;
+  --brand-navy: #0c2c55;
+  --brand-brasa: #d23b26; /* 4,78:1 com branco — AA */
+  --brand-brasa-clara: #f4826d; /* brasa sobre navy (6,2:1); a brasa pura da 2,9:1 */
+  --brand-ocean: #629fad;
+  --brand-nevoa: #eef1f5;
+
+  --brasa: #d23b26;
+  --brasa-hover: #b9321f;
+  --brasa-foreground: #ffffff;
 
   /* semanticos */
-  --background: #fefaef;
-  --foreground: #182350;
+  --background: #eef1f5;
+  --foreground: #0c2c55;
   --card: #ffffff;
-  --card-foreground: #182350;
+  --card-foreground: #0c2c55;
   --popover: #ffffff;
-  --popover-foreground: #182350;
-  --primary: #182350;
-  --primary-foreground: #fefaef;
-  --secondary: #afd2fa;
-  --secondary-foreground: #182350;
-  --muted: #f2ece0;
-  --muted-foreground: #5a6485;
-  --accent: #b9915e;
-  --accent-foreground: #182350;
-  --destructive: #b3261e;
-  --border: #e6dfd1;
-  --input: #e6dfd1;
-  --ring: #182350;
+  --popover-foreground: #0c2c55;
+  --primary: #0c2c55;
+  --primary-foreground: #ffffff;
+  --secondary: #dcebef;
+  --secondary-foreground: #0c2c55;
+  --muted: #e4e8ee;
+  --muted-foreground: #4a5b74;
+  --accent: #f1f3f6; /* hover cinza-claro, nao azul */
+  --accent-foreground: #0c2c55;
+  --destructive: #b4123f; /* carmim: nao confunde com a brasa da marca */
+  --border: #dde3ea;
+  --input: #c6cfda;
+  --ring: #0c2c55;
 
-  /* scrim de overlay — solido, SEM blur (§10) */
-  --scrim: rgb(14 21 51 / 0.52);
+  /* scrim de overlay — solido, SEM blur */
+  --scrim: rgb(7 20 39 / 0.52);
 
   --radius: 0.75rem;
 
-  /* sidebar — navy solido (§19) */
-  --sidebar: #182350;
-  --sidebar-foreground: #fefaef;
-  --sidebar-primary: #afd2fa;
-  --sidebar-primary-foreground: #182350;
-  --sidebar-accent: #23305f;
-  --sidebar-accent-foreground: #fefaef;
-  --sidebar-border: #2c396b;
-  --sidebar-ring: #afd2fa;
+  /* sidebar — trilho claro; item ativo em brasa */
+  --sidebar: #eef1f5;
+  --sidebar-foreground: #0c2c55;
+  --sidebar-primary: #d23b26;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f3f6;
+  --sidebar-accent-foreground: #0c2c55;
+  --sidebar-border: #dde3ea;
+  --sidebar-ring: #0c2c55;
 
-  /* charts — derivados da marca, nao das cores de estado */
-  --chart-1: #182350;
-  --chart-2: #4a68b8;
-  --chart-3: #afd2fa;
-  --chart-4: #b9915e;
-  --chart-5: #7a8bb5;
+  /* charts — navy, ocean e tons de apoio; nunca as cores de estado */
+  --chart-1: #0c2c55;
+  --chart-2: #629fad;
+  --chart-3: #2e8a6a;
+  --chart-4: #c2702e;
+  --chart-5: #a7577f;
 
   /* ---------------------------------------------------------------------- *
    * Estados operacionais (§7).
@@ -182,9 +211,9 @@
   --state-aguardando-fg: #ffffff;
   --state-nao-identificada: #6d28d9; /* violeta         */
   --state-nao-identificada-fg: #ffffff;
-  --state-falha: #b3261e; /* vermelho controlado */
+  --state-falha: #b4123f; /* carmim (ADR-021) */
   --state-falha-fg: #ffffff;
-  --state-urgente: #c2410c; /* laranja-vermelho */
+  --state-urgente: #8f1d4a; /* vinho — laranja-vermelho colidia com a brasa (ADR-021) */
   --state-urgente-fg: #ffffff;
   --state-pronta: #0f766e; /* teal            */
   --state-pronta-fg: #ffffff;
@@ -197,71 +226,76 @@
 }
 
 /* =============================================================================
-   Dark Mode (§6) — nao e inversao do light.
-   Base derivada do Deep Blue, mais escura que #182350. Cards em navy elevado.
-   Powder Blue = destaque ativo/foco. Floral White = texto principal.
+   Dark Mode — derivado do ADR-021 (ainda nao revisado em prancha).
+   Nao e inversao do light: fundo navy mais escuro que o navy da marca,
+   cartao navy elevado, ocean claro na acao e brasa clara na acao pequena.
    ========================================================================== */
 .dark {
-  --brand-deep-blue: #182350;
-  --brand-powder-blue: #afd2fa;
-  --brand-floral-white: #fefaef;
-  --brand-pale-brown: #b9915e;
+  --brand-navy: #0c2c55;
+  --brand-brasa: #d23b26;
+  --brand-brasa-clara: #f4826d;
+  --brand-ocean: #8cc3cf;
+  --brand-nevoa: #eef1f5;
 
-  --background: #0e1533;
-  --foreground: #fefaef;
-  --card: #182350;
-  --card-foreground: #fefaef;
-  --popover: #1d2a5e;
-  --popover-foreground: #fefaef;
-  --primary: #afd2fa;
-  --primary-foreground: #0e1533;
-  --secondary: #23305f;
-  --secondary-foreground: #fefaef;
-  --muted: #1d2a5e;
-  --muted-foreground: #a8b3d4;
-  --accent: #b9915e;
-  --accent-foreground: #0e1533;
-  --destructive: #f2685f;
-  --border: #2c396b;
-  --input: #2c396b;
-  --ring: #afd2fa;
+  --brasa: #f4826d;
+  --brasa-hover: #f79a88;
+  --brasa-foreground: #0a1b33;
 
-  --scrim: rgb(6 10 26 / 0.62);
+  --background: #0a1b33;
+  --foreground: #eef1f5;
+  --card: #10294a;
+  --card-foreground: #eef1f5;
+  --popover: #143159;
+  --popover-foreground: #eef1f5;
+  --primary: #8cc3cf;
+  --primary-foreground: #0a1b33;
+  --secondary: #163a5c;
+  --secondary-foreground: #eef1f5;
+  --muted: #0f2442;
+  --muted-foreground: #a9b8cc;
+  --accent: #163a5c;
+  --accent-foreground: #eef1f5;
+  --destructive: #ff8fa6;
+  --border: #1f3a60;
+  --input: #2c4a75;
+  --ring: #8cc3cf;
 
-  --sidebar: #0e1533;
-  --sidebar-foreground: #fefaef;
-  --sidebar-primary: #afd2fa;
-  --sidebar-primary-foreground: #0e1533;
-  --sidebar-accent: #1d2a5e;
-  --sidebar-accent-foreground: #fefaef;
-  --sidebar-border: #2c396b;
-  --sidebar-ring: #afd2fa;
+  --scrim: rgb(4 10 20 / 0.62);
 
-  --chart-1: #afd2fa;
-  --chart-2: #7f9fe0;
-  --chart-3: #b9915e;
-  --chart-4: #5a6ca8;
-  --chart-5: #d9e6fb;
+  --sidebar: #071427;
+  --sidebar-foreground: #eef1f5;
+  --sidebar-primary: #f4826d;
+  --sidebar-primary-foreground: #0a1b33;
+  --sidebar-accent: #163a5c;
+  --sidebar-accent-foreground: #eef1f5;
+  --sidebar-border: #1f3a60;
+  --sidebar-ring: #8cc3cf;
+
+  --chart-1: #8cc3cf;
+  --chart-2: #d9925a;
+  --chart-3: #3fb68a;
+  --chart-4: #e0b34a;
+  --chart-5: #d57aa6;
 
   /* estados — versao clara para contraste sobre navy */
   --state-recebida: #93b4fd;
-  --state-recebida-fg: #0e1533;
+  --state-recebida-fg: #0a1b33;
   --state-aguardando: #f0b95c;
-  --state-aguardando-fg: #0e1533;
+  --state-aguardando-fg: #0a1b33;
   --state-nao-identificada: #c0a6fb;
-  --state-nao-identificada-fg: #0e1533;
-  --state-falha: #f2685f;
-  --state-falha-fg: #0e1533;
-  --state-urgente: #fb9a6b;
-  --state-urgente-fg: #0e1533;
+  --state-nao-identificada-fg: #0a1b33;
+  --state-falha: #ff8fa6;
+  --state-falha-fg: #0a1b33;
+  --state-urgente: #f59ab8;
+  --state-urgente-fg: #0a1b33;
   --state-pronta: #5ecfc0;
-  --state-pronta-fg: #0e1533;
+  --state-pronta-fg: #0a1b33;
   --state-retirada: #6dd68a;
-  --state-retirada-fg: #0e1533;
+  --state-retirada-fg: #0a1b33;
   --state-devolvida: #9aa8c4;
-  --state-devolvida-fg: #0e1533;
+  --state-devolvida-fg: #0a1b33;
   --state-offline: #a8b3d4;
-  --state-offline-fg: #0e1533;
+  --state-offline-fg: #0a1b33;
 }
 
 @layer base {
@@ -286,6 +320,49 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* =============================================================================
+   Profundidade "flutuante" (ADR-021): controles e cards ficam acima do fundo
+   Nevoa com sombra navy em camadas. Em @layer components para que uma classe
+   utilitaria na instancia ainda possa sobrescrever.
+   ========================================================================== */
+@layer components {
+  [data-slot="button"]:is([data-variant="outline"], [data-variant="secondary"]),
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"],
+  [data-slot="native-select"] {
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  [data-slot="button"][data-variant="default"] {
+    box-shadow: var(--shadow-primary);
+  }
+
+  [data-slot="card"] {
+    box-shadow: var(--shadow-elevation-2);
+  }
+
+  [data-slot="card"] [data-slot="card"] {
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-slot="button"]:not([data-variant="ghost"], [data-variant="link"]):not(
+        :disabled
+      ) {
+      transition:
+        transform var(--duration-micro) var(--ease-custelo),
+        box-shadow var(--duration-micro) var(--ease-custelo),
+        background-color var(--duration-micro) var(--ease-custelo);
+    }
+    [data-slot="button"]:not([data-variant="ghost"], [data-variant="link"]):not(
+        :disabled
+      ):hover {
+      transform: translateY(-1px);
     }
   }
 }

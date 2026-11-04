@@ -29,6 +29,7 @@ Stack_. Aqui fica a decisao e o que ela obriga no codigo.
 | 018 | Frontend           | Next + TS + Tailwind + shadcn/ui; TanStack Query; RHF + Zod             | `(web)`/`(saas)` Server Components; `(ops)` client-side                  |
 | 019 | Ambientes e CI/CD  | Vercel; Supabase separado por ambiente; migrations por pipeline         | staging jamais aponta para WhatsApp real de cliente                      |
 | 020 | Backup e DR        | PITR; RPO 5 min; RTO 4h; restore testado por trimestre                  | motor de retencao parametrizavel; prazos por configuracao                |
+| 021 | Identidade visual  | Nevoa + Brasa; navy na acao principal, brasa em acao pequena; Jakarta   | erro carmim; `variant="brasa"` no Button; sombras navy em camadas        |
 
 ## Portas obrigatorias
 

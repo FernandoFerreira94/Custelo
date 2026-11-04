@@ -33,8 +33,9 @@ export function PacoteZapMark({
   const icon = ICON_SIZES[iconSize];
   const pacoteClass =
     variant === "onPrimary" ? "text-primary-foreground" : "text-primary";
+  // ADR-021: "Zap" em brasa; sobre navy usa a brasa clara (contraste).
   const zapClass =
-    variant === "onPrimary" ? "text-secondary" : "text-secondary";
+    variant === "onPrimary" ? "text-brand-brasa-clara" : "text-brand-brasa";
 
   return (
     <div
@@ -57,12 +58,12 @@ export function PacoteZapMark({
       ) : null}
       <p
         className={cn(
-          "font-sans text-2xl font-semibold tracking-tight sm:text-3xl",
+          "font-brand text-2xl font-extrabold tracking-tight sm:text-3xl",
           textClassName,
         )}
       >
         <span className={pacoteClass}>Pacote</span>
-        <span className={cn("font-brand font-semibold", zapClass)}>Zap</span>
+        <span className={zapClass}>Zap</span>
       </p>
     </div>
   );

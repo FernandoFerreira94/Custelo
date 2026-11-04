@@ -26,12 +26,12 @@ describe("design tokens", () => {
     expect(css).not.toMatch(/filter\s*:\s*[^;}]*\bblur\s*\(/);
   });
 
-  it("define a paleta de marca completa", () => {
+  it("define a paleta de marca completa (ADR-021)", () => {
     for (const token of [
-      "--brand-deep-blue: #182350",
-      "--brand-powder-blue: #afd2fa",
-      "--brand-floral-white: #fefaef",
-      "--brand-pale-brown: #b9915e",
+      "--brand-navy: #0c2c55",
+      "--brand-brasa: #d23b26",
+      "--brand-ocean: #629fad",
+      "--brand-nevoa: #eef1f5",
     ]) {
       expect(css).toContain(token);
     }
@@ -78,13 +78,20 @@ describe("design tokens", () => {
     expect(css).toContain("prefers-reduced-motion: reduce");
   });
 
-  it("liga Poppins da wordmark em --font-brand", () => {
+  it("liga Plus Jakarta Sans em --font-brand e nos titulos", () => {
     expect(css).toContain("--font-brand: var(--font-brand)");
-    expect(css).toContain("--font-heading: var(--font-sans)");
+    expect(css).toContain("--font-heading: var(--font-brand)");
   });
 
   it("tem dark mode que nao e inversao do light", () => {
-    // Fundo dark deve ser mais escuro que o Deep Blue, nao o Deep Blue puro.
-    expect(css).toMatch(/\.dark\s*\{[\s\S]*--background:\s*#0e1533/);
+    // Fundo dark deve ser mais escuro que o navy da marca, nao o navy puro.
+    expect(css).toMatch(/\.dark\s*\{[\s\S]*--background:\s*#0a1b33/);
+  });
+
+  it("separa a brasa da marca do vermelho de erro (ADR-021)", () => {
+    // Brasa e laranja-avermelhado; erro e urgencia nao podem ter o mesmo tom.
+    expect(css).toContain("--destructive: #b4123f");
+    expect(css).toContain("--state-falha: #b4123f");
+    expect(css).not.toContain("--state-urgente: #c2410c");
   });
 });
