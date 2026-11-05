@@ -1,6 +1,7 @@
 import type { Contexto } from "@/application/auth/contexto";
 import { negarSemPermissao } from "@/application/estrutura/guarda";
 import type {
+  ContagensDeUnidades,
   DepsDeEstrutura,
   FiltroDeUnidades,
   NoArvore,
@@ -45,4 +46,13 @@ export async function resumoDeUnidades(
   const negado = negarSemPermissao(ctx, "cadastro.ler");
   if (negado) return negado;
   return sucesso(await deps.repo.resumoDeUnidades(ctx));
+}
+
+export async function contagensDeUnidades(
+  deps: DepsDeEstrutura,
+  ctx: Contexto,
+): Promise<Resultado<ContagensDeUnidades>> {
+  const negado = negarSemPermissao(ctx, "cadastro.ler");
+  if (negado) return negado;
+  return sucesso(await deps.repo.contagensDeUnidades(ctx));
 }

@@ -163,10 +163,43 @@ export const estruturaRepo: EstruturaRepo = {
     });
   },
 
+  async contagensDeUnidades(ctx) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const [r] = await db.execute<{
+        todas: number;
+        sem_contato: number;
+        areas_comuns: number;
+        inativas: number;
+      }>(sql`
+        select
+          count(*) filter (where u.ativo)::int as todas,
+          count(*) filter (where u.ativo and u.tipo = 'area_comum')::int as areas_comuns,
+          count(*) filter (where not u.ativo)::int as inativas,
+          count(*) filter (where u.ativo and not exists (
+            select 1
+            from vinculos v join contatos c on c.pessoa_id = v.pessoa_id
+            where v.unidade_id = u.id and v.status = 'ativo' and v.recebe_aviso
+              and c.ativo and c.consentimento_em is not null and c.status <> 'falha'
+          ))::int as sem_contato
+        from unidades u
+        where u.empreendimento_id = ${ctx.empreendimentoId}::uuid
+      `);
+      return {
+        todas: r?.todas ?? 0,
+        semContato: r?.sem_contato ?? 0,
+        areasComuns: r?.areas_comuns ?? 0,
+        inativas: r?.inativas ?? 0,
+      };
+    });
+  },
+
   async listarUnidades(ctx, f) {
     return withTenantDb(tenant(ctx), async (db) => {
       const cursor = f.cursor ? decodificarCursor(f.cursor) : null;
-      const condicoes = [eq(unidades.empreendimentoId, ctx.empreendimentoId)];
+      const condicoes = [
+        eq(unidades.empreendimentoId, ctx.empreendimentoId),
+        eq(unidades.ativo, !f.inativas),
+      ];
       if (f.areaId) condicoes.push(eq(unidades.areaId, f.areaId));
       if (f.tipo) condicoes.push(eq(unidades.tipo, f.tipo));
       if (f.busca?.trim()) {

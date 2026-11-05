@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
-// Usa o gestor do seed de desenvolvimento. Não cria unidade de verdade: os dados persistem
-// no projeto de teste, então só exercita a tela e a prévia (a criação é coberta no teste RLS).
+// Usa o gestor do seed de desenvolvimento. A geração em lote só mostra a prévia; o cadastro
+// de uma unidade cria e desativa de verdade, com código único por execução.
 const email = process.env.E2E_GESTOR_EMAIL ?? "gestor@colinas.com.br";
 const senha = process.env.E2E_GESTOR_PASSWORD ?? "gestor12345";
 
@@ -47,4 +47,42 @@ test("o painel de geração mostra a prévia ao vivo", async ({ page }) => {
   await expect(
     page.getByRole("button", { name: "Criar unidades" }),
   ).toBeDisabled();
+});
+
+test("cadastrar unidade, ver duplicada e desativar", async ({ page }) => {
+  const numero = String(Date.now() % 1_000_000);
+  const codigo = `E2E-${numero}`;
+  await entrarComoGestor(page);
+  await page.goto("/gestao/unidades");
+
+  async function criar() {
+    await page.getByRole("button", { name: "Nova unidade" }).click();
+    await page.getByLabel("Bloco (opcional)").fill("E2E");
+    await page.getByLabel("Número").fill(numero);
+    await expect(
+      page.getByRole("dialog").getByText(codigo, { exact: true }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Criar unidade" }).click();
+  }
+
+  await criar();
+  // O painel fecha sozinho quando a unidade é criada.
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await page.getByLabel("Buscar por código ou apelido").fill(codigo);
+  await page.getByRole("search").press("Enter");
+  await expect(page.getByRole("cell", { name: codigo })).toBeVisible();
+
+  // A mesma unidade de novo: recusada, com o caminho para abrir a que existe.
+  await criar();
+  await expect(page.getByRole("alert")).toContainText(
+    `Já existe a unidade ${codigo}`,
+  );
+  await expect(
+    page.getByRole("link", { name: `Abrir ${codigo}` }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Desativar" }).first().click();
+  await page.getByRole("button", { name: "Desativar unidade" }).click();
+  await expect(page.getByRole("cell", { name: codigo })).toHaveCount(0);
 });

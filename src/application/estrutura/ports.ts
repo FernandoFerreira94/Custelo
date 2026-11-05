@@ -59,7 +59,16 @@ export type FiltroDeUnidades = {
   tipo?: TipoUnidade;
   /** Só unidades sem vínculo ativo com `recebe_aviso` e contato consentido. */
   semContato?: boolean;
+  /** Só as desativadas. Sem isso, a lista mostra só as ativas. */
+  inativas?: boolean;
   cursor?: string;
+};
+
+export type ContagensDeUnidades = {
+  todas: number;
+  semContato: number;
+  areasComuns: number;
+  inativas: number;
 };
 
 /** Plano de uma geração em lote: tudo entra numa transação ou nada entra. */
@@ -85,6 +94,7 @@ export interface EstruturaRepo {
   arvore(ctx: Contexto): Promise<NoArvore[]>;
   /** Todas as unidades ativas (até o limite do repositório) para montar a árvore. */
   resumoDeUnidades(ctx: Contexto): Promise<UnidadeNaArvore[]>;
+  contagensDeUnidades(ctx: Contexto): Promise<ContagensDeUnidades>;
   listarUnidades(
     ctx: Contexto,
     f: FiltroDeUnidades,

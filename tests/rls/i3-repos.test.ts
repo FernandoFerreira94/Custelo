@@ -388,6 +388,46 @@ describe("pessoasRepo contra o banco real (RLS)", () => {
     expect(por(vazia)).toMatchObject({ moradores: [], semContato: true });
   });
 
+  it("contagens e filtros de unidades: inativas e áreas comuns saem da lista padrão", async () => {
+    const antes = await estruturaRepo.contagensDeUnidades(ctxA);
+    const sufixo = unico("");
+    const [comum, apto] = (
+      await estruturaRepo.criarUnidades(ctxA, [
+        {
+          codigo: `Salao ${sufixo}`,
+          tipo: "area_comum",
+          apelidos: [],
+          avisarResponsavel: false,
+        },
+        {
+          codigo: `CN-${sufixo}`,
+          tipo: "apartamento",
+          apelidos: [],
+          avisarResponsavel: false,
+        },
+      ])
+    ).ids;
+    await estruturaRepo.atualizarUnidade(ctxA, apto!, { ativo: false });
+
+    const depois = await estruturaRepo.contagensDeUnidades(ctxA);
+    const ativas = await estruturaRepo.listarUnidades(ctxA, { busca: sufixo });
+    const desativadas = await estruturaRepo.listarUnidades(ctxA, {
+      busca: sufixo,
+      inativas: true,
+    });
+    const comuns = await estruturaRepo.listarUnidades(ctxA, {
+      busca: sufixo,
+      tipo: "area_comum",
+    });
+
+    expect(depois.todas).toBe(antes.todas + 1);
+    expect(depois.areasComuns).toBe(antes.areasComuns + 1);
+    expect(depois.inativas).toBe(antes.inativas + 1);
+    expect(ativas.itens.map((u) => u.id)).toEqual([comum]);
+    expect(desativadas.itens.map((u) => u.id)).toEqual([apto]);
+    expect(comuns.itens.map((u) => u.id)).toEqual([comum]);
+  });
+
   it("lista pessoas com as unidades e pagina por cursor", async () => {
     const prefixo = unico("Lista");
     const unidadeId = await unidadeNova(ctxA, "PL-");
