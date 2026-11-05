@@ -25,8 +25,14 @@ export async function withTenantDb<T>(
   context: TenantContext,
   fn: (db: TenantDb) => Promise<T>,
 ): Promise<T> {
-  return withAppRls(getClient(), context, async (tx) =>
-    // TransactionSql nao expoe end/options, que o drizzle nao usa dentro da transacao.
-    fn(drizzle(tx as unknown as postgres.Sql, { schema })),
-  );
+  const root = getClient();
+  return withAppRls(root, context, async (tx) => {
+    // TransactionSql nao expoe `options`, e o drizzle le `options.parsers` ao
+    // montar todo SELECT. Emprestamos as do client raiz (so leitura).
+    const scoped = tx as unknown as postgres.Sql;
+    if (!scoped.options) {
+      Object.defineProperty(scoped, "options", { value: root.options });
+    }
+    return fn(drizzle(scoped, { schema }));
+  });
 }
