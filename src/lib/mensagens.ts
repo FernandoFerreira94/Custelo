@@ -1,3 +1,5 @@
+import { type CodigoFalha, type Falha, falha } from "@/lib/resultado";
+
 /**
  * Catálogo único de mensagens ao usuário (padrão de 04/11/2026).
  * Toda mensagem diz o que aconteceu e o que fazer. Nunca "erro" sozinho.
@@ -8,6 +10,8 @@ export const MSG = {
   muitasTentativas: "Muitas tentativas. Aguarde 1 minuto e tente de novo.",
   sessaoExpirada: "Sua sessão terminou. Entre de novo para continuar.",
   semPermissao: "Seu perfil não pode fazer isso. Fale com o gestor.",
+  semContexto: "Escolha o empreendimento para continuar.",
+  dadosInvalidos: "Confira os campos destacados.",
   inesperado:
     "Algo deu errado. Tente de novo; se continuar, fale com o suporte.",
 } as const;
@@ -43,16 +47,24 @@ export function mensagemDeFalha(erro: unknown): string {
   return MSG.inesperado;
 }
 
+/** Código estável da falha, para a tela decidir o que fazer sem ler texto. */
+export function codigoDeFalha(erro: unknown): CodigoFalha {
+  const e = (erro ?? {}) as ErroComStatus;
+  if (e.status === 401) return "SEM_SESSAO";
+  if (e.status === 403) return "SEM_PERMISSAO";
+  return "INDISPONIVEL";
+}
+
 /**
  * Executa uma ação de formulário e nunca deixa estourar sem mensagem.
- * Falha vira `{ ok: false, message }` com o texto certo.
+ * Falha vira `Falha`, com código e o texto certo.
  */
 export async function comMensagemDeFalha<T extends { ok: boolean }>(
   acao: () => Promise<T>,
-): Promise<T | { ok: false; message: string }> {
+): Promise<T | Falha> {
   try {
     return await acao();
   } catch (erro) {
-    return { ok: false, message: mensagemDeFalha(erro) };
+    return falha(codigoDeFalha(erro), mensagemDeFalha(erro));
   }
 }

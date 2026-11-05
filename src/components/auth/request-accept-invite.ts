@@ -22,7 +22,9 @@ export async function fetchPendingInvite(): Promise<PendingInvitePreview | null>
 
 export async function requestAcceptInvite(
   input: AcceptInviteInput,
-): Promise<{ ok: true; redirectTo?: string } | { ok: false; message: string }> {
+): Promise<
+  { ok: true; redirectTo?: string } | { ok: false; mensagem: string }
+> {
   const result = await comMensagemDeFalha(() => acceptInviteAction(input));
   if (!result.ok) {
     return result;

@@ -104,7 +104,7 @@ describe("LoginForm", () => {
   it("informa quando a sessao ainda nao existe", async () => {
     vi.mocked(requestSession).mockResolvedValue({
       ok: false,
-      message: AUTH_UNAVAILABLE,
+      mensagem: AUTH_UNAVAILABLE,
     });
 
     render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);
@@ -125,7 +125,7 @@ describe("LoginForm", () => {
   it("bloqueia o envio na quinta falha e mostra a contagem", async () => {
     vi.mocked(requestSession).mockResolvedValue({
       ok: false,
-      message: "E-mail ou senha incorretos.",
+      mensagem: "E-mail ou senha incorretos.",
     });
 
     render(<LoginForm onInvite={vi.fn()} onRecover={vi.fn()} />);

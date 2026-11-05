@@ -37,6 +37,10 @@ describe("comMensagemDeFalha", () => {
       comMensagemDeFalha(async () => {
         throw { status: 503 };
       }),
-    ).resolves.toEqual({ ok: false, message: MSG.instavel });
+    ).resolves.toEqual({
+      ok: false,
+      codigo: "INDISPONIVEL",
+      mensagem: MSG.instavel,
+    });
   });
 });

@@ -7,6 +7,6 @@ export const RECOVERY_ACCEPTED =
 
 export async function requestRecovery(
   input: RecoverInput,
-): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+): Promise<{ ok: true; mensagem: string } | { ok: false; mensagem: string }> {
   return comMensagemDeFalha(() => requestRecoveryAction(input));
 }

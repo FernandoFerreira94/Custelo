@@ -23,10 +23,10 @@ export async function fetchPendingInviteAction(): Promise<
 
 export async function acceptInviteAction(
   input: unknown,
-): Promise<{ ok: true; redirectTo: string } | { ok: false; message: string }> {
+): Promise<{ ok: true; redirectTo: string } | { ok: false; mensagem: string }> {
   const parsed = acceptInviteSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, message: "Preencha nome e senha válidos." };
+    return { ok: false, mensagem: "Preencha nome e senha válidos." };
   }
 
   return acceptInviteForSession(parsed.data);
@@ -34,10 +34,10 @@ export async function acceptInviteAction(
 
 export async function requestRecoveryAction(
   input: unknown,
-): Promise<{ ok: true; message: string } | { ok: false; message: string }> {
+): Promise<{ ok: true; mensagem: string } | { ok: false; mensagem: string }> {
   const parsed = recoverSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, message: "Informe um e-mail válido." };
+    return { ok: false, mensagem: "Informe um e-mail válido." };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -51,7 +51,7 @@ export async function requestRecoveryAction(
   if (!origin) {
     return {
       ok: false,
-      message:
+      mensagem:
         "Não foi possível enviar o link agora. Tente novamente em instantes.",
     };
   }
@@ -69,31 +69,31 @@ export async function requestRecoveryAction(
   if (error) {
     return {
       ok: false,
-      message:
+      mensagem:
         "Não foi possível enviar o link agora. Tente novamente em instantes.",
     };
   }
 
   return {
     ok: true,
-    message:
+    mensagem:
       "Se existir uma conta com esse e-mail, o link será enviado. Por segurança, não confirmamos quais e-mails estão cadastrados.",
   };
 }
 
 export async function setPasswordAction(
   input: unknown,
-): Promise<{ ok: true; redirectTo: string } | { ok: false; message: string }> {
+): Promise<{ ok: true; redirectTo: string } | { ok: false; mensagem: string }> {
   const parsed = setPasswordSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, message: "Verifique a senha e a confirmação." };
+    return { ok: false, mensagem: "Verifique a senha e a confirmação." };
   }
 
   const session = await getAuthenticatedSession();
   if (!session) {
     return {
       ok: false,
-      message: "Link expirado. Solicite um novo link de recuperação.",
+      mensagem: "Link expirado. Solicite um novo link de recuperação.",
     };
   }
 
@@ -105,7 +105,7 @@ export async function setPasswordAction(
   if (error) {
     return {
       ok: false,
-      message: "Não foi possível salvar a senha. Tente novamente.",
+      mensagem: "Não foi possível salvar a senha. Tente novamente.",
     };
   }
 

@@ -28,7 +28,7 @@ describe("requestSession: mensagem certa por causa", () => {
     });
     await expect(requestSession(input)).resolves.toEqual({
       ok: false,
-      message: LOGIN_FAILED,
+      mensagem: LOGIN_FAILED,
     });
   });
 
@@ -39,7 +39,7 @@ describe("requestSession: mensagem certa por causa", () => {
     });
     await expect(requestSession(input)).resolves.toEqual({
       ok: false,
-      message: MSG.muitasTentativas,
+      mensagem: MSG.muitasTentativas,
     });
   });
 
@@ -50,7 +50,7 @@ describe("requestSession: mensagem certa por causa", () => {
     });
     await expect(requestSession(input)).resolves.toEqual({
       ok: false,
-      message: LOGIN_EMAIL_NAO_CONFIRMADO,
+      mensagem: LOGIN_EMAIL_NAO_CONFIRMADO,
     });
   });
 
@@ -62,7 +62,7 @@ describe("requestSession: mensagem certa por causa", () => {
     });
     await expect(requestSession(input)).resolves.toEqual({
       ok: false,
-      message: MSG.semConexao,
+      mensagem: MSG.semConexao,
     });
   });
 
@@ -73,7 +73,7 @@ describe("requestSession: mensagem certa por causa", () => {
     });
     await expect(requestSession(input)).resolves.toEqual({
       ok: false,
-      message: MSG.instavel,
+      mensagem: MSG.instavel,
     });
   });
 });

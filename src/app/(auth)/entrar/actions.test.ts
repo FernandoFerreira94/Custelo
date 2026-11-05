@@ -91,7 +91,7 @@ describe("acceptInviteAction — AUTH-002", () => {
       acceptInviteAction({ fullName: "", password: "curta" }),
     ).resolves.toEqual({
       ok: false,
-      message: "Preencha nome e senha válidos.",
+      mensagem: "Preencha nome e senha válidos.",
     });
 
     expect(mocks.acceptInviteForSession).not.toHaveBeenCalled();
@@ -117,7 +117,7 @@ describe("requestRecoveryAction — AUTH-003", () => {
     await expect(requestRecoveryAction({ email: "invalido" })).resolves.toEqual(
       {
         ok: false,
-        message: "Informe um e-mail válido.",
+        mensagem: "Informe um e-mail válido.",
       },
     );
 
@@ -148,7 +148,7 @@ describe("requestRecoveryAction — AUTH-003", () => {
       requestRecoveryAction({ email: "usuario@example.test" }),
     ).resolves.toEqual({
       ok: false,
-      message:
+      mensagem:
         "Não foi possível enviar o link agora. Tente novamente em instantes.",
     });
   });
@@ -163,7 +163,7 @@ describe("setPasswordAction — AUTH-004", () => {
       }),
     ).resolves.toEqual({
       ok: false,
-      message: "Verifique a senha e a confirmação.",
+      mensagem: "Verifique a senha e a confirmação.",
     });
   });
 
@@ -177,7 +177,7 @@ describe("setPasswordAction — AUTH-004", () => {
       }),
     ).resolves.toEqual({
       ok: false,
-      message: "Link expirado. Solicite um novo link de recuperação.",
+      mensagem: "Link expirado. Solicite um novo link de recuperação.",
     });
   });
 
