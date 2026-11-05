@@ -82,3 +82,15 @@ SAAS-007,SAAS,12 Billing,pos-MVP,tela,pos-MVP,nao,P3,09,pos-MVP,NOT_STARTED,NOT_
 BIL-001,SAAS,12 Billing,Billing self-service,tela,pos-MVP,nao,P3,09,pos-MVP,NOT_STARTED,NOT_STARTED,NOT_STARTED,billing,NOT_STARTED,N/A,NOT_STARTED,nao,Provedor de billing em aberto
 BIL-002,SAAS,12 Billing,Invoices / portal,tela,pos-MVP,nao,P3,09,pos-MVP,NOT_STARTED,NOT_STARTED,NOT_STARTED,billing,NOT_STARTED,N/A,NOT_STARTED,nao,Provedor de billing em aberto
 BIL-003,SAAS,12 Billing,Consumo (admin),tela,/(saas)/consumo,sim,P1,08,I11,APPROVED,DONE,NOT_STARTED,billing,NOT_STARTED,N/A,NOT_STARTED,nao,
+OPT-001,PUBLIC,04 Comunicacao,Opt-in do morador,tela,/(public)/optin/[token],sim,P0,08,I7,APPROVED,DONE,NOT_STARTED,contacts-consent,NOT_STARTED,REVIEW,NOT_STARTED,nao,Trava o piloto; estados OPT-002..004 na mesma prancha
+SYS-001,OPS,13 Sistema,Banner de integracao fora do ar,tela,/(ops),sim,P1,08,I7,APPROVED,DONE,NOT_STARTED,integration-health,NOT_STARTED,REVIEW,NOT_STARTED,nao,Prancha SYS-001..003 em pz-faltam
+LGPD-001,PUBLIC,10 Auditoria,Seus dados (pedido do titular),tela,/(public)/meus-dados,sim,P0,08,I12,APPROVED,DONE,NOT_STARTED,data-subject-requests,NOT_STARTED,REVIEW,NOT_STARTED,nao,Trava o piloto; LGPD-002 e o sucesso
+CFG-008A,WEB,10 Auditoria,Pedidos de titular (registrar e excluir),tela,/(web)/config/retencao,sim,P0,08,I12,APPROVED,DONE,NOT_STARTED,data-subject-requests,NOT_STARTED,N/A,NOT_STARTED,nao,Folha Registrar pedido e dialogo Excluir dados
+LEG-001,PUBLIC,10 Auditoria,Termos e privacidade,tela,/(public)/termos,sim,P0,08,I12,APPROVED,DONE,NOT_STARTED,legal-acceptance,NOT_STARTED,REVIEW,NOT_STARTED,nao,LEG-002 aceite de nova versao; AUTH-001 checkbox com links
+IMP-016,WEB,03 Pessoas,Implantacao: passos finais (IMP-016..020),tela,/(web)/implantacao,sim,P1,08,I11,APPROVED,DONE,NOT_STARTED,onboarding,NOT_STARTED,N/A,NOT_STARTED,nao,Moradores, equipe, regras, WhatsApp, revisao e ativacao
+NAV-001,WEB,01 Tenancy,Menu do perfil,tela,/(web),sim,P1,08,Fase 0,APPROVED,DONE,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,Caminho para Equipe, Auditoria e Dados
+PES-010,WEB,03 Pessoas,Sugestoes de cadastro,tela,/(web)/pessoas/sugestoes,sim,P1,08,I10,APPROVED,DONE,NOT_STARTED,people,NOT_STARTED,N/A,NOT_STARTED,nao,Vem do Para resolver do painel
+REC-011,OPS,06 Recebimento,Encomenda excepcional (marcar e selo),tela,/(ops)/receber/lote,sim,P1,08,I5,APPROVED,DONE,NOT_STARTED,custody,NOT_STARTED,REVIEW,NOT_STARTED,nao,Decisao D13; prancha MarcarExcecao e FilaComSelo
+SAAS-002A,SAAS,12 Billing,Custos do provedor,tela,/(saas)/planos,sim,P1,08,I11,APPROVED,DONE,NOT_STARTED,billing,NOT_STARTED,N/A,NOT_STARTED,nao,Secao dentro de Planos
+ORG-005,WEB,01 Tenancy,Relatorios da organizacao,tela,/(web)/org/relatorios,sim,P1,08,I11,APPROVED,DONE,NOT_STARTED,reports,NOT_STARTED,N/A,NOT_STARTED,nao,Soma REL-001..003 por empreendimento
+CFG-009,SAAS,12 Billing,Aprovar acesso de suporte,tela,/(web)/config/suporte,sim,P1,08,I11,APPROVED,DONE,NOT_STARTED,billing,NOT_STARTED,N/A,NOT_STARTED,nao,Dialogo de acao critica; relacionado a SAAS-004

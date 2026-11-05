@@ -79,7 +79,24 @@ function Linha({ children }: { children: React.ReactNode }) {
 /* Regra do app (Fernando, 04/11): celular sem logo no topo; header com voltar e título centralizado;
    pouco texto de apoio, um destaque que diz só o que aconteceu e uma ação clara. */
 
-function TelaCelular({ titulo, voltar = true, acaoTopo, rodape, children }: { titulo: string; voltar?: boolean; acaoTopo?: React.ReactNode; rodape?: React.ReactNode; children: React.ReactNode }) {
+/* Escala de texto: a moldura compartilhada (pranchas.tsx, ESCALA_CELULAR) já sobe os tokens text-* um degrau
+   (sm 16, base 18, lg 20). Aqui só fixamos o papel de cada texto: label 16 semibold · input 18 · botão 18 · link 16 sublinhado. */
+const ESCALA_PRESTADORA =
+  "[&_[data-slot=field-label]]:text-sm [&_[data-slot=field-label]]:font-semibold [&_label]:text-sm [&_label]:font-semibold [&_input]:text-base [&_[data-slot=item-title]]:text-base [&_[data-slot=item-title]]:font-semibold [&_[data-slot=item-description]]:text-sm [&_[data-slot=field-error]]:text-sm [&_a]:text-sm [&_a]:font-semibold [&_a]:underline [&_[data-slot=input-otp-slot]]:w-12 [&_[data-slot=input-otp-slot]]:text-2xl"
+
+/** Passo a passo: diz onde a pessoa está e quanto falta. A próxima ação é sempre o botão cheio do rodapé. */
+function Passos({ atual, total }: { atual: number; total: number }) {
+  return (
+    <div className="grid gap-2 px-4" role="group" aria-label={`Passo ${atual} de ${total}`}>
+      <p className="text-sm font-semibold text-brand">Passo {atual} de {total}</p>
+      <div className="flex gap-1.5" aria-hidden>
+        {Array.from({ length: total }, (_, i) => <span key={i} className={`h-1.5 flex-1 rounded-full ${i < atual ? "bg-brand" : "bg-border"}`} />)}
+      </div>
+    </div>
+  )
+}
+
+function TelaCelular({ titulo, voltar = true, acaoTopo, rodape, passo, children }: { titulo: string; voltar?: boolean; acaoTopo?: React.ReactNode; rodape?: React.ReactNode; passo?: [number, number]; children: React.ReactNode }) {
   return (
     <div className="flex h-full flex-col bg-muted">
       <header className="grid grid-cols-[48px_minmax(0,1fr)_48px] items-center gap-2 px-2 pt-10 pb-2">
@@ -87,8 +104,9 @@ function TelaCelular({ titulo, voltar = true, acaoTopo, rodape, children }: { ti
         <h1 className="truncate text-center text-lg font-semibold">{titulo}</h1>
         <div className="justify-self-end">{acaoTopo}</div>
       </header>
-      <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-4 pt-4 pb-4">{children}</div>
-      {rodape && <footer className="grid gap-2 px-4 pt-2 pb-8">{rodape}</footer>}
+      {passo && <Passos atual={passo[0]} total={passo[1]} />}
+      <div className={`flex flex-1 flex-col gap-5 overflow-y-auto px-4 pt-4 pb-4 ${ESCALA_PRESTADORA}`}>{children}</div>
+      {rodape && <footer className="grid gap-2 px-4 pt-2 pb-8 [&_button]:text-base [&_button]:font-semibold">{rodape}</footer>}
     </div>
   )
 }
@@ -100,7 +118,7 @@ function Destaque({ tom = "neutro", icone, titulo, apoio }: { tom?: "neutro" | "
     <div className="grid justify-items-center gap-3 pt-4 text-center" role={tom === "erro" || tom === "aviso" ? "alert" : "status"}>
       <span className={`grid size-16 place-items-center rounded-full [&>svg]:size-8 ${cor}`}>{icone}</span>
       <h2 className="font-display text-3xl leading-tight font-extrabold tracking-tight text-balance">{titulo}</h2>
-      {apoio && <p className="text-muted-foreground">{apoio}</p>}
+      {apoio && <p className="text-base text-muted-foreground">{apoio}</p>}
     </div>
   )
 }
@@ -113,7 +131,7 @@ function EntrarComCodigo({ estado = "vazio" }: { estado?: EstadoCodigo }) {
   const valor = estado === "vazio" || estado === "offline" ? "" : estado === "erro" || estado === "bloqueado" ? "GX4T2P" : "GIRA2K"
   if (estado === "ok") {
     return (
-      <TelaCelular titulo="Código do local" voltar={false} rodape={<Button shape="pill" size="lg">Continuar</Button>}>
+      <TelaCelular passo={[1, 3]} titulo="Código do local" voltar={false} rodape={<Button shape="pill" size="lg">Continuar</Button>}>
         <Destaque tom="ok" icone={<CheckCircle2Icon aria-hidden />} titulo="Aparelho pareado" apoio="Residencial Girassol 2" />
       </TelaCelular>
     )
@@ -125,7 +143,7 @@ function EntrarComCodigo({ estado = "vazio" }: { estado?: EstadoCodigo }) {
       bloqueado: { tom: "aviso" as const, icone: <ClockIcon aria-hidden />, t: "Muitas tentativas", a: "Tente de novo em 2:00." },
     }[estado]
     return (
-      <TelaCelular titulo="Código do local" rodape={<Button shape="pill" size="lg" disabled={estado === "bloqueado"}>{estado === "bloqueado" ? "Espere 2:00" : "Tentar de novo"}</Button>}>
+      <TelaCelular passo={[1, 3]} titulo="Código do local" rodape={<Button shape="pill" size="lg" disabled={estado === "bloqueado"}>{estado === "bloqueado" ? "Espere 2:00" : "Tentar de novo"}</Button>}>
         <Destaque tom={d.tom} icone={d.icone} titulo={d.t} apoio={d.a} />
         <InputOTP id={`cod-${estado}`} maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} defaultValue={valor} aria-invalid={estado === "erro"} disabled={estado === "bloqueado"} containerClassName="justify-center">
           <InputOTPGroup>{[0, 1, 2, 3, 4, 5].map((i) => <InputOTPSlot key={i} index={i} />)}</InputOTPGroup>
@@ -135,6 +153,7 @@ function EntrarComCodigo({ estado = "vazio" }: { estado?: EstadoCodigo }) {
   }
   return (
     <TelaCelular
+      passo={[1, 3]}
       titulo="Código do local"
       rodape={
         <>
@@ -166,7 +185,7 @@ type EstadoLista = "lista" | "senha" | "senhaErrada" | "entrando" | "vazia" | "r
 function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
   if (estado === "vazia") {
     return (
-      <TelaCelular titulo="Girassol 2" voltar={false} rodape={<Button shape="pill" size="lg">Entrar</Button>}>
+      <TelaCelular passo={[2, 3]} titulo="Girassol 2" voltar={false} rodape={<Button shape="pill" size="lg">Entrar</Button>}>
         <Destaque icone={<UsersIcon aria-hidden />} titulo="Primeiro acesso neste aparelho" apoio="Da próxima vez seu nome aparece aqui." />
         <Field>
           <FieldLabel htmlFor="ld-email">E-mail</FieldLabel>
@@ -182,6 +201,7 @@ function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
   if (estado === "senha" || estado === "senhaErrada" || estado === "entrando") {
     return (
       <TelaCelular
+        passo={[3, 3]}
         titulo="Girassol 2"
         rodape={
           <Button shape="pill" size="lg" disabled={estado === "entrando"} aria-busy={estado === "entrando"}>
@@ -203,6 +223,7 @@ function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
   }
   return (
     <TelaCelular
+      passo={[2, 3]}
       titulo="Girassol 2"
       voltar={false}
       acaoTopo={<Button variant="ghost" shape="pill" size="icon-lg" aria-label="Remover alguém deste aparelho"><Trash2Icon aria-hidden /></Button>}
@@ -228,8 +249,8 @@ function ListaDoAparelho({ estado = "lista" }: { estado?: EstadoLista }) {
           <AlertTitle>Remover Jorge Lima deste aparelho?</AlertTitle>
           <AlertDescription>
             <span className="flex gap-2 pt-2">
-              <Button size="sm" variant="destructive" shape="pill">Remover</Button>
-              <Button size="sm" variant="outline" shape="pill">Cancelar</Button>
+              <Button variant="destructive" shape="pill">Remover</Button>
+              <Button variant="outline" shape="pill">Cancelar</Button>
             </span>
           </AlertDescription>
         </Alert>
@@ -251,20 +272,20 @@ const CONTRATOS_FUNC = [
 function EscolherCondominio({ estado = "lista" }: { estado?: EstadoEscolha }) {
   if (estado === "semContrato") {
     return (
-      <TelaCelular titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg" variant="outline">Pedir ao gestor da Selva</Button>}>
+      <TelaCelular passo={[2, 2]} titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg" variant="outline">Pedir ao gestor da Selva</Button>}>
         <Destaque tom="aviso" icone={<LockIcon aria-hidden />} titulo="Nenhum condomínio liberado" apoio="Peça ao gestor da Selva." />
       </TelaCelular>
     )
   }
   if (estado === "erro") {
     return (
-      <TelaCelular titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg">Tentar de novo</Button>}>
+      <TelaCelular passo={[2, 2]} titulo="Onde você trabalha?" rodape={<Button shape="pill" size="lg">Tentar de novo</Button>}>
         <Destaque tom="erro" icone={<WifiOffIcon aria-hidden />} titulo="Não carregou" apoio="Confira a internet." />
       </TelaCelular>
     )
   }
   return (
-    <TelaCelular titulo="Onde você trabalha?">
+    <TelaCelular passo={[2, 2]} titulo="Onde você trabalha?" rodape={estado === "carregando" ? undefined : <Button shape="pill" size="lg">Entrar em Girassol 2</Button>}>
       {estado === "carregando" ? (
         <div role="status" aria-label="Carregando seus condomínios" className="grid gap-3">
           {[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 rounded-2xl" />)}
@@ -275,7 +296,7 @@ function EscolherCondominio({ estado = "lista" }: { estado?: EstadoEscolha }) {
             {CONTRATOS_FUNC.filter((c) => estado === "suspenso" || c.s === "ativo").map((c) => {
               const off = c.s === "suspenso"
               return (
-                <Item key={c.n} variant="outline" className={`min-h-16 rounded-2xl bg-card text-left ${off ? "opacity-80" : "shadow-wc-md"}`} asChild>
+                <Item key={c.n} variant="outline" className={`min-h-16 rounded-2xl bg-card text-left ${off ? "opacity-80" : c.n.endsWith("2") ? "border-brand shadow-wc-md ring-2 ring-brand" : "shadow-wc-md"}`} asChild>
                   <button type="button" disabled={off} aria-disabled={off}>
                     <ItemMedia variant="icon"><Building2Icon aria-hidden /></ItemMedia>
                     <ItemContent>

@@ -102,6 +102,19 @@ function Marca({ className = "" }: { className?: string }) {
   return <PzMarca className={className} texto="text-2xl" />
 }
 
+/**
+ * Escala de texto do celular (Fernando, 04/11): um degrau acima do padrão para ler rápido.
+ * xs 12→14 · sm 14→16 · base 16→18 · lg 18→20 · xl 20→22. Títulos (2xl+) não mudam.
+ * Input, label, botão e link usam sm/base, então ficam com 16–18px.
+ */
+export const ESCALA_CELULAR = {
+  "--wc-text-xs": "0.875rem",
+  "--wc-text-sm": "1rem",
+  "--wc-text-base": "1.125rem",
+  "--wc-text-lg": "1.25rem",
+  "--wc-text-xl": "1.375rem",
+} as React.CSSProperties
+
 export function Prancha({ id, titulo, children }: { id: string; titulo: string; children: React.ReactNode }) {
   return (
     <figure className="m-0 grid w-[390px] shrink-0 gap-3">
@@ -109,7 +122,7 @@ export function Prancha({ id, titulo, children }: { id: string; titulo: string; 
         <span className="font-mono text-foreground">{id}</span> · {titulo}
       </figcaption>
       <PhoneFrame label={`${id} ${titulo}`} className="h-[844px] max-w-[390px]">
-        {children}
+        <div className="contents" style={ESCALA_CELULAR}>{children}</div>
       </PhoneFrame>
     </figure>
   )

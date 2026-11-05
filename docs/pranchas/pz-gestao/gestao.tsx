@@ -665,3 +665,5 @@ export function Gestao() {
     </div>
   )
 }
+
+export { Shell as ShellGestao }

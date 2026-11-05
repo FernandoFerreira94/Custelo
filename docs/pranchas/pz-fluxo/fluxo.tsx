@@ -455,13 +455,23 @@ function NaoIdentificadas() {
 
 const ETAPAS = [{ title: "Encomendas" }, { title: "Quem recebe" }, { title: "Assinatura" }]
 
+/** Passo a passo no celular: "Passo X de Y" em destaque + pontos. A próxima ação é o único botão cheio. */
+function Passo({ atual }: { atual: number }) {
+  return (
+    <div className="grid gap-2">
+      <p className="text-sm font-semibold"><span className="text-brand">Passo {atual + 1} de {ETAPAS.length}</span> · {ETAPAS[atual].title}</p>
+      <Stepper steps={ETAPAS} current={atual} variant="dots" />
+    </div>
+  )
+}
+
 function SelecionarRetirada() {
   return (
     <div className="flex h-full flex-col bg-muted">
       <div className="min-h-0 flex-1 overflow-y-auto pb-4">
         <NavigationBar title="Entregar" leading={<Fechar label="Cancelar entrega" />} />
         <div className="grid gap-4 px-4">
-          <Stepper steps={ETAPAS} current={0} variant="dots" />
+          <Passo atual={0} />
           <SearchBar placeholder="Unidade" aria-label="Buscar unidade" inputClassName={BUSCA} defaultValue="B-304" />
           <p className="text-sm font-medium">B-304 · 3 na custódia</p>
           <div className="grid gap-2">
@@ -495,7 +505,7 @@ function QuemRecebe() {
       <div className="min-h-0 flex-1 overflow-y-auto pb-4">
         <NavigationBar title="Quem está retirando?" leading={<Voltar label="Voltar para encomendas" />} />
         <div className="grid gap-4 px-4">
-          <Stepper steps={ETAPAS} current={1} variant="dots" />
+          <Passo atual={1} />
           <RadioGroup defaultValue="outra" aria-label="Quem retira" className="grid gap-2">
             {[
               ["mariana", "Mariana Souza", "Titular · destinatária das 2"],
@@ -541,7 +551,7 @@ function Assinatura() {
       <div className="min-h-0 flex-1 overflow-y-auto pb-4">
         <NavigationBar title="Assinatura" leading={<Voltar label="Voltar para quem recebe" />} />
         <div className="grid gap-4 px-4">
-          <Stepper steps={ETAPAS} current={2} variant="dots" />
+          <Passo atual={2} />
           <Card className="gap-2 rounded-3xl py-4">
             <CardContent className="px-4">
               <DescriptionList layout="horizontal">

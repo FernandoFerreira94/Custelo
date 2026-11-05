@@ -716,3 +716,5 @@ export function Configuracoes() {
     </div>
   )
 }
+
+export { Shell as ShellOrg, NAV_ORG }

@@ -140,16 +140,28 @@ Registradas em `.ai/memory.md` (04/11/2026).
 
 **O que este plano usa dela (pré-requisitos da Fase 0):**
 
-| Entrega da Parte 1                   | Onde                                                                    | Uso aqui                            |
-| ------------------------------------ | ----------------------------------------------------------------------- | ----------------------------------- |
-| Base `@webcode` e tema Névoa + Brasa | `src/components/ui/*`, `globals.css`                                    | todas as telas                      |
-| Marca                                | `src/components/brand/marca.tsx` (`PzMarca`, `PzSimbolo`, `PzSplash`)   | cascas, comprovante, e-mails        |
-| Estados globais                      | `TelaDeEstado`, `not-found`, `error`, `global-error`, `loading` na raiz | seção 4.5 estende por grupo         |
-| Avisos                               | `Toaster` (sonner) e `NotificationBannerHost` no layout raiz            | seção 4                             |
-| Casca web/admin                      | `src/components/shell/{trilho,casca-web}.tsx`                           | seção 5.1 acrescenta itens por fase |
-| Barra da portaria                    | `src/components/shell/nav-portaria.tsx` (TabBar de vidro, ADR-022)      | I4–I8 ligam as abas                 |
-| Ajuda e suporte                      | `src/lib/suporte.ts`, `botao-ajuda.tsx`                                 | D12                                 |
-| Ferramentas                          | `scripts/capturar-telas.mjs`, `scripts/webcode-add.mjs`, `knip.json`    | Design Review e limpeza             |
+| Entrega da Parte 1                   | Onde                                                                    | Uso aqui                                           |
+| ------------------------------------ | ----------------------------------------------------------------------- | -------------------------------------------------- |
+| Base `@webcode` e tema Névoa + Brasa | `src/components/ui/*`, `globals.css`                                    | todas as telas                                     |
+| Marca                                | `src/components/brand/marca.tsx` (`PzMarca`, `PzSimbolo`, `PzSplash`)   | cascas, comprovante, e-mails                       |
+| OPT-001..004                         | Opt-in do morador (público)                                             | `/optin/[token]` (link do convite ou QR do cartaz) | `pz-faltam/faltam.tsx · OptInForm, OptInSucesso, OptInVencido, OptInJaCadastrado` | gerar foto | field, input, input-phone, checkbox, result, banner           | I7     |
+| SYS-001..003                         | Integração fora do ar (banner por superfície)                           | faixa no topo da portaria e da gestão              | `pz-faltam/faltam.tsx · PortariaComAvisos, AvisosAbertos, GestaoComAviso`         | gerar foto | banner, notification-banner, item                             | I7     |
+| LGPD-001/002                         | Seus dados (pedido do titular, público)                                 | `/meus-dados`                                      | `pz-faltam/faltam.tsx · TitularPublico, TitularEnviado`                           | gerar foto | radio-group, field, input, textarea, result                   | I12    |
+| CFG-008 (pedidos)                    | Pedidos de titular: registrar e excluir dados                           | folha e diálogo no CFG-008                         | `pz-faltam/faltam.tsx · PedidosTitular, RegistrarPedido, ExcluirDados`            | gerar foto | sheet, dialog, field, native-select, input-date, alert, badge | I12    |
+| LEG-001/002 + AUTH-001               | Termos, privacidade, aceite de nova versão e checkbox da entrada        | `/termos`, `/privacidade`, aceite no 1º acesso     | `pz-faltam/faltam.tsx · Termos, AceiteNovaVersao, CheckboxEntrada`                | gerar foto | card, checkbox, button, banner                                | I12    |
+| IMP-016..020                         | Implantação: moradores, equipe, regras, WhatsApp, revisão e ativação    | `/gestao/implantacao`                              | `pz-faltam/faltam.tsx · PassosMeio, Revisao`                                      | gerar foto | stepper, item, switch, field, badge, button                   | I11    |
+| NAV-001                              | Menu do perfil (Equipe, Auditoria, Dados)                               | avatar do topo da gestão                           | `pz-faltam/faltam.tsx · MenuPerfil` (+ `pz-dash/painel.tsx · Perfil`)             | gerar foto | dropdown-menu, avatar, item                                   | Fase 0 |
+| PES-010                              | Sugestões de cadastro                                                   | `/gestao/pessoas/sugestoes`                        | `pz-faltam/faltam.tsx · Sugestoes`                                                | gerar foto | item, badge, dialog, textarea, empty, skeleton                | I10    |
+| REC-003 + CUS-001 (excepcional)      | Marcar encomenda como excepcional e selo na fila                        | etapa do lote e detalhe                            | `pz-faltam/faltam.tsx · MarcarExcecao, FilaComSelo`                               | gerar foto | toggle-group, badge, textarea, item                           | I5     |
+| SAAS-002 (custos)                    | Custos do provedor                                                      | `/plataforma/planos` (seção)                       | `pz-faltam/faltam.tsx · Custos`                                                   | gerar foto | table, field, input-date, timeline                            | I11    |
+| ORG-005                              | Relatórios da organização                                               | `/organizacao/relatorios`                          | `pz-faltam/faltam.tsx · RelatoriosOrg`                                            | gerar foto | stat-card, bar-chart, table, native-select                    | I11    |
+| CFG-009                              | Aprovar acesso de suporte                                               | diálogo no SAAS-004                                | `pz-faltam/faltam.tsx · AprovarSuporte`                                           | gerar foto | dialog, countdown, alert                                      | I11    |
+| Estados globais                      | `TelaDeEstado`, `not-found`, `error`, `global-error`, `loading` na raiz | seção 4.5 estende por grupo                        |
+| Avisos                               | `Toaster` (sonner) e `NotificationBannerHost` no layout raiz            | seção 4                                            |
+| Casca web/admin                      | `src/components/shell/{trilho,casca-web}.tsx`                           | seção 5.1 acrescenta itens por fase                |
+| Barra da portaria                    | `src/components/shell/nav-portaria.tsx` (TabBar de vidro, ADR-022)      | I4–I8 ligam as abas                                |
+| Ajuda e suporte                      | `src/lib/suporte.ts`, `botao-ajuda.tsx`                                 | D12                                                |
+| Ferramentas                          | `scripts/capturar-telas.mjs`, `scripts/webcode-add.mjs`, `knip.json`    | Design Review e limpeza                            |
 
 **Ajustes na Parte 1** (já gravados no plano da migração junto com este plano; avise a janela que executa, porque ela pode estar com a cópia antiga):
 
@@ -341,18 +353,18 @@ export type Resultado<T> =
 
 ### 4.5 Páginas de sistema
 
-| Página                                    | Rota / arquivo                                                | Prancha             | Fase                                 |
+| Página | Rota / arquivo | Prancha | Fase |
 | ----------------------------------------- | ------------------------------------------------------------- | ------------------- | ------------------------------------ | -------------------------------------------- | ----------------- |
-| 404 global                                | `src/app/not-found.tsx`                                       | `Erros` (#estados)  | Parte 1                              |
-| 500 global                                | `src/app/error.tsx`, `global-error.tsx`                       | `Erros`             | Parte 1                              |
-| Carregando global                         | `src/app/loading.tsx`                                         | `EsqueletoDesktop`  | Parte 1                              |
+| 404 global | `src/app/not-found.tsx` | `Erros` (#estados) | Parte 1 |
+| 500 global | `src/app/error.tsx`, `global-error.tsx` | `Erros` | Parte 1 |
+| Carregando global | `src/app/loading.tsx` | `EsqueletoDesktop` | Parte 1 |
 | 404, erro e carregando **por superfície** | `src/app/(web                                                 | ops                 | saas)/{not-found,error,loading}.tsx` | `Erros`, `EsqueletoDesktop`, `EsqueletoFila` | Fase 0 (Task 0.6) |
-| Sem permissão (403) dentro da superfície  | componente `SemPermissao` (usa `TelaDeEstado status="403"`)   | `Erros`             | Fase 0                               |
-| Sessão expirada                           | `/sessao-expirada`                                            | `ERR-SESSAO`        | Fase 0                               |
-| Manutenção                                | `/manutencao` (middleware desvia quando `MANUTENCAO=1`)       | `ERR-MANUT`         | Fase 0                               |
-| Sem internet ao abrir (PWA)               | fallback do Service Worker `/offline`                         | `ERR-OFFLINE`       | I6                                   |
-| Preparando o aparelho (1º uso)            | estado da casca `(ops)` enquanto baixa o cadastro local       | `LOAD-1A-VEZ`       | I6                                   |
-| Integração fora do ar                     | `Banner` global por superfície, lendo a saúde (`/api/health`) | `Avisos` (#estados) | I7 (WhatsApp), I11 (todas)           |
+| Sem permissão (403) dentro da superfície | componente `SemPermissao` (usa `TelaDeEstado status="403"`) | `Erros` | Fase 0 |
+| Sessão expirada | `/sessao-expirada` | `ERR-SESSAO` | Fase 0 |
+| Manutenção | `/manutencao` (middleware desvia quando `MANUTENCAO=1`) | `ERR-MANUT` | Fase 0 |
+| Sem internet ao abrir (PWA) | fallback do Service Worker `/offline` | `ERR-OFFLINE` | I6 |
+| Preparando o aparelho (1º uso) | estado da casca `(ops)` enquanto baixa o cadastro local | `LOAD-1A-VEZ` | I6 |
+| Integração fora do ar | `Banner` global por superfície, lendo a saúde (`/api/health`) | `Avisos` (#estados) | I7 (WhatsApp), I11 (todas) |
 
 ---
 
@@ -649,23 +661,9 @@ Prancha = `docs/pranchas/<arquivo>` · função. Foto = `docs/pranchas/telas/<ar
 
 AUTH-007, CUS-006, DASH-002, SAAS-007, BIL-001, BIL-002 e o modo escuro (`#escuro`, até a revisão).
 
-### 6.3 Telas que aguardam prancha (o Fernando está desenhando)
+### 6.3 Telas que aguardam prancha
 
-Não implemente sem prancha. Quando a prancha chegar, atualize `docs/pranchas/` e o catálogo acima.
-
-| Tela                                                                                                                                                                                                                                                     | Por que precisa                                                                                                         | Fase               |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| Assistente de implantação, passos de importação → equipe → regras → WhatsApp → revisão e ativação (FL-11 / Notion §7, estado `PRONTO_PARA_OPERAR`). Os passos de dados, endereço e blocos/unidades **já têm prancha**: `pz-forms/forms.tsx · Condominio` | Fluxo mais longo do produto; define o custo de implantação                                                              | I11                |
-| Página pública de opt-in do morador ("Quero receber avisos de encomenda"), pelo link do convite                                                                                                                                                          | A Meta exige opt-in; o consentimento não vem da planilha (nota de importação de 04/11)                                  | I7                 |
-| Termos de uso e política de privacidade (páginas públicas + aceite no 1º acesso)                                                                                                                                                                         | Gate jurídico antes do go-live; hoje o aceite da prancha de entrada não tem página                                      | I12                |
-| Página pública para o morador pedir sobre os próprios dados (LGPD: cópia, correção, exclusão, parar de receber aviso). O lado do gestor já tem prancha (CFG-008)                                                                                         | Direito do titular; o morador não tem login. Esta página **ou** a folha "Registrar pedido" abaixo é stop-ship do piloto | I12                |
-| Menu do perfil com Equipe, Auditoria e Dados                                                                                                                                                                                                             | As pranchas mostram as telas mas não o caminho até elas                                                                 | Fase 0 (confirmar) |
-| Banner de integração fora do ar dentro do app (por superfície)                                                                                                                                                                                           | "Falha é estado visível"; a prancha `Avisos` mostra o componente, não o lugar                                           | I7                 |
-| Lista de sugestões de cadastro (aceitar → pessoa nova pré-preenchida, recusar com motivo)                                                                                                                                                                | Recebimento e retirada geram sugestões (5.7, 8.2); hoje só o item do painel leva a elas                                 | I10                |
-| Marcar encomenda como excepcional (perecível, volume grande) no recebimento e no detalhe                                                                                                                                                                 | D13; a coluna existe desde a I4                                                                                         | I5                 |
-| Registrar pedido do titular (folha no CFG-008, para o gestor lançar o pedido que chegou pela portaria ou por e-mail)                                                                                                                                     | Sem canal de entrada, o card do CFG-008 fica vazio                                                                      | I12                |
-| Editar custo por mensagem e por leitura (`precos_provedor`) no SAAS-002                                                                                                                                                                                  | Hoje entra por migration de dados                                                                                       | I11                |
-| Relatórios consolidados da organização (item "Relatórios" do `NAV_ORG`)                                                                                                                                                                                  | ORG-001 mostra só os números de 10 dias                                                                                 | I11                |
+As 11 telas da lista de 04/11 receberam prancha (`pz-faltam/faltam.tsx`, aba `#piloto`) e subiram para o catálogo 6.1. Se surgir tela nova sem prancha, liste aqui e não implemente antes dela: ao recebê-la, atualize `docs/pranchas/` e o catálogo.
 
 ---
 
@@ -1389,9 +1387,8 @@ vi.mock("@/lib/env", () => ({
 
 describe("createSupabaseMiddlewareClient", () => {
   it("cookie renovado vai para a request repassada e para a resposta", async () => {
-    const { createSupabaseMiddlewareClient } = await import(
-      "./supabase-middleware"
-    );
+    const { createSupabaseMiddlewareClient } =
+      await import("./supabase-middleware");
     const req = new NextRequest("http://localhost/gestao", {
       headers: { cookie: "sb=velho" },
     });
@@ -2053,12 +2050,7 @@ describe("gerarUnidades", () => {
 ```ts
 // src/domain/estrutura/unidade.ts
 export type TipoUnidade =
-  | "apartamento"
-  | "casa"
-  | "sala"
-  | "loja"
-  | "area_comum"
-  | "outro";
+  "apartamento" | "casa" | "sala" | "loja" | "area_comum" | "outro";
 
 /** Mesma regra da coluna gerada unidades.codigo_normalizado (0011). */
 export function normalizarCodigo(texto: string): string {
@@ -5060,10 +5052,7 @@ O teste falha se uma propriedade fora da allowlist for enviada (ADR-017). A cons
 ```ts
 // src/domain/sync/saida.ts
 export type EstadoItem =
-  | "LOCAL"
-  | "SINCRONIZANDO"
-  | "SINCRONIZADO"
-  | "CONFLITO";
+  "LOCAL" | "SINCRONIZANDO" | "SINCRONIZADO" | "CONFLITO";
 export type RespostaItem =
   | { status: "ok" | "repetido" }
   | { status: "conflito"; conflitoId: string }

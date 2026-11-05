@@ -512,3 +512,5 @@ export function Plataforma() {
     </div>
   )
 }
+
+export { Admin }
