@@ -58,3 +58,10 @@ export const esquemaDeDetalhe = z.object({
   id: z.uuid(),
   mostrarCpf: z.boolean().optional(),
 });
+
+export const esquemaDeRecebeAviso = z.object({
+  vinculoId: z.uuid(),
+  recebeAviso: z.boolean(),
+});
+
+export const esquemaDeId = z.object({ id: z.uuid() });

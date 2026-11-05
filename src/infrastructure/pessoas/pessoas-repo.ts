@@ -294,6 +294,28 @@ export const pessoasRepo: PessoasRepo = {
           ilike(pessoas.nome, `%${f.busca.trim().replace(/[%_]/g, "\\$&")}%`),
         );
       }
+      if (f.tipo) {
+        condicoes.push(
+          inArray(
+            pessoas.id,
+            db
+              .select({ id: vinculos.pessoaId })
+              .from(vinculos)
+              .where(
+                and(
+                  eq(vinculos.empreendimentoId, ctx.empreendimentoId),
+                  eq(vinculos.tipo, f.tipo),
+                  eq(vinculos.status, "ativo"),
+                ),
+              ),
+          ),
+        );
+      }
+      if (f.semContato) {
+        condicoes.push(
+          sql`not exists (select 1 from contatos c where c.pessoa_id = ${pessoas.id} and c.ativo and c.consentimento_em is not null and c.status <> 'falha')`,
+        );
+      }
       if (f.unidadeId) {
         condicoes.push(
           inArray(
@@ -365,6 +387,77 @@ export const pessoasRepo: PessoasRepo = {
           temMais && ultimo
             ? codificarCursor(ultimo.cursorTs, ultimo.id)
             : undefined,
+      };
+    });
+  },
+
+  async salvarRecebeAviso(ctx, vinculoId, recebeAviso) {
+    await withTenantDb(tenant(ctx), (db) =>
+      db
+        .update(vinculos)
+        .set({ recebeAviso })
+        .where(
+          and(
+            eq(vinculos.empreendimentoId, ctx.empreendimentoId),
+            eq(vinculos.id, vinculoId),
+          ),
+        ),
+    );
+  },
+
+  async autorizadosDe(ctx, pessoaId) {
+    return withTenantDb(tenant(ctx), (db) =>
+      db
+        .select({
+          vinculoId: vinculos.id,
+          pessoaId: pessoas.id,
+          nome: pessoas.nome,
+          unidadeCodigo: unidades.codigo,
+          relacao: vinculos.relacao,
+          validoAte: vinculos.vigenciaFim,
+        })
+        .from(vinculos)
+        .innerJoin(pessoas, eq(pessoas.id, vinculos.pessoaId))
+        .innerJoin(unidades, eq(unidades.id, vinculos.unidadeId))
+        .where(
+          and(
+            eq(vinculos.empreendimentoId, ctx.empreendimentoId),
+            eq(vinculos.emNomeDePessoaId, pessoaId),
+            eq(vinculos.tipo, "autorizado"),
+            eq(vinculos.status, "ativo"),
+          ),
+        )
+        .orderBy(asc(pessoas.nome)),
+    );
+  },
+
+  async contagensDePessoas(ctx) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const [r] = await db.execute<{
+        todas: number;
+        titulares: number;
+        moradores: number;
+        inquilinos: number;
+        autorizados: number;
+        sem_contato: number;
+      }>(sql`
+        select
+          count(*) filter (where p.ativo)::int as todas,
+          count(*) filter (where p.ativo and exists (select 1 from vinculos v where v.pessoa_id = p.id and v.status = 'ativo' and v.tipo = 'titular'))::int as titulares,
+          count(*) filter (where p.ativo and exists (select 1 from vinculos v where v.pessoa_id = p.id and v.status = 'ativo' and v.tipo = 'morador'))::int as moradores,
+          count(*) filter (where p.ativo and exists (select 1 from vinculos v where v.pessoa_id = p.id and v.status = 'ativo' and v.tipo = 'inquilino'))::int as inquilinos,
+          count(*) filter (where p.ativo and exists (select 1 from vinculos v where v.pessoa_id = p.id and v.status = 'ativo' and v.tipo = 'autorizado'))::int as autorizados,
+          count(*) filter (where p.ativo and not exists (select 1 from contatos c where c.pessoa_id = p.id and c.ativo and c.consentimento_em is not null and c.status <> 'falha'))::int as sem_contato
+        from pessoas p
+        where p.empreendimento_id = ${ctx.empreendimentoId}::uuid
+      `);
+      return {
+        todas: r?.todas ?? 0,
+        titulares: r?.titulares ?? 0,
+        moradores: r?.moradores ?? 0,
+        inquilinos: r?.inquilinos ?? 0,
+        autorizados: r?.autorizados ?? 0,
+        semContato: r?.sem_contato ?? 0,
       };
     });
   },

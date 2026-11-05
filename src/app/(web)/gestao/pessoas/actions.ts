@@ -2,6 +2,7 @@
 
 import { autorizarRetirada } from "@/application/pessoas/autorizar-retirada";
 import { detalhePessoa } from "@/application/pessoas/consultas";
+import { definirRecebeAviso } from "@/application/pessoas/definir-recebe-aviso";
 import { criarPessoa } from "@/application/pessoas/criar-pessoa";
 import { encerrarVinculo } from "@/application/pessoas/encerrar-vinculo";
 import type { DepsDePessoas } from "@/application/pessoas/ports";
@@ -13,6 +14,7 @@ import {
   esquemaDeConsentimento,
   esquemaDeContato,
   esquemaDeDetalhe,
+  esquemaDeRecebeAviso,
   esquemaDeEncerramento,
   esquemaDePessoa,
   esquemaDeVinculo,
@@ -84,5 +86,12 @@ export async function detalhePessoaAction(entrada: unknown) {
     revalidar: [],
     executar: (ctx, { id, mostrarCpf }) =>
       detalhePessoa(deps, ctx, id, { mostrarCpf }),
+  });
+}
+
+export async function definirRecebeAvisoAction(entrada: unknown) {
+  return executarAcao(esquemaDeRecebeAviso, entrada, {
+    revalidar: LISTAS,
+    executar: (ctx, d) => definirRecebeAviso(deps, ctx, d),
   });
 }

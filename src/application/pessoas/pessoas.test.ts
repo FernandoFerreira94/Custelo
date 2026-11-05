@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { Contexto } from "@/application/auth/contexto";
 import { autorizarRetirada } from "@/application/pessoas/autorizar-retirada";
 import { criarPessoa } from "@/application/pessoas/criar-pessoa";
+import { definirRecebeAviso } from "@/application/pessoas/definir-recebe-aviso";
 import { detalhePessoa } from "@/application/pessoas/consultas";
 import { encerrarVinculo } from "@/application/pessoas/encerrar-vinculo";
 import type { DepsDePessoas } from "@/application/pessoas/ports";
@@ -320,5 +321,89 @@ describe("detalhePessoa", () => {
     });
 
     expect(r).toMatchObject({ ok: false, codigo: "SEM_PERMISSAO" });
+  });
+});
+
+describe("definirRecebeAviso", () => {
+  it("com contato consentido, liga e desliga o aviso e audita", async () => {
+    const criada = await novaHelena();
+    if (!criada.ok) throw new Error(criada.mensagem);
+
+    await definirRecebeAviso(deps, gestor, {
+      vinculoId: criada.data.vinculoId,
+      recebeAviso: false,
+    });
+    expect(fake.estado.vinculos[0]?.recebeAviso).toBe(false);
+
+    const r = await definirRecebeAviso(deps, gestor, {
+      vinculoId: criada.data.vinculoId,
+      recebeAviso: true,
+    });
+
+    expect(r).toMatchObject({ ok: true });
+    expect(fake.estado.vinculos[0]?.recebeAviso).toBe(true);
+    expect(trilha.entradas.map((e) => e.acao).slice(-2)).toEqual([
+      "AVISO_DESLIGADO",
+      "AVISO_LIGADO",
+    ]);
+  });
+
+  it("sem consentimento não liga: o aviso não teria para onde sair", async () => {
+    const criada = await novaHelena({ moradorAutorizou: false });
+    if (!criada.ok) throw new Error(criada.mensagem);
+    fake.estado.vinculos[0]!.recebeAviso = false;
+
+    const r = await definirRecebeAviso(deps, gestor, {
+      vinculoId: criada.data.vinculoId,
+      recebeAviso: true,
+    });
+
+    expect(r).toEqual({
+      ok: false,
+      codigo: "ENTRADA_INVALIDA",
+      mensagem: "Registre a autorização do morador antes de ligar o aviso.",
+    });
+    expect(fake.estado.vinculos[0]?.recebeAviso).toBe(false);
+  });
+
+  it("autorizado e vínculo encerrado não recebem aviso", async () => {
+    const criada = await novaHelena();
+    if (!criada.ok) throw new Error(criada.mensagem);
+    const autorizada = await autorizarRetirada(deps, gestor, {
+      unidadeId: "u-b304",
+      nome: "Joana Prates",
+      cpf: "529.982.247-25",
+      relacao: "irmã",
+      valeAte: new Date("2026-12-01T00:00:00Z"),
+      emNomeDePessoaId: criada.data.pessoaId,
+    });
+    if (!autorizada.ok) throw new Error(autorizada.mensagem);
+
+    await expect(
+      definirRecebeAviso(deps, gestor, {
+        vinculoId: autorizada.data.vinculoId,
+        recebeAviso: true,
+      }),
+    ).resolves.toMatchObject({ ok: false, codigo: "ENTRADA_INVALIDA" });
+
+    await encerrarVinculo(deps, gestor, {
+      vinculoId: criada.data.vinculoId,
+      motivo: "mudou",
+    });
+    await expect(
+      definirRecebeAviso(deps, gestor, {
+        vinculoId: criada.data.vinculoId,
+        recebeAviso: true,
+      }),
+    ).resolves.toMatchObject({ ok: false, codigo: "CONFLITO" });
+  });
+
+  it("recepcionista: SEM_PERMISSAO", async () => {
+    await expect(
+      definirRecebeAviso(deps, ctx("recepcionista"), {
+        vinculoId: "v-1",
+        recebeAviso: true,
+      }),
+    ).resolves.toMatchObject({ ok: false, codigo: "SEM_PERMISSAO" });
   });
 });

@@ -106,7 +106,16 @@ export function criarPessoasRepoFake() {
         id: p.id,
         nome: p.nome,
         cpf: p.cpf,
-        contatos: [],
+        contatos: estado.contatos
+          .filter((c) => c.pessoaId === p.id)
+          .map((c) => ({
+            id: c.id,
+            canal: c.canal,
+            valor: c.valor,
+            status: "valido" as const,
+            ordem: 0,
+            consentimentoEm: c.consentimento?.em ?? null,
+          })),
         vinculos: estado.vinculos
           .filter((v) => v.pessoaId === p.id)
           .map((v) => ({ ...v, unidadeCodigo: v.unidadeId })),
@@ -114,6 +123,23 @@ export function criarPessoasRepoFake() {
     },
     async listarPessoas() {
       return { itens: [] };
+    },
+    async salvarRecebeAviso(_ctx, vinculoId, recebeAviso) {
+      const v = estado.vinculos.find((x) => x.id === vinculoId);
+      if (v) v.recebeAviso = recebeAviso;
+    },
+    async autorizadosDe() {
+      return [];
+    },
+    async contagensDePessoas() {
+      return {
+        todas: 0,
+        titulares: 0,
+        moradores: 0,
+        inquilinos: 0,
+        autorizados: 0,
+        semContato: 0,
+      };
     },
     async pessoasDaUnidade() {
       return [];

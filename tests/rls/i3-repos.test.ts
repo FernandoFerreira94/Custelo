@@ -473,6 +473,91 @@ describe("pessoasRepo contra o banco real (RLS)", () => {
     ).toBe(false);
   });
 
+  it("filtros e contagens de pessoas: tipo de vínculo e sem contato", async () => {
+    const antes = await pessoasRepo.contagensDePessoas(ctxA);
+    const unidadeId = await unidadeNova(ctxA, "FP-");
+    const marca = unico("Filtro");
+    const inq = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: `${marca} Inquilino`,
+      vinculo: { unidadeId, tipo: "inquilino", recebeAviso: true },
+      contatos: [
+        {
+          canal: "whatsapp",
+          valor: `+5511${unico("7")}`,
+          consentimento: {
+            em: new Date(),
+            origem: "gestor",
+            por: ctxA.usuarioId,
+          },
+        },
+      ],
+    });
+    const tit = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: `${marca} Titular`,
+      vinculo: { unidadeId, tipo: "titular", recebeAviso: true },
+      contatos: [],
+    });
+
+    const depois = await pessoasRepo.contagensDePessoas(ctxA);
+    const inquilinos = await pessoasRepo.listarPessoas(ctxA, {
+      busca: marca,
+      tipo: "inquilino",
+    });
+    const semContato = await pessoasRepo.listarPessoas(ctxA, {
+      busca: marca,
+      semContato: true,
+    });
+
+    expect(depois.todas).toBe(antes.todas + 2);
+    expect(depois.inquilinos).toBe(antes.inquilinos + 1);
+    expect(depois.titulares).toBe(antes.titulares + 1);
+    expect(depois.semContato).toBe(antes.semContato + 1);
+    expect(inquilinos.itens.map((x) => x.id)).toEqual([inq.pessoaId]);
+    expect(semContato.itens.map((x) => x.id)).toEqual([tit.pessoaId]);
+  });
+
+  it("autorizados de um morador e liga/desliga do aviso no vínculo", async () => {
+    const unidadeId = await unidadeNova(ctxA, "AU-");
+    const morador = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "Morador Autoriza",
+      vinculo: { unidadeId, tipo: "titular", recebeAviso: true },
+      contatos: [],
+    });
+    const joana = await pessoasRepo.criarPessoa(ctxA, {
+      nome: "Joana Autorizada",
+    });
+    const validoAte = new Date(Date.now() + 7 * 86_400_000);
+    await pessoasRepo.criarVinculo(ctxA, {
+      pessoaId: joana.id,
+      unidadeId,
+      tipo: "autorizado",
+      recebeAviso: false,
+      relacao: "irmã",
+      emNomeDePessoaId: morador.pessoaId,
+      vigenciaFim: validoAte,
+    });
+
+    const autorizados = await pessoasRepo.autorizadosDe(ctxA, morador.pessoaId);
+    expect(autorizados).toHaveLength(1);
+    expect(autorizados[0]).toMatchObject({
+      nome: "Joana Autorizada",
+      relacao: "irmã",
+    });
+    expect(autorizados[0]?.validoAte?.getTime()).toBeCloseTo(
+      validoAte.getTime(),
+      -3,
+    );
+
+    await pessoasRepo.salvarRecebeAviso(ctxA, morador.vinculoId, false);
+    expect(
+      (await pessoasRepo.buscarVinculo(ctxA, morador.vinculoId))?.recebeAviso,
+    ).toBe(false);
+    // De outro empreendimento, ninguém aparece.
+    await expect(
+      pessoasRepo.autorizadosDe(ctxB, morador.pessoaId),
+    ).resolves.toEqual([]);
+  });
+
   it("lista pessoas com as unidades e pagina por cursor", async () => {
     const prefixo = unico("Lista");
     const unidadeId = await unidadeNova(ctxA, "PL-");

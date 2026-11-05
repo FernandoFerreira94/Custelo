@@ -38,10 +38,33 @@ export type PessoaBruta = {
   vinculos: (Vinculo & { unidadeCodigo: string })[];
 };
 
+/** Quem foi autorizado a retirar em nome de um morador. */
+export type Autorizado = {
+  vinculoId: string;
+  pessoaId: string;
+  nome: string;
+  unidadeCodigo: string;
+  relacao: string | null;
+  validoAte: Date | null;
+};
+
 export type FiltroDePessoas = {
   busca?: string;
   unidadeId?: string;
+  /** Só quem tem vínculo ativo deste tipo. */
+  tipo?: TipoDeVinculo;
+  /** Só quem ninguém consegue avisar: sem contato com consentimento. */
+  semContato?: boolean;
   cursor?: string;
+};
+
+export type ContagensDePessoas = {
+  todas: number;
+  titulares: number;
+  moradores: number;
+  inquilinos: number;
+  autorizados: number;
+  semContato: number;
 };
 
 export interface PessoasRepo {
@@ -86,6 +109,14 @@ export interface PessoasRepo {
     ctx: Contexto,
     f: FiltroDePessoas,
   ): Promise<Pagina<PessoaResumo>>;
+  salvarRecebeAviso(
+    ctx: Contexto,
+    vinculoId: string,
+    recebeAviso: boolean,
+  ): Promise<void>;
+  /** Autorizados ativos a retirar em nome desta pessoa. */
+  autorizadosDe(ctx: Contexto, pessoaId: string): Promise<Autorizado[]>;
+  contagensDePessoas(ctx: Contexto): Promise<ContagensDePessoas>;
   pessoasDaUnidade(ctx: Contexto, unidadeId: string): Promise<PessoaBruta[]>;
   unidadesDaPessoa(
     ctx: Contexto,
