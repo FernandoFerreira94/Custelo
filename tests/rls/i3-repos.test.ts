@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import type { Contexto } from "@/application/auth/contexto";
 import { AreaEmCiclo } from "@/application/estrutura/ports";
+import { codigoPg } from "@/infrastructure/db/erros-pg";
 import { estruturaRepo } from "@/infrastructure/estrutura/estrutura-repo";
+import { pessoasRepo } from "@/infrastructure/pessoas/pessoas-repo";
 
 import {
   FIXTURE_ORG_A,
@@ -202,5 +204,168 @@ describe("estruturaRepo contra o banco real (RLS)", () => {
     await expect(
       estruturaRepo.contarUnidadesAtivasNaArea(ctxA, area.id),
     ).resolves.toBe(1);
+  });
+});
+
+describe("pessoasRepo contra o banco real (RLS)", () => {
+  setupRlsSuite(async (c) => {
+    await seedTenantPair(c);
+  });
+
+  async function unidadeNova(ctx: Contexto, prefixo: string) {
+    const r = await estruturaRepo.criarUnidades(ctx, [
+      {
+        codigo: unico(prefixo),
+        tipo: "apartamento",
+        apelidos: [],
+        avisarResponsavel: false,
+      },
+    ]);
+    return r.ids[0]!;
+  }
+
+  it("cria pessoa, vínculo e contato numa transação e devolve o CPF só em dígitos", async () => {
+    const unidadeId = await unidadeNova(ctxA, "PR-");
+
+    const { pessoaId, vinculoId } = await pessoasRepo.criarPessoaCompleta(
+      ctxA,
+      {
+        nome: "Helena Prado",
+        cpf: "52998224725",
+        vinculo: { unidadeId, tipo: "titular", recebeAviso: true },
+        contatos: [
+          {
+            canal: "whatsapp",
+            valor: `+5511${unico("9")}`,
+            consentimento: {
+              em: new Date(),
+              origem: "gestor",
+              por: ctxA.usuarioId,
+            },
+          },
+        ],
+      },
+    );
+
+    const p = await pessoasRepo.pessoaPorId(ctxA, pessoaId);
+    expect(p).toMatchObject({ nome: "Helena Prado", cpf: "52998224725" });
+    expect(p?.contatos).toHaveLength(1);
+    expect(p?.contatos[0]?.consentimentoEm).toBeInstanceOf(Date);
+    expect(p?.vinculos[0]).toMatchObject({ id: vinculoId, status: "ativo" });
+  });
+
+  it("não deixa gravar contato com consentimento pela metade (origem sem data)", async () => {
+    const unidadeId = await unidadeNova(ctxA, "PM-");
+    const { pessoaId } = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "Pessoa Meia",
+      vinculo: { unidadeId, tipo: "morador", recebeAviso: true },
+      contatos: [],
+    });
+    const c = await pessoasRepo.salvarContato(ctxA, {
+      pessoaId,
+      canal: "email",
+      valor: `${unico("m")}@x.com`,
+    });
+
+    await pessoasRepo.marcarConsentimento(ctxA, c.id, {
+      em: new Date(),
+      origem: "gestor",
+      por: ctxA.usuarioId,
+    });
+
+    const p = await pessoasRepo.pessoaPorId(ctxA, pessoaId);
+    expect(p?.contatos[0]?.consentimentoEm).toBeInstanceOf(Date);
+  });
+
+  it("encerrar vínculo grava fim e desliga o aviso; novo vínculo ativo é liberado", async () => {
+    const unidadeId = await unidadeNova(ctxA, "PE-");
+    const { pessoaId, vinculoId } = await pessoasRepo.criarPessoaCompleta(
+      ctxA,
+      {
+        nome: "Pessoa Encerra",
+        vinculo: { unidadeId, tipo: "morador", recebeAviso: true },
+        contatos: [],
+      },
+    );
+    const vinculo = await pessoasRepo.buscarVinculo(ctxA, vinculoId);
+
+    await pessoasRepo.salvarVinculoEncerrado(ctxA, {
+      ...vinculo!,
+      vigenciaFim: new Date(),
+      motivoEncerramento: "mudou",
+    });
+
+    expect(
+      await pessoasRepo.vinculoAtivo(ctxA, pessoaId, unidadeId),
+    ).toBeNull();
+    await expect(
+      pessoasRepo.criarVinculo(ctxA, {
+        pessoaId,
+        unidadeId,
+        tipo: "morador",
+        recebeAviso: true,
+      }),
+    ).resolves.toHaveProperty("id");
+  });
+
+  it("não vincula pessoa de outro empreendimento (FK composta)", async () => {
+    const unidadeA = await unidadeNova(ctxA, "PX-");
+    const unidadeB = await unidadeNova(ctxB, "PX-");
+    const { pessoaId } = await pessoasRepo.criarPessoaCompleta(ctxB, {
+      nome: "Pessoa de B",
+      vinculo: { unidadeId: unidadeB, tipo: "morador", recebeAviso: true },
+      contatos: [],
+    });
+
+    await expect(
+      pessoasRepo.criarVinculo(ctxA, {
+        pessoaId,
+        unidadeId: unidadeA,
+        tipo: "morador",
+        recebeAviso: true,
+      }),
+    ).rejects.toSatisfy((e: unknown) => codigoPg(e) === "23503");
+    await expect(pessoasRepo.pessoaPorId(ctxA, pessoaId)).resolves.toBeNull();
+  });
+
+  it("acha a pessoa ativa na unidade pelo nome normalizado", async () => {
+    const unidadeId = await unidadeNova(ctxA, "PN-");
+    const { pessoaId } = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "José Álvares",
+      vinculo: { unidadeId, tipo: "morador", recebeAviso: true },
+      contatos: [],
+    });
+
+    const achada = await pessoasRepo.pessoaAtivaNaUnidadePorNome(
+      ctxA,
+      unidadeId,
+      "jose alvares",
+    );
+
+    expect(achada).toEqual({ id: pessoaId });
+  });
+
+  it("lista pessoas com as unidades e pagina por cursor", async () => {
+    const prefixo = unico("Lista");
+    const unidadeId = await unidadeNova(ctxA, "PL-");
+    for (let i = 0; i < 55; i++) {
+      await pessoasRepo.criarPessoaCompleta(ctxA, {
+        nome: `${prefixo} ${i}`,
+        vinculo: { unidadeId, tipo: "morador", recebeAviso: false },
+        contatos: [],
+      });
+    }
+
+    const primeira = await pessoasRepo.listarPessoas(ctxA, { busca: prefixo });
+    const segunda = await pessoasRepo.listarPessoas(ctxA, {
+      busca: prefixo,
+      cursor: primeira.proximo,
+    });
+
+    expect(primeira.itens).toHaveLength(50);
+    expect(segunda.itens).toHaveLength(5);
+    expect(primeira.itens[0]?.unidades).toHaveLength(1);
+    const ids = [...primeira.itens, ...segunda.itens].map((p) => p.id);
+    expect(new Set(ids).size).toBe(55);
   });
 });
