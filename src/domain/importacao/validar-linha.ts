@@ -449,3 +449,28 @@ export function validarLinha(
       return validarAreaComum(dados, contexto);
   }
 }
+
+/**
+ * Chave que `validarLinha` registra em `vistos` para a linha já normalizada. Serve para
+ * remontar o `vistos` ao revalidar UMA linha sem reler o arquivo inteiro.
+ */
+export function chaveDaLinha(
+  cadastro: Cadastro,
+  dados: Record<string, unknown>,
+): string | null {
+  const t = (campo: string) => String(dados[campo] ?? "");
+  switch (cadastro) {
+    case "unidades":
+      return t("codigo") ? `u:${normalizarCodigo(t("codigo"))}` : null;
+    case "moradores":
+      return t("unidadeCodigo") && t("nome")
+        ? `m:${normalizarCodigo(t("unidadeCodigo"))}|${nomeNormalizado(t("nome"))}|${t("whatsapp")}`
+        : null;
+    case "funcionarios":
+      return t("email") ? `f:${t("email")}` : null;
+    case "areas_comuns":
+      return t("codigo") ? `a:${normalizarCodigo(t("codigo"))}` : null;
+    default:
+      return null;
+  }
+}
