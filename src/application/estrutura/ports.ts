@@ -38,6 +38,19 @@ export type UnidadeResumo = {
   apelidos: string[];
 };
 
+/** Uma unidade na árvore: o bastante para o selo e o painel, sem ir ao banco de novo. */
+export type UnidadeNaArvore = {
+  id: string;
+  codigo: string;
+  tipo: TipoUnidade;
+  areaId: string | null;
+  apelidos: string[];
+  /** Nomes de quem mora (titular, morador, inquilino, dependente) com vínculo ativo. */
+  moradores: string[];
+  /** Ninguém com vínculo ativo que recebe aviso E contato com consentimento. */
+  semContato: boolean;
+};
+
 export type Pagina<T> = { itens: T[]; proximo?: string };
 
 export type FiltroDeUnidades = {
@@ -70,6 +83,8 @@ export class AreaEmCiclo extends Error {
 
 export interface EstruturaRepo {
   arvore(ctx: Contexto): Promise<NoArvore[]>;
+  /** Todas as unidades ativas (até o limite do repositório) para montar a árvore. */
+  resumoDeUnidades(ctx: Contexto): Promise<UnidadeNaArvore[]>;
   listarUnidades(
     ctx: Contexto,
     f: FiltroDeUnidades,

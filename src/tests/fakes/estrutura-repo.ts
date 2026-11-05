@@ -27,6 +27,9 @@ export function criarEstruturaRepoFake() {
     async arvore() {
       return [];
     },
+    async resumoDeUnidades() {
+      return [];
+    },
     async listarUnidades(_ctx: Contexto, f) {
       estado.listagens.push(f);
       return { itens: [] };

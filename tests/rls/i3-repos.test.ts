@@ -51,7 +51,7 @@ describe("estruturaRepo contra o banco real (RLS)", () => {
 
     expect(r).toEqual({ areas: 3, unidades: 6 });
     const arvore = await estruturaRepo.arvore(ctxA);
-    const no = arvore.find((a) => a.nome === bloco);
+    const no = arvore.find((a) => a.nome === `Bloco ${bloco}`);
     expect(no?.filhos.map((f) => f.unidadesAtivas)).toEqual([3, 3]);
   });
 
@@ -83,7 +83,7 @@ describe("estruturaRepo contra o banco real (RLS)", () => {
     ).rejects.toBeTruthy();
 
     const arvore = await estruturaRepo.arvore(ctxA);
-    expect(arvore.some((a) => a.nome === bloco)).toBe(false);
+    expect(arvore.some((a) => a.nome === `Bloco ${bloco}`)).toBe(false);
   });
 
   it("acha código existente pelo normalizado, sem N+1", async () => {
@@ -343,6 +343,49 @@ describe("pessoasRepo contra o banco real (RLS)", () => {
     );
 
     expect(achada).toEqual({ id: pessoaId });
+  });
+
+  it("resumo da árvore: moradores e 'sem contato' só contam consentimento", async () => {
+    const comAviso = await unidadeNova(ctxA, "RS-");
+    const semConsentimento = await unidadeNova(ctxA, "RS-");
+    const vazia = await unidadeNova(ctxA, "RS-");
+    await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "Morador Com Aviso",
+      vinculo: { unidadeId: comAviso, tipo: "titular", recebeAviso: true },
+      contatos: [
+        {
+          canal: "whatsapp",
+          valor: `+5511${unico("9")}`,
+          consentimento: {
+            em: new Date(),
+            origem: "gestor",
+            por: ctxA.usuarioId,
+          },
+        },
+      ],
+    });
+    await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "Morador Sem Consentimento",
+      vinculo: {
+        unidadeId: semConsentimento,
+        tipo: "morador",
+        recebeAviso: true,
+      },
+      contatos: [{ canal: "whatsapp", valor: `+5511${unico("8")}` }],
+    });
+
+    const resumo = await estruturaRepo.resumoDeUnidades(ctxA);
+    const por = (id: string) => resumo.find((u) => u.id === id);
+
+    expect(por(comAviso)).toMatchObject({
+      moradores: ["Morador Com Aviso"],
+      semContato: false,
+    });
+    expect(por(semConsentimento)).toMatchObject({
+      moradores: ["Morador Sem Consentimento"],
+      semContato: true,
+    });
+    expect(por(vazia)).toMatchObject({ moradores: [], semContato: true });
   });
 
   it("lista pessoas com as unidades e pagina por cursor", async () => {

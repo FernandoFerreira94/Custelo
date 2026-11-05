@@ -5,6 +5,7 @@ import type {
   FiltroDeUnidades,
   NoArvore,
   Pagina,
+  UnidadeNaArvore,
   UnidadeResumo,
 } from "@/application/estrutura/ports";
 import { type Resultado, sucesso } from "@/lib/resultado";
@@ -35,4 +36,13 @@ export function unidadesSemContato(
   filtro: Omit<FiltroDeUnidades, "semContato"> = {},
 ) {
   return listarUnidades(deps, ctx, { ...filtro, semContato: true });
+}
+
+export async function resumoDeUnidades(
+  deps: DepsDeEstrutura,
+  ctx: Contexto,
+): Promise<Resultado<UnidadeNaArvore[]>> {
+  const negado = negarSemPermissao(ctx, "cadastro.ler");
+  if (negado) return negado;
+  return sucesso(await deps.repo.resumoDeUnidades(ctx));
 }

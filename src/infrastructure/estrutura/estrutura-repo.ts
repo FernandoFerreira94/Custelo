@@ -18,10 +18,12 @@ import {
   AreaEmCiclo,
   type EstruturaRepo,
   type NoArvore,
+  type UnidadeNaArvore,
 } from "@/application/estrutura/ports";
 import {
   areas,
   contatos,
+  empreendimentos,
   pontosRecebimento,
   unidades,
   vinculos,
@@ -29,6 +31,7 @@ import {
 import { withTenantDb } from "@/infrastructure/db/tenant-db";
 
 const TAMANHO_DA_PAGINA = 50;
+const LIMITE_DA_ARVORE = 5000;
 
 const tenant = (ctx: Contexto) => ({
   orgId: ctx.orgId,
@@ -116,6 +119,47 @@ export const estruturaRepo: EstruturaRepo = {
         ),
       );
       return montarArvore(linhas, porArea);
+    });
+  },
+
+  async resumoDeUnidades(ctx) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const linhas = await db.execute<{
+        id: string;
+        codigo: string;
+        tipo: UnidadeNaArvore["tipo"];
+        area_id: string | null;
+        apelidos: string[];
+        moradores: string[];
+        sem_contato: boolean;
+      }>(sql`
+        select
+          u.id, u.codigo, u.tipo, u.area_id, u.apelidos,
+          coalesce((
+            select array_agg(p.nome order by p.nome)
+            from vinculos v join pessoas p on p.id = v.pessoa_id
+            where v.unidade_id = u.id and v.status = 'ativo' and v.tipo <> 'autorizado'
+          ), '{}') as moradores,
+          not exists (
+            select 1
+            from vinculos v join contatos c on c.pessoa_id = v.pessoa_id
+            where v.unidade_id = u.id and v.status = 'ativo' and v.recebe_aviso
+              and c.ativo and c.consentimento_em is not null and c.status <> 'falha'
+          ) as sem_contato
+        from unidades u
+        where u.empreendimento_id = ${ctx.empreendimentoId}::uuid and u.ativo
+        order by u.codigo_normalizado
+        limit ${LIMITE_DA_ARVORE}
+      `);
+      return Array.from(linhas).map((l) => ({
+        id: l.id,
+        codigo: l.codigo,
+        tipo: l.tipo,
+        areaId: l.area_id,
+        apelidos: l.apelidos,
+        moradores: l.moradores,
+        semContato: l.sem_contato,
+      }));
     });
   },
 
@@ -308,6 +352,13 @@ export const estruturaRepo: EstruturaRepo = {
     return withTenantDb(tenant(ctx), async (db) => {
       let totalAreas = 0;
       let totalUnidades = 0;
+      // "Bloco", "Torre", "Quadra"…: o rótulo é do empreendimento.
+      const [emp] = await db
+        .select({ rotulo: empreendimentos.rotuloCamadaIntermediaria })
+        .from(empreendimentos)
+        .where(eq(empreendimentos.id, ctx.empreendimentoId))
+        .limit(1);
+      const rotulo = emp?.rotulo?.trim() || "Bloco";
       for (const [ordemBloco, bloco] of plano.blocos.entries()) {
         let blocoId: string | null = null;
         if (bloco.nome !== "") {
@@ -316,7 +367,7 @@ export const estruturaRepo: EstruturaRepo = {
             .values({
               orgId: ctx.orgId,
               empreendimentoId: ctx.empreendimentoId,
-              nome: bloco.nome,
+              nome: `${rotulo} ${bloco.nome}`,
               ordem: ordemBloco,
             })
             .returning({ id: areas.id });
