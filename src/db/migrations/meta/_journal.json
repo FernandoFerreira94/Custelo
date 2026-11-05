@@ -85,6 +85,13 @@
       "when": 1755567500000,
       "tag": "0011_i3_modelo",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1755567600000,
+      "tag": "0012_i3_importacao",
+      "breakpoints": true
     }
   ]
 }
