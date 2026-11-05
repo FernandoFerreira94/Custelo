@@ -247,6 +247,7 @@ export async function deactivateUser(
   input: {
     actorUserId: string;
     targetUserId: string;
+    motivo?: string;
   },
   deps: ManageAccessDeps = depsPadrao,
 ): Promise<ManageAccessResult> {
@@ -276,6 +277,7 @@ export async function deactivateUser(
     acao: "USUARIO_DESATIVADO",
     alvoTipo: "usuario",
     alvoId: input.targetUserId,
+    motivo: input.motivo,
     origem: "web",
   });
 

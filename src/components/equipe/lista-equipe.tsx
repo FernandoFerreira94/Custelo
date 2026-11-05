@@ -12,7 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DesativarMembro } from "@/components/equipe/desativar-membro";
 import type { MembroEquipe } from "@/infrastructure/auth/equipe-repo";
+import type { Resultado } from "@/lib/resultado";
 
 function iniciais(nome: string): string {
   const [a = "", b = ""] = nome.trim().split(/\s+/);
@@ -39,8 +41,19 @@ function Situacao({ status }: { status: MembroEquipe["status"] }) {
   return <span className="text-muted-foreground">Ativo</span>;
 }
 
+type Acao = (entrada: unknown) => Promise<Resultado<unknown>>;
+
 /** USR-001. O e-mail aparece mascarado na lista (o inteiro fica para o detalhe). */
-export function ListaEquipe({ membros }: { membros: MembroEquipe[] }) {
+export function ListaEquipe({
+  membros,
+  usuarioAtualId,
+  desativar,
+}: {
+  membros: MembroEquipe[];
+  usuarioAtualId?: string;
+  /** Sem ela, a coluna de ações não aparece (auditor só lê). */
+  desativar?: Acao;
+}) {
   return (
     <Table>
       <TableHeader>
@@ -48,6 +61,11 @@ export function ListaEquipe({ membros }: { membros: MembroEquipe[] }) {
           <TableHead>Pessoa</TableHead>
           <TableHead>Papel</TableHead>
           <TableHead>Situação</TableHead>
+          {desativar ? (
+            <TableHead>
+              <span className="sr-only">Ações</span>
+            </TableHead>
+          ) : null}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -70,6 +88,17 @@ export function ListaEquipe({ membros }: { membros: MembroEquipe[] }) {
             <TableCell>
               <Situacao status={m.status} />
             </TableCell>
+            {desativar ? (
+              <TableCell className="text-right">
+                {m.status === "ativo" && m.usuarioId !== usuarioAtualId ? (
+                  <DesativarMembro
+                    usuarioId={m.usuarioId}
+                    nome={m.nome}
+                    desativar={desativar}
+                  />
+                ) : null}
+              </TableCell>
+            ) : null}
           </TableRow>
         ))}
       </TableBody>

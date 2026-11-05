@@ -12,6 +12,7 @@ import { contextoDaSessao } from "@/infrastructure/auth/contexto";
 import { listarEquipe } from "@/infrastructure/auth/equipe-repo";
 
 import { convidarAction } from "./actions";
+import { desativarAction } from "./desativar";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Equipe" };
@@ -47,7 +48,11 @@ export default async function EquipePage() {
       </div>
       <Card className="rounded-3xl">
         <CardContent>
-          <ListaEquipe membros={membros} />
+          <ListaEquipe
+            membros={membros}
+            usuarioAtualId={ctx.data.usuarioId}
+            desativar={podeGerir ? desativarAction : undefined}
+          />
         </CardContent>
       </Card>
     </main>
