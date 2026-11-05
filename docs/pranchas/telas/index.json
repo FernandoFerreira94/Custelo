@@ -1,203 +1,5 @@
 [
  {
-  "aba": "cadastros",
-  "id": "UNI-002",
-  "titulo": "Unidades",
-  "file": "cadastros/uni-002-unidades.webp"
- },
- {
-  "aba": "cadastros",
-  "id": "PES-001 + PES-003",
-  "titulo": "Pessoas e detalhe",
-  "file": "cadastros/pes-001-pes-003-pessoas-e-detalhe.webp"
- },
- {
-  "aba": "cadastros",
-  "id": "NOT-001 + NOT-002",
-  "titulo": "Avisos e tentativas",
-  "file": "cadastros/not-001-not-002-avisos-e-tentativas.webp"
- },
- {
-  "aba": "cadastros",
-  "id": "DEV-001 + DEV-002",
-  "titulo": "Registrar devolução",
-  "file": "cadastros/dev-001-dev-002-registrar-devolucao.webp"
- },
- {
-  "aba": "cadastros",
-  "id": "DEV-003",
-  "titulo": "Confirmação",
-  "file": "cadastros/dev-003-confirmacao.webp"
- },
- {
-  "aba": "estrutura",
-  "id": "UNI-001",
-  "titulo": "Estrutura do condomínio",
-  "file": "estrutura/uni-001-estrutura-do-condominio.webp"
- },
- {
-  "aba": "estrutura",
-  "id": "UNI-003 + UNI-004",
-  "titulo": "Áreas e pontos de recebimento",
-  "file": "estrutura/uni-003-uni-004-areas-e-pontos-de-recebimento.webp"
- },
- {
-  "aba": "estrutura",
-  "id": "PES-002",
-  "titulo": "Vínculos da pessoa",
-  "file": "estrutura/pes-002-vinculos-da-pessoa.webp"
- },
- {
-  "aba": "estados",
-  "id": "ERR-SESSAO",
-  "titulo": "Sessão expirada",
-  "file": "estados/err-sessao-sessao-expirada.webp"
- },
- {
-  "aba": "estados",
-  "id": "ERR-OFFLINE",
-  "titulo": "Sem internet ao abrir",
-  "file": "estados/err-offline-sem-internet-ao-abrir.webp"
- },
- {
-  "aba": "estados",
-  "id": "ERR-MANUT",
-  "titulo": "Manutenção",
-  "file": "estados/err-manut-manutencao.webp"
- },
- {
-  "aba": "estados",
-  "id": "LOAD-DASH",
-  "titulo": "Painel carregando",
-  "file": "estados/load-dash-painel-carregando.webp"
- },
- {
-  "aba": "estados",
-  "id": "LOAD-FILA",
-  "titulo": "Fila carregando",
-  "file": "estados/load-fila-fila-carregando.webp"
- },
- {
-  "aba": "estados",
-  "id": "LOAD-1A-VEZ",
-  "titulo": "Preparando o aparelho",
-  "file": "estados/load-1a-vez-preparando-o-aparelho.webp"
- },
- {
-  "aba": "importacao",
-  "id": "IMP-001",
-  "titulo": "Enviar planilha",
-  "file": "importacao/imp-001-enviar-planilha.webp"
- },
- {
-  "aba": "importacao",
-  "id": "IMP-002",
-  "titulo": "Conferir",
-  "file": "importacao/imp-002-conferir.webp"
- },
- {
-  "aba": "importacao",
-  "id": "IMP-003",
-  "titulo": "Corrigir",
-  "file": "importacao/imp-003-corrigir.webp"
- },
- {
-  "aba": "importacao",
-  "id": "IMP-004",
-  "titulo": "Resultado do lote",
-  "file": "importacao/imp-004-resultado-do-lote.webp"
- },
- {
-  "aba": "importacao",
-  "id": "REL-001",
-  "titulo": "Operação",
-  "file": "importacao/rel-001-operacao.webp"
- },
- {
-  "aba": "importacao",
-  "id": "REL-002",
-  "titulo": "Avisos",
-  "file": "importacao/rel-002-avisos.webp"
- },
- {
-  "aba": "importacao",
-  "id": "REL-003 + REL-004",
-  "titulo": "Retiradas e exceções",
-  "file": "importacao/rel-003-rel-004-retiradas-e-excecoes.webp"
- },
- {
-  "aba": "importacao",
-  "id": "REL-005",
-  "titulo": "Exportar período",
-  "file": "importacao/rel-005-exportar-periodo.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-010",
-  "titulo": "Botão em todo cadastro",
-  "file": "importar/imp-010-botao-em-todo-cadastro.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-011",
-  "titulo": "Enviar arquivo",
-  "file": "importar/imp-011-enviar-arquivo.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-012",
-  "titulo": "Conferir e corrigir por linha",
-  "file": "importar/imp-012-conferir-e-corrigir-por-linha.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-013",
-  "titulo": "PDF assistido",
-  "file": "importar/imp-013-pdf-assistido.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-014",
-  "titulo": "Confirmar",
-  "file": "importar/imp-014-confirmar.webp"
- },
- {
-  "aba": "importar",
-  "id": "IMP-015",
-  "titulo": "Concluir",
-  "file": "importar/imp-015-concluir.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-avisos",
-  "titulo": "Avisos e alertas",
-  "file": "estados/bloco-e-avisos.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-erros",
-  "titulo": "Páginas de erro",
-  "file": "estados/bloco-e-erros.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-carregar",
-  "titulo": "Carregamento e esqueleto",
-  "file": "estados/bloco-e-carregar.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-vazio",
-  "titulo": "Telas vazias",
-  "file": "estados/bloco-e-vazio.webp"
- },
- {
-  "aba": "formularios",
-  "id": "FORMS",
-  "titulo": "Formulários de cadastro (página inteira)",
-  "file": "formularios/formularios-completo.webp"
- },
- {
   "aba": "entrada",
   "id": "SPLASH",
   "titulo": "Abertura",
@@ -420,6 +222,54 @@
   "file": "painel/mob-c-portaria.webp"
  },
  {
+  "aba": "cadastros",
+  "id": "UNI-002",
+  "titulo": "Unidades",
+  "file": "cadastros/uni-002-unidades.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "PES-001 + PES-003",
+  "titulo": "Pessoas e detalhe",
+  "file": "cadastros/pes-001-pes-003-pessoas-e-detalhe.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "NOT-001 + NOT-002",
+  "titulo": "Avisos e tentativas",
+  "file": "cadastros/not-001-not-002-avisos-e-tentativas.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "DEV-001 + DEV-002",
+  "titulo": "Registrar devolução",
+  "file": "cadastros/dev-001-dev-002-registrar-devolucao.webp"
+ },
+ {
+  "aba": "cadastros",
+  "id": "DEV-003",
+  "titulo": "Confirmação",
+  "file": "cadastros/dev-003-confirmacao.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "UNI-001",
+  "titulo": "Estrutura do condomínio",
+  "file": "estrutura/uni-001-estrutura-do-condominio.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "UNI-003 + UNI-004",
+  "titulo": "Áreas e pontos de recebimento",
+  "file": "estrutura/uni-003-uni-004-areas-e-pontos-de-recebimento.webp"
+ },
+ {
+  "aba": "estrutura",
+  "id": "PES-002",
+  "titulo": "Vínculos da pessoa",
+  "file": "estrutura/pes-002-vinculos-da-pessoa.webp"
+ },
+ {
   "aba": "gestao",
   "id": "USR-001 + USR-003",
   "titulo": "Equipe e convite",
@@ -454,6 +304,126 @@
   "id": "CFG-008",
   "titulo": "Retenção e dados",
   "file": "gestao/cfg-008-retencao-e-dados.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-SESSAO",
+  "titulo": "Sessão expirada",
+  "file": "estados/err-sessao-sessao-expirada.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-OFFLINE",
+  "titulo": "Sem internet ao abrir",
+  "file": "estados/err-offline-sem-internet-ao-abrir.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "ERR-MANUT",
+  "titulo": "Manutenção",
+  "file": "estados/err-manut-manutencao.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-DASH",
+  "titulo": "Painel carregando",
+  "file": "estados/load-dash-painel-carregando.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-FILA",
+  "titulo": "Fila carregando",
+  "file": "estados/load-fila-fila-carregando.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "LOAD-1A-VEZ",
+  "titulo": "Preparando o aparelho",
+  "file": "estados/load-1a-vez-preparando-o-aparelho.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-001",
+  "titulo": "Enviar planilha",
+  "file": "importacao/imp-001-enviar-planilha.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-002",
+  "titulo": "Conferir",
+  "file": "importacao/imp-002-conferir.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-003",
+  "titulo": "Corrigir",
+  "file": "importacao/imp-003-corrigir.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "IMP-004",
+  "titulo": "Resultado do lote",
+  "file": "importacao/imp-004-resultado-do-lote.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-001",
+  "titulo": "Operação",
+  "file": "importacao/rel-001-operacao.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-002",
+  "titulo": "Avisos",
+  "file": "importacao/rel-002-avisos.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-003 + REL-004",
+  "titulo": "Retiradas e exceções",
+  "file": "importacao/rel-003-rel-004-retiradas-e-excecoes.webp"
+ },
+ {
+  "aba": "importacao",
+  "id": "REL-005",
+  "titulo": "Exportar período",
+  "file": "importacao/rel-005-exportar-periodo.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-010",
+  "titulo": "Botão em todo cadastro",
+  "file": "importar/imp-010-botao-em-todo-cadastro.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-011",
+  "titulo": "Enviar arquivo",
+  "file": "importar/imp-011-enviar-arquivo.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-012",
+  "titulo": "Conferir e corrigir por linha",
+  "file": "importar/imp-012-conferir-e-corrigir-por-linha.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-013",
+  "titulo": "PDF assistido",
+  "file": "importar/imp-013-pdf-assistido.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-014",
+  "titulo": "Confirmar",
+  "file": "importar/imp-014-confirmar.webp"
+ },
+ {
+  "aba": "importar",
+  "id": "IMP-015",
+  "titulo": "Concluir",
+  "file": "importar/imp-015-concluir.webp"
  },
  {
   "aba": "config",
@@ -910,5 +880,35 @@
   "id": "CFG-009",
   "titulo": "Aprovar acesso de suporte",
   "file": "piloto/cfg-009-aprovar-acesso-de-suporte.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-avisos",
+  "titulo": "Avisos e alertas",
+  "file": "estados/bloco-e-avisos.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-erros",
+  "titulo": "Páginas de erro",
+  "file": "estados/bloco-e-erros.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-carregar",
+  "titulo": "Carregamento e esqueleto",
+  "file": "estados/bloco-e-carregar.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-vazio",
+  "titulo": "Telas vazias",
+  "file": "estados/bloco-e-vazio.webp"
+ },
+ {
+  "aba": "formularios",
+  "id": "FORMS",
+  "titulo": "Formulários de cadastro (página inteira)",
+  "file": "formularios/formularios-completo.webp"
  }
 ]
