@@ -16,11 +16,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  type Grants,
-  PermissionMatrix,
-  type PermissionGroup,
-  type Role,
+import { MatrizDePapeis } from "@/components/equipe/matriz-de-papeis";
+import type {
+  Grants,
+  PermissionGroup,
+  Role,
 } from "@/components/ui/permission-matrix";
 import { contextoDaSessao } from "@/infrastructure/auth/contexto";
 
@@ -73,12 +73,10 @@ export default async function PapeisPage() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <Card className="rounded-3xl">
           <CardContent>
-            <PermissionMatrix
-              roles={PAPEIS}
-              groups={GRUPOS}
-              value={CONCEDIDO}
-              onValueChange={() => {}}
-              readOnly
+            <MatrizDePapeis
+              papeis={PAPEIS}
+              grupos={GRUPOS}
+              concedido={CONCEDIDO}
             />
           </CardContent>
         </Card>
