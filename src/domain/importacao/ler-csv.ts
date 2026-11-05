@@ -60,21 +60,12 @@ function dividir(texto: string, separador: string): string[][] {
 }
 
 /**
- * Lê CSV com `;` ou `,`, com ou sem BOM. Tudo é texto: o zero à esquerda
- * ("01") nunca se perde. Linha em branco é ignorada.
+ * Separa o cabeçalho das linhas de dados, ignora linha em branco e aplica o limite.
+ * Serve para CSV e para XLSX: o limite e as mensagens são os mesmos.
  */
-export function lerCsv(texto: string): Resultado<TabelaLida> {
-  const limpo = texto.replace(/^﻿/, "");
-  const primeiraLinha = limpo.split(/\r?\n/, 1)[0] ?? "";
-  if (!primeiraLinha.trim()) {
-    return falha("ENTRADA_INVALIDA", "O arquivo está vazio.");
-  }
-
-  const todas = dividir(limpo, detectarSeparador(primeiraLinha)).map((l) =>
-    l.map((c) => c.trim()),
-  );
+export function montarTabela(todas: string[][]): Resultado<TabelaLida> {
   const [cabecalhos = [], ...linhas] = todas;
-  const dados = linhas.filter((l) => l.some((c) => c !== ""));
+  const dados = linhas.filter((l) => l.some((c) => c.trim() !== ""));
 
   if (dados.length === 0) {
     return falha(
@@ -89,6 +80,24 @@ export function lerCsv(texto: string): Resultado<TabelaLida> {
     );
   }
   return sucesso({ cabecalhos, linhas: dados });
+}
+
+/**
+ * Lê CSV com `;` ou `,`, com ou sem BOM. Tudo é texto: o zero à esquerda
+ * ("01") nunca se perde. Linha em branco é ignorada.
+ */
+export function lerCsv(texto: string): Resultado<TabelaLida> {
+  const limpo = texto.replace(/^﻿/, "");
+  const primeiraLinha = limpo.split(/\r?\n/, 1)[0] ?? "";
+  if (!primeiraLinha.trim()) {
+    return falha("ENTRADA_INVALIDA", "O arquivo está vazio.");
+  }
+
+  return montarTabela(
+    dividir(limpo, detectarSeparador(primeiraLinha)).map((l) =>
+      l.map((c) => c.trim()),
+    ),
+  );
 }
 
 /**
