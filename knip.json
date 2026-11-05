@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/app/**/{page,layout,loading,error,global-error,not-found,route,default,template}.{ts,tsx}",
+    "src/middleware.ts",
+    "src/instrumentation*.ts",
+    "scripts/*.mjs",
+    "tests/**/*.{ts,tsx}"
+  ],
+  "project": ["src/**/*.{ts,tsx}", "scripts/*.mjs"],
+  "ignore": ["docs/pranchas/**"],
+  "ignoreDependencies": [
+    "dexie",
+    "@serwist/next",
+    "@tanstack/react-query",
+    "@tanstack/react-query-persist-client",
+    "@tanstack/react-table",
+    "@zxing/browser",
+    "signature_pad",
+    "posthog-js",
+    "recharts",
+    "uuidv7",
+    "shadcn"
+  ]
+}
