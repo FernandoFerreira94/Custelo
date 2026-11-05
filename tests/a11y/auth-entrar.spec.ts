@@ -3,6 +3,8 @@ import { expect, test } from "@playwright/test";
 
 test("AUTH-001 entrar sem violacao serious/critical", async ({ page }) => {
   await page.goto("/entrar");
+  // O splash (3,6 s) cobre a tela: medir contraste só depois que ele sai.
+  await page.waitForSelector(".pz-splash", { state: "detached" });
   await expect(page.getByRole("heading", { name: "Entrar" })).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   const graves = results.violations.filter(

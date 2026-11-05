@@ -4,12 +4,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field";
+import { DicaCampo } from "@/components/auth/dica-campo";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
@@ -50,14 +46,10 @@ export function AuthPasswordField({
       data-login-card-item={cardItem || undefined}
       data-invalid={error ? true : undefined}
     >
-      {labelEnd ? (
-        <div className="flex items-center justify-between gap-2">
-          <FieldLabel htmlFor={id}>{label}</FieldLabel>
-          {labelEnd}
-        </div>
-      ) : (
+      <div className="flex items-center justify-between gap-2">
         <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      )}
+        {labelEnd ?? (help ? <DicaCampo texto={help} /> : null)}
+      </div>
       <InputGroup className="h-12 min-h-[var(--size-touch-min)]">
         <InputGroupInput
           id={id}
@@ -65,9 +57,7 @@ export function AuthPasswordField({
           autoComplete={autoComplete}
           placeholder={placeholder}
           aria-invalid={Boolean(error)}
-          aria-describedby={
-            error ? `${id}-error` : help ? `${id}-help` : undefined
-          }
+          aria-describedby={error ? `${id}-error` : undefined}
           {...register}
         />
         <InputGroupAddon align="inline-end">
@@ -82,11 +72,7 @@ export function AuthPasswordField({
           </InputGroupButton>
         </InputGroupAddon>
       </InputGroup>
-      {error ? (
-        <FieldError id={`${id}-error`}>{error}</FieldError>
-      ) : help ? (
-        <FieldDescription id={`${id}-help`}>{help}</FieldDescription>
-      ) : null}
+      {error ? <FieldError id={`${id}-error`}>{error}</FieldError> : null}
     </Field>
   );
 }

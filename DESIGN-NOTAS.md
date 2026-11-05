@@ -62,6 +62,9 @@ system faltou. Levar ao repo `webcode-design`.
 - **Contraste do selo de sucesso:** `--wc-success` passa de `#15803d` para
   `#166534` (4,27 → acima de 4,5:1 sobre `success-soft`). `--state-retirada`
   segue `#15803d`.
+- **Contraste do selo de aviso:** `--wc-warning` deixa de seguir `--state-aguardando`
+  e passa a `#a64b07` (4,22 → 4,77:1 sobre `warning-soft`). `--state-aguardando`
+  segue `#b45309` (branco sobre sólido).
 - **Sem `loading.tsx` em `(auth)`:** um `loading.tsx` vazio fazia o redirect de
   `/contexto` virar meta refresh (200) e reprovava o a11y da raiz. Sem ele o
   redirect volta a ser 307.
