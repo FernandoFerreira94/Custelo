@@ -43,7 +43,7 @@ Atualizado: **19/08/2026**
 **Fase atual:** I3 (estrutura e pessoas). AUTH-001..004 estao em REVIEW: RLS e
 E2E desktop/OPS revalidados, mas `pnpm verify`, a11y global e a configuracao
 humana de redirects, templates/SMTP e leaked-password protection em
-staging/producao continuam pendentes. AUTH-005/006 estao DONE.
+staging/producao continuam pendentes. AUTH-005/006 estao em REVIEW (visual migrado para a WebCode UI).
 
 ## Regra obrigatoria — ao finalizar uma pagina
 
@@ -77,8 +77,8 @@ Colunas abreviadas nas tabelas: **D** = Design · **F** = Frontend · **B** = Ba
 | AUTH-002 | Convite / 1o acesso | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Callback seguro; nome/senha; papel e escopo; ativacao server-side   |
 | AUTH-003 | Recuperar senha     | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Envio sem enumerar conta; callback token-hash/PKCE                  |
 | AUTH-004 | Definir senha       | `/(auth)/entrar`     | APPROVED    | REVIEW      | REVIEW      | DONE        | Nova senha; outras sessoes encerradas; sessao atual preservada      |
-| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | DONE        | DONE        | DONE        | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB     |
-| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | DONE        | DONE        | DONE        | Sessao sem escopo/claim util; sair e voltar ao login                |
+| AUTH-005 | Selecionar contexto | `/(auth)/contexto`   | APPROVED    | REVIEW      | DONE        | DONE        | Lista org/empreendimento; escopo na sessao; redirect OPS ou WEB     |
+| AUTH-006 | Sem acesso          | `/(auth)/sem-acesso` | APPROVED    | REVIEW      | DONE        | DONE        | Sessao sem escopo/claim util; sair e voltar ao login                |
 | AUTH-007 | MFA / step-up       | pos-MVP              | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED | Segundo fator em acao elevada; pos-piloto                           |
 
 ## Wave 02 — OPS Recebimento · Fases I5/I6

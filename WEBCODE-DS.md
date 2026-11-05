@@ -14,6 +14,13 @@ Este projeto usa o design system da WebCodeFF (repo `FernandoFerreira94/webcode-
 - Estado nunca só por cor: cor + label + ícone. Alvo de toque ≥ 44px; ação primária 48–56px.
 - Conflito entre o DS WebCode e o LOCK do Custelo: o LOCK vence até um ADR novo.
 
+## Tema, plano B e avisos
+
+- Tema = `theme-custelo` + override Nevoa no `globals.css` (o `globals.css` e a fonte canonica).
+- Plano B quando o registry nao responde: `scripts/webcode-add.mjs`.
+- Toast x `notify()`: `notify()` para o resultado de uma acao do usuario (some sozinho);
+  alerta/banner na tela para estado que precisa continuar visivel (erro de login, bloqueio).
+
 ## Componentes
 
 1. Existe em `@webcode`? Instale: `npx shadcn@latest add @webcode/<nome>` (namespace `@webcode` no `components.json`, registry público, sem token).

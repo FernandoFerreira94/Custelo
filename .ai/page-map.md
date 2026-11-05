@@ -23,10 +23,10 @@ CSV + pages-roadmap (F/B/T).
 - Actions: entrar · esqueci senha · enviar link · definir senha · aceitar
   convite e ativar usuario/escopo.
 - States: validacao · loading · erro de credencial · sucesso (redirect
-  `/contexto`) · reduced-motion (pula intro GSAP).
+  `/contexto`) · reduced-motion (pula o splash).
 - Connects to: `/contexto` · `/sem-acesso`.
-- Notes: GSAP so nesta tela. A intro bloqueia interacao ate o palco estar
-  hidratado. Bola `primary` atras do card. Senha min 10. AUTH-001..004 REVIEW:
+- Notes: splash CSS na 1a abertura da sessao; transicao CSS entre cards.
+  Ajuda longa dos campos fica no "?" do label (tooltip). Senha min 10. AUTH-001..004 REVIEW:
   RLS e E2E desktop/OPS revalidados; fechamento formal aguarda `pnpm verify`,
   a11y global e configuracao de Auth no Supabase.
 

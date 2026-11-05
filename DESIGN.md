@@ -16,8 +16,10 @@ decoracao que compete com o dado.
 
 ## Tokens
 
-Marca LOCKED (ADR-021, Nevoa + Brasa): navy `#0C2C55` · brasa `#D23B26` ·
-Nevoa `#EEF1F5` · ocean `#629FAD` · erro carmim `#B4123F`.
+Marca LOCKED (ADR-021, Nevoa + Brasa): fundo Nevoa `#EEF1F5` · navy `#0C2C55` ·
+ocean `#629FAD` · brasa `#D23B26` no botao pequeno · erro carmim `#B4123F`.
+Jakarta (titulos) e Inter (corpo). Superficies flutuam: tom solido + borda 1px +
+sombra de elevacao. Fonte: `docs/pranchas/`.
 
 Light: fundo Nevoa, cards brancos, foreground e primary navy. Botao grande e
 card de destaque navy; botao pequeno de acao `variant="brasa"`. Nunca brasa em
@@ -63,8 +65,8 @@ continua na fila. Toast de sucesso nao bloqueia o proximo item.
 `prefers-reduced-motion` e global.
 
 OPS: so CSS / `tw-animate-css`. Sem Framer Motion.
-AUTH `/entrar`: GSAP + `@gsap/react` **restritos a essa tela** (intro +
-translate de palco). Nao espalhar GSAP para o PWA.
+AUTH `/entrar`: splash CSS na 1a abertura da sessao e transicao CSS entre
+cards. Sem GSAP; nao espalhar biblioteca de motion para o PWA.
 
 ## States
 
