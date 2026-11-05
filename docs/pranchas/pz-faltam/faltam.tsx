@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {
+  ChevronLeftIcon,
   AlertTriangleIcon,
   ArrowRightIcon,
   BadgeCheckIcon,
@@ -40,6 +41,7 @@ import {
 } from "lucide-react"
 
 import { NEVOA, Prancha } from "../pranchas/pranchas"
+import { NavigationBar } from "@/registry/webcode/ui/navigation-bar"
 import { ShellOrg, NAV_ORG } from "../pz-config/config"
 import { Busca, Moldura, Perfil, Trilho } from "../pz-dash/painel"
 import { ShellGestao } from "../pz-gestao/gestao"
@@ -127,43 +129,53 @@ function Estados({ itens }: { itens: { titulo: string; children: React.ReactNode
    1 · OPT-IN DO MORADOR (página pública, celular)
    ===================================================================== */
 
-function Topo({ condominio = "Residencial Vila Verde" }: { condominio?: string }) {
+// Celular: sem logo. Barra com voltar e título no centro; pouco texto, ação na frente.
+function Voltar({ label = "Voltar" }: { label?: string }) {
   return (
-    <header className="grid gap-3 px-5 pt-6">
-      <PzMarca texto="text-xl" simbolo="size-8" />
-      <p className="text-sm text-muted-foreground"><Building2Icon aria-hidden className="me-1 inline size-4" />{condominio}</p>
-    </header>
+    <Button variant="ghost" size="icon" aria-label={label}>
+      <ChevronLeftIcon aria-hidden />
+    </Button>
   )
 }
 
-function PaginaPublica({ children, rodape }: { children: React.ReactNode; rodape?: React.ReactNode }) {
+function PaginaPublica({ titulo, voltar = true, children, rodape }: { titulo: string; voltar?: boolean; children: React.ReactNode; rodape?: React.ReactNode }) {
   return (
     <div className="flex h-full flex-col bg-background">
+      <NavigationBar title={titulo} leading={voltar ? <Voltar /> : undefined} />
       <div className="min-h-0 flex-1 overflow-y-auto pb-4">
-        <Topo />
-        <div className="grid gap-5 px-5 pt-5">{children}</div>
+        <div className="grid gap-5 px-5 pt-4">{children}</div>
       </div>
       {rodape && <div className="grid gap-2 px-5 pt-3 pb-5">{rodape}</div>}
     </div>
   )
 }
 
+/** Destaque curto no topo: o que importa agora, sem parágrafo. */
+function Destaque({ rotulo, valor }: { rotulo: string; valor: string }) {
+  return (
+    <Card className="gap-1 rounded-2xl py-4">
+      <CardContent className="flex items-center justify-between px-4">
+        <span className="text-sm text-muted-foreground">{rotulo}</span>
+        <span className="font-mono text-lg font-bold">{valor}</span>
+      </CardContent>
+    </Card>
+  )
+}
+
 function OptInForm({ cartaz = false, enviando = false, invalido = false }: { cartaz?: boolean; enviando?: boolean; invalido?: boolean }) {
   return (
     <PaginaPublica
+      titulo="Receber avisos"
+      voltar={false}
       rodape={
         <>
           <Button shape="pill" size="lg" disabled={enviando} aria-busy={enviando}>
-            {enviando ? <><Spinner aria-hidden />Enviando…</> : "Quero receber avisos"}
+            {enviando ? <><Spinner aria-hidden />Enviando…</> : "Ativar avisos"}
           </Button>
           <p className="text-center text-xs text-muted-foreground"><a href="#privacidade" className="underline underline-offset-4">Política de privacidade</a></p>
         </>
       }
     >
-      <div className="grid gap-1">
-        <h1 className="font-display text-2xl font-bold">Quero receber avisos de encomenda</h1>
-        <p className="text-sm text-muted-foreground">Quando chegar algo para você na portaria, a gente avisa.</p>
-      </div>
       <form className="grid gap-4" onSubmit={(e) => e.preventDefault()}>
         {cartaz ? (
           <div className="grid grid-cols-2 gap-3">
@@ -181,12 +193,7 @@ function OptInForm({ cartaz = false, enviando = false, invalido = false }: { car
             </Field>
           </div>
         ) : (
-          <Card className="gap-1 rounded-2xl py-3">
-            <CardContent className="flex items-center justify-between px-4">
-              <span className="text-sm text-muted-foreground">Unidade</span>
-              <span className="font-mono font-semibold">B-304</span>
-            </CardContent>
-          </Card>
+          <Destaque rotulo="Vila Verde" valor="B-304" />
         )}
         <Field>
           <FieldLabel htmlFor={`o-nome-${cartaz}`}>Seu nome</FieldLabel>
@@ -195,7 +202,7 @@ function OptInForm({ cartaz = false, enviando = false, invalido = false }: { car
         <Field data-invalid={invalido || undefined}>
           <FieldLabel htmlFor={`o-zap-${cartaz}-${invalido}`}>WhatsApp</FieldLabel>
           <InputPhone id={`o-zap-${cartaz}-${invalido}`} accept="mobile" defaultValue={invalido ? "1134567" : "11987654321"} aria-invalid={invalido || undefined} aria-describedby={invalido ? "o-zap-erro" : undefined} />
-          {invalido && <FieldError id="o-zap-erro">Esse número não parece de celular. Confira o DDD e os 9 dígitos.</FieldError>}
+          {invalido && <FieldError id="o-zap-erro">Confira o DDD e os 9 dígitos.</FieldError>}
         </Field>
         <Field>
           <FieldLabel htmlFor={`o-mail-${cartaz}`}>E-mail (opcional)</FieldLabel>
@@ -204,10 +211,9 @@ function OptInForm({ cartaz = false, enviando = false, invalido = false }: { car
         <div className="flex items-start gap-3 rounded-2xl border bg-card p-3">
           <Checkbox id={`o-aceite-${cartaz}`} defaultChecked className="mt-0.5" />
           <Label htmlFor={`o-aceite-${cartaz}`} className="leading-snug font-normal">
-            Concordo em receber avisos de encomenda deste condomínio. Posso sair quando quiser respondendo SAIR.
+            Aceito os avisos. Saio quando quiser.
           </Label>
         </div>
-        {cartaz && <p className="text-xs text-muted-foreground">Pelo cartaz, a administração confirma seu cadastro antes do primeiro aviso.</p>}
       </form>
     </PaginaPublica>
   )
@@ -215,12 +221,11 @@ function OptInForm({ cartaz = false, enviando = false, invalido = false }: { car
 
 function OptInSucesso() {
   return (
-    <PaginaPublica rodape={<Button variant="ghost" shape="pill">Sair dos avisos</Button>}>
-      <Result status="success" title="Pronto!" description="Você vai receber os avisos no (11) 98765-4321." />
+    <PaginaPublica titulo="Avisos" voltar={false} rodape={<Button variant="ghost" shape="pill">Sair dos avisos</Button>}>
+      <Result status="success" title="Avisos ativados" description="(11) 98765-4321 · B-304" />
       <Alert variant="info">
-        <MessageCircleIcon aria-hidden />
-        <AlertTitle>Como chega</AlertTitle>
-        <AlertDescription>Uma mensagem do PacoteZap com a unidade e onde retirar. Nunca pedimos senha nem pagamento.</AlertDescription>
+        <ShieldCheckIcon aria-hidden />
+        <AlertTitle>Nunca pedimos senha nem pagamento</AlertTitle>
       </Alert>
     </PaginaPublica>
   )
@@ -228,8 +233,8 @@ function OptInSucesso() {
 
 function OptInVencido() {
   return (
-    <PaginaPublica>
-      <Result status="warning" title="Este link venceu" description="Convites valem 7 dias. Peça um novo na portaria ou use o QR do cartaz." />
+    <PaginaPublica titulo="Receber avisos" voltar={false}>
+      <Result status="warning" title="Link vencido" description="Peça outro na portaria." />
       <Button variant="outline" shape="pill" size="lg"><RefreshCwIcon aria-hidden />Pedir novo link</Button>
     </PaginaPublica>
   )
@@ -237,8 +242,8 @@ function OptInVencido() {
 
 function OptInJaCadastrado() {
   return (
-    <PaginaPublica>
-      <Result status="info" title="Este número já recebe avisos" description="(11) 9••••-4321 já está na B-304. Não precisa fazer nada." />
+    <PaginaPublica titulo="Receber avisos" voltar={false}>
+      <Result status="info" title="Já cadastrado" description="(11) 9••••-4321 · B-304" />
       <Button variant="outline" shape="pill" size="lg">Usar outro número</Button>
     </PaginaPublica>
   )
@@ -250,18 +255,14 @@ function OptInJaCadastrado() {
 
 function TitularPublico() {
   return (
-    <PaginaPublica rodape={<Button shape="pill" size="lg">Enviar pedido</Button>}>
-      <div className="grid gap-1">
-        <h1 className="font-display text-2xl font-bold">Seus dados no PacoteZap</h1>
-        <p className="text-sm text-muted-foreground">A administração do condomínio responde em até 15 dias.</p>
-      </div>
+    <PaginaPublica titulo="Seus dados" rodape={<Button shape="pill" size="lg">Enviar pedido</Button>}>
       <form className="grid gap-4" onSubmit={(e) => e.preventDefault()}>
         <RadioGroup defaultValue="copia" aria-label="O que você quer" className="grid gap-2">
           {[
-            ["copia", "Receber uma cópia dos meus dados", FileDownIcon],
-            ["corrigir", "Corrigir um dado", ClipboardListIcon],
-            ["excluir", "Excluir meus dados", Trash2Icon],
-            ["parar", "Parar de receber avisos", XCircleIcon],
+            ["copia", "Cópia dos dados", FileDownIcon],
+            ["corrigir", "Corrigir", ClipboardListIcon],
+            ["excluir", "Excluir", Trash2Icon],
+            ["parar", "Parar avisos", XCircleIcon],
           ].map(([v, t, Icon]) => {
             const I = Icon as typeof FileDownIcon
             return (
@@ -282,9 +283,8 @@ function TitularPublico() {
           <Input id="t-uni" defaultValue="B-305" />
         </Field>
         <Field>
-          <FieldLabel htmlFor="t-contato">Contato para a resposta</FieldLabel>
+          <FieldLabel htmlFor="t-contato">E-mail para a resposta</FieldLabel>
           <Input id="t-contato" type="email" defaultValue="helena@email.com" />
-          <FieldDescription>Só usamos para responder este pedido.</FieldDescription>
         </Field>
       </form>
     </PaginaPublica>
@@ -293,14 +293,9 @@ function TitularPublico() {
 
 function TitularEnviado() {
   return (
-    <PaginaPublica>
-      <Result status="success" title="Pedido registrado" description="A administração responde até 19/11 no e-mail helena@email.com." />
-      <Card className="gap-1 rounded-2xl py-3">
-        <CardContent className="flex items-center justify-between px-4">
-          <span className="text-sm text-muted-foreground">Protocolo</span>
-          <span className="font-mono font-semibold">LGPD-2611-0007</span>
-        </CardContent>
-      </Card>
+    <PaginaPublica titulo="Seus dados" voltar={false}>
+      <Result status="success" title="Pedido enviado" description="Resposta até 19/11" />
+      <Destaque rotulo="Protocolo" valor="LGPD-2611-0007" />
     </PaginaPublica>
   )
 }
@@ -684,13 +679,13 @@ function PortariaComAvisos() {
           <WifiOffIcon aria-hidden />
           <BannerContent>
             <BannerTitle>Sem internet</BannerTitle>
-            <BannerDescription>Pode seguir registrando. Sobe quando a rede voltar.</BannerDescription>
+            <BannerDescription>Pode registrar normal.</BannerDescription>
           </BannerContent>
         </Banner>
         <Banner variant="warning" className="px-4 py-2">
           <MessageCircleIcon aria-hidden />
           <BannerContent>
-            <BannerDescription>WhatsApp fora · os avisos ficam na fila. <a href="#mais" className="font-medium underline underline-offset-4">+1 aviso</a></BannerDescription>
+            <BannerDescription>WhatsApp fora. <a href="#mais" className="font-medium underline underline-offset-4">+1 aviso</a></BannerDescription>
           </BannerContent>
         </Banner>
       </div>
@@ -703,7 +698,6 @@ function PortariaComAvisos() {
             <Button shape="pill" size="lg" variant="secondary">Registrar encomenda</Button>
           </CardContent>
         </Card>
-        <p className="text-xs text-muted-foreground">Regra: “Sem internet” fica sempre em cima. As integrações juntam numa linha só, com o total.</p>
       </div>
     </div>
   )
@@ -711,16 +705,16 @@ function PortariaComAvisos() {
 
 function AvisosAbertos() {
   const lista: [typeof MessageCircleIcon, string, string][] = [
-    [MessageCircleIcon, "WhatsApp fora do ar", "Os avisos ficam na fila e saem quando voltar. 12 na fila."],
-    [CameraOffIcon, "Leitura da etiqueta lenta", "Digite a unidade. A foto continua sendo salva."],
-    [CloudOffIcon, "Fotos sem subir", "Pode seguir registrando. 3 fotos esperando."],
+    [MessageCircleIcon, "WhatsApp fora do ar", "12 avisos na fila."],
+    [CameraOffIcon, "Leitura da etiqueta lenta", "Digite a unidade."],
+    [CloudOffIcon, "Fotos sem subir", "3 fotos esperando."],
   ]
   return (
     <div className="flex h-full flex-col bg-sunken">
       <p aria-hidden className="px-4 pt-4 pb-6 text-sm font-semibold text-muted-foreground">Toque em “+1 aviso”</p>
       <section aria-label="Avisos do sistema" className="flex min-h-0 flex-1 flex-col gap-3 rounded-t-3xl border-t bg-card px-4 pt-3 pb-5 shadow-wc-lg">
         <span aria-hidden className="mx-auto h-1.5 w-10 rounded-full bg-border-strong" />
-        <h3 className="font-display text-xl font-bold">O que está fora agora</h3>
+        <h3 className="font-display text-xl font-bold">Fora do ar</h3>
         {lista.map(([I, t, d]) => (
           <Alert key={t} variant="warning">
             <I aria-hidden />
@@ -728,7 +722,6 @@ function AvisosAbertos() {
             <AlertDescription>{d}</AlertDescription>
           </Alert>
         ))}
-        <p className="text-xs text-muted-foreground">Não dá para fechar enquanto o problema existe. Some sozinho quando volta, com um toast “WhatsApp voltou”.</p>
       </section>
     </div>
   )
@@ -896,12 +889,9 @@ function MarcarExcecao() {
       <p aria-hidden className="px-4 pt-4 pb-6 text-sm font-semibold text-muted-foreground">Confirmar · B-304 · Mercado Livre</p>
       <section aria-label="Encomenda especial" className="flex min-h-0 flex-1 flex-col gap-4 rounded-t-3xl border-t bg-card px-4 pt-3 pb-5 shadow-wc-lg">
         <span aria-hidden className="mx-auto h-1.5 w-10 rounded-full bg-border-strong" />
-        <div className="grid gap-1">
-          <h3 className="font-display text-xl font-bold">É uma encomenda especial?</h3>
-          <p className="text-sm text-muted-foreground">O selo aparece na fila e no detalhe. Não muda nenhuma regra.</p>
-        </div>
+        <h3 className="font-display text-xl font-bold">Encomenda especial?</h3>
         <RadioGroup defaultValue="perecivel" aria-label="Tipo" className="grid gap-2">
-          {[["nao", "Não, é comum", ""], ["perecivel", "Perecível", "Comida, remédio, flores"], ["grande", "Volume grande", "Não cabe na prateleira"], ["outro", "Outro", "Escreva o motivo"]].map(([v, t, d]) => (
+          {[["nao", "Não", ""], ["perecivel", "Perecível", ""], ["grande", "Volume grande", ""], ["outro", "Outro", ""]].map(([v, t, d]) => (
             <RadioGroupCard key={v} value={v}>
               <RadioGroupCardContent>
                 <RadioGroupCardTitle>{t}</RadioGroupCardTitle>
@@ -911,7 +901,7 @@ function MarcarExcecao() {
           ))}
         </RadioGroup>
         <Field>
-          <FieldLabel htmlFor="ex-mot">Motivo curto (opcional)</FieldLabel>
+          <FieldLabel htmlFor="ex-mot">Motivo (opcional)</FieldLabel>
           <Input id="ex-mot" defaultValue="Caixa térmica, manter em pé" />
         </Field>
         <Button shape="pill" size="lg" className="mt-auto">Confirmar</Button>

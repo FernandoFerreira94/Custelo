@@ -37,6 +37,7 @@ import {
   WifiOffIcon,
 } from "lucide-react"
 
+import { ESCALA_CELULAR } from "../pranchas/pranchas"
 import { PhoneFrame } from "@/components/demos/phone-frame"
 import { ActivityRing } from "@/registry/webcode/ui/activity-ring"
 import { Avatar, AvatarFallback } from "@/registry/webcode/ui/avatar"
@@ -1109,7 +1110,7 @@ function Celular({ id, titulo, nota, children }: { id: string; titulo: string; n
         <span className="text-sm text-muted-foreground">{nota}</span>
       </figcaption>
       <PhoneFrame label={`${id} ${titulo}`} className="h-[844px] max-w-[390px]">
-        {children}
+        <div className="contents" style={ESCALA_CELULAR}>{children}</div>
       </PhoneFrame>
     </figure>
   )

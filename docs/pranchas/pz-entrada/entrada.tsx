@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 
 import { Celular, Moldura, PALETAS, vars } from "../pz-dash/painel"
+import { CICLO_CSS, CICLOS, CicloEstacoes } from "./ciclo"
 import { Badge } from "@/registry/webcode/ui/badge"
 import { Banner, BannerContent, BannerDescription, BannerTitle } from "@/registry/webcode/ui/banner"
 import { Button } from "@/registry/webcode/ui/button"
@@ -233,7 +234,7 @@ function Fundo() {
   )
 }
 
-function PainelMarca() {
+function PainelMarca({ Ciclo = CicloEstacoes }: { Ciclo?: () => React.ReactElement }) {
   return (
     <aside className="relative isolate flex flex-col justify-between gap-10 overflow-hidden rounded-[1.6rem] bg-primary p-10 text-primary-foreground">
       <Fundo />
@@ -242,25 +243,7 @@ function PainelMarca() {
         <h2 className="max-w-[16ch] font-display text-4xl leading-tight font-extrabold tracking-tight text-balance">
           A portaria registra. O morador fica sabendo.
         </h2>
-        <div aria-hidden className="relative h-48 max-w-md">
-          <div className="absolute inset-x-10 top-0 h-24 rounded-2xl" style={{ background: "color-mix(in oklab, var(--primary-foreground) 12%, var(--primary))" }} />
-          <div className="absolute inset-x-5 top-5 h-24 rounded-2xl" style={{ background: "color-mix(in oklab, var(--primary-foreground) 24%, var(--primary))" }} />
-          <div className="absolute inset-x-0 top-10 grid gap-3 rounded-2xl bg-card p-4 text-card-foreground shadow-wc-lg">
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-full bg-accent text-brand">
-                <PackageIcon className="size-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-mono font-semibold">B-304 · C2</p>
-                <p className="text-sm text-muted-foreground">Mariana Souza · Mercado Livre</p>
-              </div>
-              <Badge variant="success">
-                <CheckCircle2Icon aria-hidden />
-                Avisada 11:43
-              </Badge>
-            </div>
-          </div>
-        </div>
+        <Ciclo />
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
         <span className="inline-flex items-center gap-2 opacity-90">
@@ -460,7 +443,7 @@ export function Entrada() {
   return (
     <div data-wc-theme="custelo" data-mode="light" style={vars(nevoa.vars)} className="min-h-dvh bg-background px-4 py-12 text-foreground sm:px-8">
       <link rel="stylesheet" href={LINK} />
-      <style>{PZ_SPLASH_CSS + TAG_CSS}</style>
+      <style>{PZ_SPLASH_CSS + TAG_CSS + CICLO_CSS}</style>
       <div className="mx-auto grid max-w-[1320px] grid-cols-[minmax(0,1fr)] gap-12">
         <header className="grid gap-2">
           <p className="text-sm text-muted-foreground">Pranchas · 03/11/2026 · WebCode UI · paleta Névoa</p>
@@ -495,6 +478,22 @@ export function Entrada() {
           </Moldura>
           <Moldura id="AUTH-001" titulo="Entrar" nota="Tela dividida: marca e prova do produto à esquerda, formulário e suporte à direita.">
             <EntrarDesktop />
+          </Moldura>
+          <Moldura id="AUTH-001 · animação" titulo="Ciclo do pacote no painel azul (3 variações)" nota="Chegou → Conferida → Avisada → Retirada em 10 s, só transform e opacidade. Com movimento reduzido fica parada. Escolhida: C (04/11), já no login.">
+            <div className="grid grid-cols-3 gap-6">
+              {CICLOS.map(({ id, nome, nota, Comp }) => (
+                <figure key={id} className="m-0 grid content-start gap-3">
+                  <div className="relative isolate grid h-[360px] place-items-center overflow-hidden rounded-[1.6rem] bg-primary p-8 text-primary-foreground">
+                    <Fundo />
+                    <Comp />
+                  </div>
+                  <figcaption className="grid gap-0.5">
+                    <span className="font-semibold">{nome}</span>
+                    <span className="text-sm text-muted-foreground">{nota}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </Moldura>
           <Moldura id="AUTH-AJUDA" titulo="Ajuda para entrar (aberta)" nota="O ícone de headset abre este diálogo. A pessoa escolhe o caso e o pedido já vai com o código do erro.">
             <AjudaAberta />

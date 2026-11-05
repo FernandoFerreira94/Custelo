@@ -26,7 +26,7 @@ As pranchas são as telas aprovadas pelo Fernando, feitas com a WebCode UI.
 | `#importar` | `pz-importar/importar.tsx` | IMP-010..015 | `telas/importar/` |
 | `#config` | `pz-config/config.tsx` | CFG-001/005/006/007, AUD-002, ORG-001..004 | `telas/config/` |
 | `#plataforma` | `pz-plataforma/plataforma.tsx` | SAAS-001..006, BIL-003 | `telas/plataforma/` |
-| `#piloto` | `pz-faltam/faltam.tsx` | OPT-001..004, LGPD-001/002, LEG-001/002, IMP-016..020, SYS-001..003 e as demais telas do piloto | — (sem fotos ainda) |
+| `#piloto` | `pz-faltam/faltam.tsx` | OPT-001..004, LGPD-001/002, LEG-001/002, IMP-016..020, SYS-001..003, NAV-001, PES-010, REC-003 excepcional, SAAS-002 custos, ORG-005, CFG-009 | — (sem fotos ainda) |
 | `#prestadora` | `pz-prestadora/prestadora.tsx` | D20: LOC-001..003 (código do local, lista do aparelho, escolher condomínio), CTR-001/002 (contratos), PAR-001 (pareamento), PRE-001/002 (painel da prestadora) | `telas/prestadora/` |
 | `#escuro` | `pz-escuro/escuro.tsx` | Modo escuro (Dash A + Mob C), **aguarda revisão do Fernando**: não implementar ainda | — |
 | `#laranja` | `pz-laranja/laranja.tsx` | paleta e logos | — |
