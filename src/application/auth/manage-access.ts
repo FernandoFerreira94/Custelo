@@ -7,14 +7,54 @@ import {
   type ManagedScope,
 } from "@/application/auth/access-management";
 import {
+  type Auditoria,
+  type EntradaAuditoria,
+  mascararEmail,
+} from "@/application/auditoria/ports";
+import {
   loadAccessActor,
   loadTargetScopes,
   persistScopeGrant,
   persistScopeRevocation,
   persistUserDeactivation,
 } from "@/infrastructure/auth/access-management-repository";
+import { auditoriaRepo } from "@/infrastructure/auditoria/auditoria-repo";
 import { sendInviteByEmail } from "@/infrastructure/auth/invite-service";
 import { revokeUserSessions } from "@/infrastructure/auth/session-revocation";
+import { log } from "@/infrastructure/observability/logger";
+
+export type ManageAccessDeps = { auditoria: Auditoria };
+const depsPadrao: ManageAccessDeps = { auditoria: auditoriaRepo };
+
+/**
+ * Registra depois da operação que deu certo. Falha de auditoria não desfaz a
+ * operação (ela já foi feita), mas fica no log como erro para alguém agir.
+ */
+async function registrarTrilha(
+  deps: ManageAccessDeps,
+  context: {
+    actorUserId: string;
+    actorOrgId: string;
+    actorEmpreendimentoId: string;
+  },
+  entrada: EntradaAuditoria,
+): Promise<void> {
+  try {
+    await deps.auditoria.registrar(
+      {
+        orgId: context.actorOrgId,
+        empreendimentoId: context.actorEmpreendimentoId,
+        usuarioId: context.actorUserId,
+      },
+      entrada,
+    );
+  } catch {
+    log("error", {
+      msg: `falha_auditoria:${entrada.acao}`,
+      org_id: context.actorOrgId,
+    });
+  }
+}
 
 export type ManageAccessErrorCode =
   | "UNAUTHORIZED"
@@ -67,11 +107,14 @@ async function requireActor(userId: string): Promise<
   return { ok: true, actor, context };
 }
 
-export async function inviteUser(input: {
-  actorUserId: string;
-  email: string;
-  initialScope: ManagedScope;
-}): Promise<ManageAccessResult> {
+export async function inviteUser(
+  input: {
+    actorUserId: string;
+    email: string;
+    initialScope: ManagedScope;
+  },
+  deps: ManageAccessDeps = depsPadrao,
+): Promise<ManageAccessResult> {
   const resolved = await requireActor(input.actorUserId);
   if (!resolved.ok) {
     return resolved;
@@ -97,16 +140,30 @@ export async function inviteUser(input: {
     scope: input.initialScope,
   });
 
-  return sent.ok
-    ? { ok: true }
-    : { ok: false, code: sent.code as ManageAccessErrorCode };
+  if (!sent.ok) {
+    return { ok: false, code: sent.code as ManageAccessErrorCode };
+  }
+  await registrarTrilha(deps, resolved.context, {
+    acao: "USUARIO_CONVIDADO",
+    alvoTipo: "usuario",
+    depois: {
+      email: mascararEmail(input.email),
+      papel: input.initialScope.roleCode,
+      empreendimento_id: input.initialScope.empreendimentoId,
+    },
+    origem: "web",
+  });
+  return { ok: true };
 }
 
-export async function changeScope(input: {
-  actorUserId: string;
-  targetUserId: string;
-  requestedScope: ManagedScope;
-}): Promise<ManageAccessResult> {
+export async function changeScope(
+  input: {
+    actorUserId: string;
+    targetUserId: string;
+    requestedScope: ManagedScope;
+  },
+  deps: ManageAccessDeps = depsPadrao,
+): Promise<ManageAccessResult> {
   const resolved = await requireActor(input.actorUserId);
   if (!resolved.ok) {
     return resolved;
@@ -125,16 +182,30 @@ export async function changeScope(input: {
     input.requestedScope,
   );
 
-  return persisted.ok
-    ? { ok: true }
-    : { ok: false, code: persisted.code as ManageAccessErrorCode };
+  if (!persisted.ok) {
+    return { ok: false, code: persisted.code as ManageAccessErrorCode };
+  }
+  await registrarTrilha(deps, resolved.context, {
+    acao: "ESCOPO_CONCEDIDO",
+    alvoTipo: "usuario",
+    alvoId: input.targetUserId,
+    depois: {
+      papel: input.requestedScope.roleCode,
+      empreendimento_id: input.requestedScope.empreendimentoId,
+    },
+    origem: "web",
+  });
+  return { ok: true };
 }
 
-export async function revokeScope(input: {
-  actorUserId: string;
-  scopeId: string;
-  existingScope: ManagedScope;
-}): Promise<ManageAccessResult> {
+export async function revokeScope(
+  input: {
+    actorUserId: string;
+    scopeId: string;
+    existingScope: ManagedScope;
+  },
+  deps: ManageAccessDeps = depsPadrao,
+): Promise<ManageAccessResult> {
   const resolved = await requireActor(input.actorUserId);
   if (!resolved.ok) {
     return resolved;
@@ -155,15 +226,29 @@ export async function revokeScope(input: {
     input.scopeId,
   );
 
-  return persisted.ok
-    ? { ok: true }
-    : { ok: false, code: persisted.code as ManageAccessErrorCode };
+  if (!persisted.ok) {
+    return { ok: false, code: persisted.code as ManageAccessErrorCode };
+  }
+  await registrarTrilha(deps, resolved.context, {
+    acao: "ESCOPO_REVOGADO",
+    alvoTipo: "escopo",
+    alvoId: input.scopeId,
+    antes: {
+      papel: input.existingScope.roleCode,
+      empreendimento_id: input.existingScope.empreendimentoId,
+    },
+    origem: "web",
+  });
+  return { ok: true };
 }
 
-export async function deactivateUser(input: {
-  actorUserId: string;
-  targetUserId: string;
-}): Promise<ManageAccessResult> {
+export async function deactivateUser(
+  input: {
+    actorUserId: string;
+    targetUserId: string;
+  },
+  deps: ManageAccessDeps = depsPadrao,
+): Promise<ManageAccessResult> {
   const resolved = await requireActor(input.actorUserId);
   if (!resolved.ok) {
     return resolved;
@@ -185,6 +270,13 @@ export async function deactivateUser(input: {
   if (!persisted.ok) {
     return { ok: false, code: persisted.code as ManageAccessErrorCode };
   }
+
+  await registrarTrilha(deps, resolved.context, {
+    acao: "USUARIO_DESATIVADO",
+    alvoTipo: "usuario",
+    alvoId: input.targetUserId,
+    origem: "web",
+  });
 
   try {
     await revokeUserSessions(input.targetUserId);

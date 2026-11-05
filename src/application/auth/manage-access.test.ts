@@ -25,6 +25,10 @@ vi.mock("@/infrastructure/auth/access-management-repository", () => ({
   persistUserDeactivation: mocks.persistUserDeactivation,
 }));
 
+vi.mock("@/infrastructure/auditoria/auditoria-repo", () => ({
+  auditoriaRepo: { registrar: vi.fn() },
+}));
+
 vi.mock("@/infrastructure/auth/session-revocation", () => ({
   revokeUserSessions: mocks.revokeUserSessions,
 }));
@@ -33,6 +37,7 @@ vi.mock("@/infrastructure/auth/invite-service", () => ({
   sendInviteByEmail: mocks.sendInviteByEmail,
 }));
 
+import { criarAuditoriaFake } from "@/tests/fakes/auditoria";
 import {
   changeScope,
   deactivateUser,
@@ -396,5 +401,87 @@ describe("deactivateUser — I2.3", () => {
     ).resolves.toEqual({ ok: false, code: "INVALID_SCOPE" });
 
     expect(mocks.revokeUserSessions).not.toHaveBeenCalled();
+  });
+});
+
+describe("trilha de auditoria — Fase 0", () => {
+  it("convidar registra USUARIO_CONVIDADO com papel e sem e-mail completo no depois", async () => {
+    const { auditoria, entradas } = criarAuditoriaFake();
+
+    await inviteUser(
+      {
+        actorUserId: orgAdmin.userId,
+        email: "novo@example.test",
+        initialScope: scopeInEmpA,
+      },
+      { auditoria },
+    );
+
+    expect(entradas).toHaveLength(1);
+    expect(entradas[0]).toMatchObject({
+      acao: "USUARIO_CONVIDADO",
+      depois: { email: "n***@example.test", papel: scopeInEmpA.roleCode },
+    });
+    expect(JSON.stringify(entradas[0])).not.toContain("novo@example.test");
+  });
+
+  it("conceder, revogar e desativar registram a ação; falha de operação não registra", async () => {
+    const { auditoria, entradas } = criarAuditoriaFake();
+
+    await changeScope(
+      {
+        actorUserId: orgAdmin.userId,
+        targetUserId: "alvo-id",
+        requestedScope: scopeInEmpA,
+      },
+      { auditoria },
+    );
+    await revokeScope(
+      {
+        actorUserId: orgAdmin.userId,
+        scopeId: "escopo-id",
+        existingScope: scopeInEmpA,
+      },
+      { auditoria },
+    );
+    await deactivateUser(
+      { actorUserId: orgAdmin.userId, targetUserId: "alvo-id" },
+      { auditoria },
+    );
+    mocks.persistScopeGrant.mockResolvedValue({
+      ok: false,
+      code: "INVALID_SCOPE",
+    });
+    await changeScope(
+      {
+        actorUserId: orgAdmin.userId,
+        targetUserId: "alvo-id",
+        requestedScope: scopeInEmpA,
+      },
+      { auditoria },
+    );
+
+    expect(entradas.map((e) => e.acao)).toEqual([
+      "ESCOPO_CONCEDIDO",
+      "ESCOPO_REVOGADO",
+      "USUARIO_DESATIVADO",
+    ]);
+  });
+
+  it("falha ao gravar a trilha não desfaz a operação", async () => {
+    const auditoria = {
+      registrar: vi.fn().mockRejectedValue(new Error("banco fora")),
+    };
+
+    await expect(
+      changeScope(
+        {
+          actorUserId: orgAdmin.userId,
+          targetUserId: "alvo-id",
+          requestedScope: scopeInEmpA,
+        },
+        { auditoria },
+      ),
+    ).resolves.toEqual({ ok: true });
   });
 });
