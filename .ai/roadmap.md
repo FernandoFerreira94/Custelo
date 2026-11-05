@@ -12,7 +12,9 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   Fase 0 → I3 … I13 (piloto). Decisoes D1–D19 na secao 1 aguardam o Fernando;
   o plano segue a recomendacao ate a resposta. Telas sem prancha: secao 6.3.
 
-- **Migracao das telas para a WebCode UI + limpeza de codigo morto** — plano
+- **Migracao das telas para a WebCode UI** — DONE (PRs #22 e #23: tema Nevoa +
+  Brasa, AUTH-001..006, cascas e paginas iniciais). Pendencias em `DESIGN-NOTAS.md`.
+  Falta so a limpeza de codigo morto (Tarefa 16). Plano
   passo a passo em `docs/superpowers/plans/2026-11-04-webcode-ui-migracao.md`
   (spec: `docs/plano/PLANO-EXECUCAO-WEBCODE-UI.md`) (base `@webcode`,
   tema Nevoa + Brasa, marca final, estados, AUTH-001..006 nas pranchas, cascas

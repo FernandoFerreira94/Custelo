@@ -68,3 +68,26 @@ system faltou. Levar ao repo `webcode-design`.
 - **Sem `loading.tsx` em `(auth)`:** um `loading.tsx` vazio fazia o redirect de
   `/contexto` virar meta refresh (200) e reprovava o a11y da raiz. Sem ele o
   redirect volta a ser 307.
+
+## Tarefas 12–14 — cascas e páginas iniciais
+
+- **Trilho (web e admin) e barra da portaria (ops):** `Trilho`, `CascaWeb` e
+  `NavPortaria` vivem em `src/components/shell/`. A biblioteca não tem uma casca
+  pronta com a marca; o `AppShell` do DS não foi usado.
+- **Contexto ativo:** as páginas mostram só o papel. As claims ainda não trazem
+  o nome do empreendimento, e nenhum nome foi inventado.
+- **Estado vazio das páginas iniciais:** `estadoVazioPaginaClass` dá respiro do
+  topo e põe fundo de card + anel de brasa na mídia, porque `bg-accent` some sobre
+  a Névoa. O DS deveria ter um `tone="brand"` com contraste próprio.
+- **Testes de a11y:** esperam o splash sair e rodam com movimento reduzido; sem
+  isso o axe media contraste no meio do fade.
+
+## Ajuda dos campos (login e convite)
+
+- **Dica no label:** `DicaCampo`/`RotuloComDica` (`src/components/auth/dica-campo.tsx`)
+  trocam o `FieldDescription` por um "?" em círculo à direita do label com o
+  `Tooltip` do DS. O texto vai também no `aria-label` do botão. Falta no DS um
+  `FieldLabel` com slot de dica. O `TooltipProvider` mora no próprio componente
+  para funcionar sem provider na raiz.
+- **Botão de suporte:** tooltip no lugar do `title` nativo.
+- **Ícones nos botões:** Entrar, Aceitar convite, Criar acesso e Voltar.
