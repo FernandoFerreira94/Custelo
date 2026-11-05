@@ -428,6 +428,51 @@ describe("pessoasRepo contra o banco real (RLS)", () => {
     expect(comuns.itens.map((u) => u.id)).toEqual([comum]);
   });
 
+  it("área comum traz o nome do responsável; ponto de recebimento lista e desativa", async () => {
+    const unidadeId = await unidadeNova(ctxA, "AC-");
+    const { pessoaId } = await pessoasRepo.criarPessoaCompleta(ctxA, {
+      nome: "Marta Responsável",
+      vinculo: { unidadeId, tipo: "morador", recebeAviso: false },
+      contatos: [],
+    });
+    const nomeArea = unico("Academia ");
+    const [areaId] = (
+      await estruturaRepo.criarUnidades(ctxA, [
+        {
+          codigo: nomeArea,
+          tipo: "area_comum",
+          responsavelPessoaId: pessoaId,
+          avisarResponsavel: true,
+          apelidos: [],
+        },
+      ])
+    ).ids;
+
+    const areas = await estruturaRepo.areasComuns(ctxA);
+    expect(areas.find((a) => a.id === areaId)).toMatchObject({
+      codigo: nomeArea,
+      responsavelNome: "Marta Responsável",
+      avisarResponsavel: true,
+    });
+
+    const nomePonto = unico("Portaria ");
+    const ponto = await estruturaRepo.criarPonto(ctxA, {
+      nome: nomePonto,
+      funcionamento: "24 h",
+    });
+    expect(
+      (await estruturaRepo.pontos(ctxA)).find((x) => x.id === ponto.id),
+    ).toMatchObject({ nome: nomePonto, funcionamento: "24 h", ativo: true });
+
+    await estruturaRepo.atualizarPonto(ctxA, ponto.id, { ativo: false });
+    expect(
+      (await estruturaRepo.pontos(ctxA)).find((x) => x.id === ponto.id)?.ativo,
+    ).toBe(false);
+    expect(
+      (await estruturaRepo.pontos(ctxB)).some((x) => x.id === ponto.id),
+    ).toBe(false);
+  });
+
   it("lista pessoas com as unidades e pagina por cursor", async () => {
     const prefixo = unico("Lista");
     const unidadeId = await unidadeNova(ctxA, "PL-");

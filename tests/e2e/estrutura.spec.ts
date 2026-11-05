@@ -86,3 +86,31 @@ test("cadastrar unidade, ver duplicada e desativar", async ({ page }) => {
   await page.getByRole("button", { name: "Desativar unidade" }).click();
   await expect(page.getByRole("cell", { name: codigo })).toHaveCount(0);
 });
+
+test("áreas e pontos: criar área comum e ponto, e desligar o ponto", async ({
+  page,
+}) => {
+  const sufixo = String(Date.now() % 1_000_000);
+  const area = `Academia ${sufixo}`;
+  const ponto = `Portaria ${sufixo}`;
+  await entrarComoGestor(page);
+  await page.goto("/gestao/estrutura/areas");
+
+  await page.getByRole("button", { name: "Área", exact: true }).click();
+  await page.getByLabel("Nome", { exact: true }).fill(area);
+  await page.getByRole("button", { name: "Salvar área" }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(page.getByText(area, { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Ponto", exact: true }).click();
+  await page.getByLabel("Nome", { exact: true }).fill(ponto);
+  await page.getByLabel("Funciona").fill("24 h");
+  await page.getByRole("button", { name: "Salvar ponto" }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await expect(page.getByText(ponto, { exact: true })).toBeVisible();
+
+  const chave = page.getByRole("switch", { name: `${ponto} ativo` });
+  await expect(chave).toBeChecked();
+  await chave.click();
+  await expect(page.getByText("Desativado").first()).toBeVisible();
+});

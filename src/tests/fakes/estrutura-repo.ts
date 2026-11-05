@@ -27,6 +27,12 @@ export function criarEstruturaRepoFake() {
     async arvore() {
       return [];
     },
+    async areasComuns() {
+      return [];
+    },
+    async pontos() {
+      return [];
+    },
     async contagensDeUnidades() {
       return { todas: 0, semContato: 0, areasComuns: 0, inativas: 0 };
     },

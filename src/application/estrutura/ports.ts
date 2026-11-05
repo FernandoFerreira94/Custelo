@@ -51,6 +51,22 @@ export type UnidadeNaArvore = {
   semContato: boolean;
 };
 
+export type AreaComum = {
+  id: string;
+  codigo: string;
+  responsavelPessoaId: string | null;
+  responsavelNome: string | null;
+  avisarResponsavel: boolean;
+  ativo: boolean;
+};
+
+export type Ponto = {
+  id: string;
+  nome: string;
+  funcionamento: string | null;
+  ativo: boolean;
+};
+
 export type Pagina<T> = { itens: T[]; proximo?: string };
 
 export type FiltroDeUnidades = {
@@ -94,6 +110,8 @@ export interface EstruturaRepo {
   arvore(ctx: Contexto): Promise<NoArvore[]>;
   /** Todas as unidades ativas (até o limite do repositório) para montar a árvore. */
   resumoDeUnidades(ctx: Contexto): Promise<UnidadeNaArvore[]>;
+  areasComuns(ctx: Contexto): Promise<AreaComum[]>;
+  pontos(ctx: Contexto): Promise<Ponto[]>;
   contagensDeUnidades(ctx: Contexto): Promise<ContagensDeUnidades>;
   listarUnidades(
     ctx: Contexto,

@@ -24,6 +24,7 @@ import {
   areas,
   contatos,
   empreendimentos,
+  pessoas,
   pontosRecebimento,
   unidades,
   vinculos,
@@ -161,6 +162,46 @@ export const estruturaRepo: EstruturaRepo = {
         semContato: l.sem_contato,
       }));
     });
+  },
+
+  async areasComuns(ctx) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const linhas = await db
+        .select({
+          id: unidades.id,
+          codigo: unidades.codigo,
+          responsavelPessoaId: unidades.responsavelPessoaId,
+          responsavelNome: pessoas.nome,
+          avisarResponsavel: unidades.avisarResponsavel,
+          ativo: unidades.ativo,
+        })
+        .from(unidades)
+        .leftJoin(pessoas, eq(pessoas.id, unidades.responsavelPessoaId))
+        .where(
+          and(
+            eq(unidades.empreendimentoId, ctx.empreendimentoId),
+            eq(unidades.tipo, "area_comum"),
+            eq(unidades.ativo, true),
+          ),
+        )
+        .orderBy(asc(unidades.codigoNormalizado));
+      return linhas;
+    });
+  },
+
+  async pontos(ctx) {
+    return withTenantDb(tenant(ctx), (db) =>
+      db
+        .select({
+          id: pontosRecebimento.id,
+          nome: pontosRecebimento.nome,
+          funcionamento: pontosRecebimento.funcionamento,
+          ativo: pontosRecebimento.ativo,
+        })
+        .from(pontosRecebimento)
+        .where(eq(pontosRecebimento.empreendimentoId, ctx.empreendimentoId))
+        .orderBy(asc(pontosRecebimento.nome)),
+    );
   },
 
   async contagensDeUnidades(ctx) {
