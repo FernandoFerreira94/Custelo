@@ -26,3 +26,8 @@ export function validarCpf(texto: string): Resultado<string> {
 export function mascararCpf(digitos: string): string {
   return `***.${digitos.slice(3, 6)}.${digitos.slice(6, 9)}-**`;
 }
+
+/** "52998224725" → "529.982.247-25" (só para quem pediu para ver, e a visualização é auditada). */
+export function formatarCpf(digitos: string): string {
+  return `${digitos.slice(0, 3)}.${digitos.slice(3, 6)}.${digitos.slice(6, 9)}-${digitos.slice(9)}`;
+}

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { mascararCpf, validarCpf } from "./cpf";
+import { formatarCpf, mascararCpf, validarCpf } from "./cpf";
 
 describe("validarCpf", () => {
   it("aceita CPF válido e devolve só os dígitos", () => {
@@ -31,5 +31,11 @@ describe("validarCpf", () => {
 describe("mascararCpf", () => {
   it("esconde o começo e o fim", () => {
     expect(mascararCpf("52998224725")).toBe("***.982.247-**");
+  });
+});
+
+describe("formatarCpf", () => {
+  it("põe pontos e traço", () => {
+    expect(formatarCpf("52998224725")).toBe("529.982.247-25");
   });
 });

@@ -36,7 +36,11 @@ export function FiltrosDeUnidades({
     <div className="grid gap-4">
       <FilterCounters
         value={filtro}
-        onValueChange={(v) => router.push(urlDaLista(v as FiltroAtivo, texto))}
+        onValueChange={(v) =>
+          router.push(
+            urlDaLista(v === "todas" ? null : (v as FiltroAtivo), texto),
+          )
+        }
         items={[
           { value: "todas", label: "Todas", count: contagens.todas },
           {

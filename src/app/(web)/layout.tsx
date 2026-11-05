@@ -4,6 +4,7 @@ import {
   LayersIcon,
   SettingsIcon,
   UsersIcon,
+  UsersRoundIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -26,6 +27,11 @@ const ITENS_WEB: ItemTrilho[] = [
     label: "Unidades",
     href: "/gestao/unidades",
     icon: <Building2Icon aria-hidden />,
+  },
+  {
+    label: "Pessoas",
+    href: "/gestao/pessoas",
+    icon: <UsersRoundIcon aria-hidden />,
   },
   { label: "Equipe", href: "/gestao/equipe", icon: <UsersIcon aria-hidden /> },
   {
