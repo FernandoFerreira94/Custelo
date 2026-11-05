@@ -62,7 +62,8 @@ export type ManageAccessErrorCode =
   | "ROLE_ESCALATION"
   | "INVALID_SCOPE"
   | "UNAVAILABLE"
-  | "INVITE_FAILED";
+  | "INVITE_FAILED"
+  | "DUPLICATE";
 
 export type ManageAccessResult =
   { ok: true } | { ok: false; code: ManageAccessErrorCode };
