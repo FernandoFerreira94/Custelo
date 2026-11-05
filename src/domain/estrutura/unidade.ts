@@ -1,6 +1,11 @@
 export type TipoUnidade =
   "apartamento" | "casa" | "sala" | "loja" | "area_comum" | "outro";
 
+/** Tira acento ("Térreo" → "Terreo"): o banco não tira, então o código já entra sem ele. */
+export function semAcento(texto: string): string {
+  return texto.normalize("NFD").replace(/\p{M}/gu, "");
+}
+
 /** Mesma regra da coluna gerada unidades.codigo_normalizado (0011). */
 export function normalizarCodigo(texto: string): string {
   return texto
