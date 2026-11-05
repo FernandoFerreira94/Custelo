@@ -1,4 +1,4 @@
-import { HomeIcon, SettingsIcon } from "lucide-react";
+import { HomeIcon, SettingsIcon, UsersIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { CascaWeb } from "@/components/shell/casca-web";
@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 // Só rotas que existem; o resto entra com a sua tela.
 const ITENS_WEB: ItemTrilho[] = [
   { label: "Hoje", href: "/gestao", icon: <HomeIcon aria-hidden /> },
+  { label: "Equipe", href: "/gestao/equipe", icon: <UsersIcon aria-hidden /> },
   {
     label: "Configurações",
     href: "/gestao/config",
