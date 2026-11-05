@@ -8,7 +8,6 @@ test-results
 pnpm-lock.yaml
 src/db/migrations
 public
-Imagen
 *.csv
 .serena
 docs/pranchas
