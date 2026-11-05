@@ -1,10 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleAlert, Lock, TimerReset } from "lucide-react";
+import {
+  CircleAlert,
+  Lock,
+  LogIn,
+  TicketCheck,
+  TimerReset,
+} from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { RotuloComDica } from "@/components/auth/dica-campo";
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import { authCardClass, authTitleClass } from "@/components/auth/auth-card";
 import { loginSchema, type LoginInput } from "@/components/auth/login-schema";
@@ -26,7 +33,6 @@ import {
 } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -91,7 +97,9 @@ export function LoginForm({
               data-login-card-item
               data-invalid={errors.email ? true : undefined}
             >
-              <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              <RotuloComDica dica="Conta individual — nunca compartilhe o acesso">
+                <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              </RotuloComDica>
               <Input
                 id="email"
                 type="email"
@@ -99,17 +107,13 @@ export function LoginForm({
                 inputMode="email"
                 placeholder="condominio@condominio.com.br"
                 aria-invalid={Boolean(errors.email)}
-                aria-describedby={errors.email ? "email-error" : "email-help"}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 className="h-12 min-h-[var(--size-touch-min)]"
                 {...register("email")}
               />
               {errors.email ? (
                 <FieldError id="email-error">{errors.email.message}</FieldError>
-              ) : (
-                <FieldDescription id="email-help">
-                  Conta individual — nunca compartilhe o acesso
-                </FieldDescription>
-              )}
+              ) : null}
             </Field>
 
             <AuthPasswordField
@@ -164,7 +168,10 @@ export function LoginForm({
                   Entrando…
                 </>
               ) : (
-                "Entrar"
+                <>
+                  <LogIn data-icon="inline-start" aria-hidden="true" />
+                  Entrar
+                </>
               )}
             </Button>
 
@@ -174,6 +181,7 @@ export function LoginForm({
               onClick={onInvite}
               className="h-auto min-h-[var(--size-touch-min)] w-full underline"
             >
+              <TicketCheck data-icon="inline-start" aria-hidden="true" />
               Aceitar convite
             </Button>
           </FieldGroup>

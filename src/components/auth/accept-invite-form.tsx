@@ -10,6 +10,7 @@ import {
   acceptInviteSchema,
   type AcceptInviteInput,
 } from "@/components/auth/accept-invite-schema";
+import { RotuloComDica } from "@/components/auth/dica-campo";
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import {
   fetchPendingInvite,
@@ -17,7 +18,7 @@ import {
   requestAcceptInvite,
 } from "@/components/auth/request-accept-invite";
 import { mensagemDeFalha } from "@/lib/mensagens";
-import { CircleAlert } from "lucide-react";
+import { ArrowLeft, CircleAlert, UserCheck } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,6 @@ import {
 } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -175,7 +175,9 @@ export function AcceptInviteForm({
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field data-invalid={errors.fullName ? true : undefined}>
-              <FieldLabel htmlFor="invite-name">Nome completo</FieldLabel>
+              <RotuloComDica dica="Aparece na auditoria de cada ação sua">
+                <FieldLabel htmlFor="invite-name">Nome completo</FieldLabel>
+              </RotuloComDica>
               <Input
                 id="invite-name"
                 type="text"
@@ -183,7 +185,7 @@ export function AcceptInviteForm({
                 placeholder="Carla Souza"
                 aria-invalid={Boolean(errors.fullName)}
                 aria-describedby={
-                  errors.fullName ? "invite-name-error" : "invite-name-help"
+                  errors.fullName ? "invite-name-error" : undefined
                 }
                 className="h-12 min-h-[var(--size-touch-min)]"
                 {...register("fullName")}
@@ -192,11 +194,7 @@ export function AcceptInviteForm({
                 <FieldError id="invite-name-error">
                   {errors.fullName.message}
                 </FieldError>
-              ) : (
-                <FieldDescription id="invite-name-help">
-                  Aparece na auditoria de cada ação sua
-                </FieldDescription>
-              )}
+              ) : null}
             </Field>
 
             <AuthPasswordField
@@ -242,7 +240,10 @@ export function AcceptInviteForm({
                   Criando acesso…
                 </>
               ) : (
-                "Criar acesso e entrar"
+                <>
+                  <UserCheck data-icon="inline-start" aria-hidden="true" />
+                  Criar acesso e entrar
+                </>
               )}
             </Button>
 
@@ -252,6 +253,7 @@ export function AcceptInviteForm({
               onClick={onBack}
               className="h-auto min-h-[var(--size-touch-min)] w-full underline"
             >
+              <ArrowLeft data-icon="inline-start" aria-hidden="true" />
               Voltar para o login
             </Button>
           </FieldGroup>

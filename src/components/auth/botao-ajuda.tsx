@@ -5,6 +5,12 @@ import { useId, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   DescriptionItem,
   DescriptionList,
 } from "@/components/ui/description-list";
@@ -191,17 +197,25 @@ function AjudaCorpo() {
 export function BotaoAjuda() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          shape="pill"
-          size="icon-lg"
-          aria-label={TITULO}
-          title={TITULO}
-        >
-          <HeadsetIcon aria-hidden />
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                shape="pill"
+                size="icon-lg"
+                aria-label={TITULO}
+              >
+                <HeadsetIcon aria-hidden />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" variant="light">
+            Não consegue entrar? Fale com o suporte.
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent size="md" className="max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle>{TITULO}</DialogTitle>
