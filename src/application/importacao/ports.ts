@@ -21,6 +21,12 @@ export type Lote = {
   confirmadoEm: Date | null;
 };
 
+/** Lote que ficou pela metade: aparece para retomar. */
+export type LoteEmConferencia = Pick<
+  Lote,
+  "id" | "cadastro" | "arquivoNome" | "linhasTotal"
+> & { criadoEm: Date };
+
 export type LinhaDoLote = {
   id: string;
   numeroLinha: number;
@@ -60,6 +66,8 @@ export interface ImportacaoRepo {
     e: { cadastro: Cadastro; arquivoNome: string; linhas: LinhaNova[] },
   ): Promise<{ id: string }>;
   buscarLote(ctx: Contexto, id: string): Promise<Lote | null>;
+  lotesEmConferencia(ctx: Contexto): Promise<LoteEmConferencia[]>;
+  cancelarLote(ctx: Contexto, id: string): Promise<void>;
   listarLinhas(ctx: Contexto, loteId: string): Promise<LinhaDoLote[]>;
   atualizarLinha(
     ctx: Contexto,

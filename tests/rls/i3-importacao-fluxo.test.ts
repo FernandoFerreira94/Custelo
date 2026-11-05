@@ -237,6 +237,29 @@ describe("importação contra o banco real (fluxo completo)", () => {
     });
   });
 
+  it("lote deixado pela metade aparece para retomar até ser cancelado", async () => {
+    const bloco = `IMP${unico()}`;
+    const lote = await enviar(ctxA, "unidades", cabUnidades, [
+      ["Apartamento", bloco, "601"],
+    ]);
+
+    const abertos = await importacaoRepo.lotesEmConferencia(ctxA);
+    expect(abertos.map((l) => l.id)).toContain(lote.loteId);
+    expect(
+      (await importacaoRepo.lotesEmConferencia(ctxB)).map((l) => l.id),
+    ).not.toContain(lote.loteId);
+
+    await importacaoRepo.cancelarLote(ctxA, lote.loteId);
+
+    expect(
+      (await importacaoRepo.lotesEmConferencia(ctxA)).map((l) => l.id),
+    ).not.toContain(lote.loteId);
+    expect(await confirmar(ctxA, lote.loteId)).toMatchObject({
+      ok: false,
+      codigo: "CONFLITO",
+    });
+  });
+
   it("lote de outro empreendimento não é visto nem confirmado", async () => {
     const bloco = `IMP${unico()}`;
     const lote = await enviar(ctxA, "unidades", cabUnidades, [

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { chaveDoCabecalho, colunasDe, mapearCabecalho } from "./colunas";
+import {
+  cadastroDoSlug,
+  chaveDoCabecalho,
+  colunasDe,
+  mapearCabecalho,
+  slugDoCadastro,
+} from "./colunas";
 
 describe("colunasDe", () => {
   it("lê as colunas do modelo oficial (fonte única: docs/product/importacao-colunas.json)", () => {
@@ -73,5 +79,14 @@ describe("mapearCabecalho", () => {
       "Papel",
     ]);
     expect(r).toMatchObject({ ok: true });
+  });
+});
+
+describe("slug do cadastro", () => {
+  it("vai e volta, inclusive o de áreas comuns", () => {
+    expect(slugDoCadastro("areas_comuns")).toBe("areas-comuns");
+    expect(cadastroDoSlug("areas-comuns")).toBe("areas_comuns");
+    expect(cadastroDoSlug("moradores")).toBe("moradores");
+    expect(cadastroDoSlug("qualquer-coisa")).toBeNull();
   });
 });

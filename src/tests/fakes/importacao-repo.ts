@@ -50,6 +50,21 @@ export function criarImportacaoRepoFake(banco: Partial<ContextoDoBanco> = {}) {
     async buscarLote(_ctx, loteId) {
       return estado.lotes.find((l) => l.id === loteId) ?? null;
     },
+    async lotesEmConferencia() {
+      return estado.lotes
+        .filter((l) => l.status === "conferindo")
+        .map((l) => ({
+          id: l.id,
+          cadastro: l.cadastro,
+          arquivoNome: l.arquivoNome,
+          linhasTotal: l.linhasTotal,
+          criadoEm: new Date(0),
+        }));
+    },
+    async cancelarLote(_ctx, loteId) {
+      const l = estado.lotes.find((x) => x.id === loteId);
+      if (l) l.status = "cancelada";
+    },
     async listarLinhas(_ctx, loteId) {
       return estado.linhas
         .filter((l) => l.loteId === loteId)

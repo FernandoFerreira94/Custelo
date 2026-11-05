@@ -92,3 +92,12 @@ export function mapearCabecalho(
   }
   return sucesso({ indices, ignoradas });
 }
+
+/** Na URL e no nome do arquivo de modelo, `areas_comuns` é `areas-comuns`. */
+export function slugDoCadastro(cadastro: Cadastro): string {
+  return cadastro.replace("_", "-");
+}
+
+export function cadastroDoSlug(slug: string): Cadastro | null {
+  return CADASTROS.find((c) => slugDoCadastro(c) === slug) ?? null;
+}

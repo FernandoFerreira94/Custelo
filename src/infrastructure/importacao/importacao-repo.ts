@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 
 import type { Contexto } from "@/application/auth/contexto";
 import type {
@@ -220,6 +220,43 @@ export const importacaoRepo: ImportacaoRepo = {
           }
         : null;
     });
+  },
+
+  async lotesEmConferencia(ctx) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const lotes = await db
+        .select()
+        .from(importacoes)
+        .where(
+          and(
+            eq(importacoes.empreendimentoId, ctx.empreendimentoId),
+            eq(importacoes.status, "conferindo"),
+          ),
+        )
+        .orderBy(desc(importacoes.createdAt));
+      return lotes.map((l) => ({
+        id: l.id,
+        cadastro: l.cadastro,
+        arquivoNome: l.arquivoNome,
+        linhasTotal: l.linhasTotal,
+        criadoEm: l.createdAt,
+      }));
+    });
+  },
+
+  async cancelarLote(ctx, id) {
+    await withTenantDb(tenant(ctx), (db) =>
+      db
+        .update(importacoes)
+        .set({ status: "cancelada" })
+        .where(
+          and(
+            eq(importacoes.empreendimentoId, ctx.empreendimentoId),
+            eq(importacoes.id, id),
+            eq(importacoes.status, "conferindo"),
+          ),
+        ),
+    );
   },
 
   async listarLinhas(ctx, loteId) {
