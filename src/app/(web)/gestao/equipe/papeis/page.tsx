@@ -30,7 +30,6 @@ export const metadata: Metadata = { title: "Papéis e permissões" };
 const PAPEIS: Role[] = PAPEIS_DA_MATRIZ.map((id) => ({
   id,
   label: ROTULO_PAPEL[id],
-  locked: true,
 }));
 
 const GRUPOS: PermissionGroup[] = GRUPOS_DE_PERMISSAO.map((g) => ({
