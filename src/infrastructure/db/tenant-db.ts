@@ -11,7 +11,7 @@ export type TenantDb = PostgresJsDatabase<typeof schema>;
 // Abrir e fechar conexao a cada chamada esgota o pooler do Supabase.
 let client: ReturnType<typeof postgres> | null = null;
 
-function getClient(): ReturnType<typeof postgres> {
+export function getClient(): ReturnType<typeof postgres> {
   if (client) return client;
   const url = getDatabaseUrl();
   if (!url) {

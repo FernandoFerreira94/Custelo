@@ -16,6 +16,8 @@ const MIGRATIONS = [
   "0006_access_management.sql",
   "0007_i3_estrutura_pessoas.sql",
   "0008_rls_fixture_hardening.sql",
+  "0009_revoke_seed_fixtures.sql",
+  "0010_base_auditoria.sql",
 ] as const;
 
 export const FIXTURE_ORG_A: TenantFixture = {
@@ -123,6 +125,22 @@ async function migrationApplied(
           await sql<{ ready: boolean }[]>`
             select pg_get_functiondef('app.seed_rls_fixtures()'::regprocedure)
               like '%ON CONFLICT (id) DO UPDATE%' as ready
+          `
+        )[0]?.ready,
+      );
+    case "0009_revoke_seed_fixtures.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select not has_function_privilege('custelo_app', 'app.seed_rls_fixtures()', 'execute') as ready
+          `
+        )[0]?.ready,
+      );
+    case "0010_base_auditoria.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regclass('public.audit_log') is not null as ready
           `
         )[0]?.ready,
       );

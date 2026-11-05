@@ -1,7 +1,6 @@
-import postgres from "postgres";
-
 import type { CusteloAccessClaims } from "@/application/auth/session-context";
 import { getDatabaseUrl } from "@/db/client";
+import { getClient } from "@/infrastructure/db/tenant-db";
 
 type ClaimsRow = {
   claims: CusteloAccessClaims;
@@ -19,16 +18,15 @@ export async function resolveAuthClaimsForUser(
     return { user_status: "missing" };
   }
 
-  const sql = postgres(url, { prepare: false, max: 1 });
-
-  try {
-    const rows = await sql<ClaimsRow[]>`
+  const sql = getClient();
+  // A função exige o usuário da sessão (GUC); aqui o alvo é o próprio usuário do token.
+  const rows = await sql.begin(async (tx) => {
+    await tx`select set_config('app.current_user_id', ${userId}, true)`;
+    return tx<ClaimsRow[]>`
       select app.resolve_auth_claims(${userId}::uuid) as claims
     `;
-    return rows[0]?.claims ?? { user_status: "missing" };
-  } finally {
-    await sql.end({ timeout: 2 });
-  }
+  });
+  return rows[0]?.claims ?? { user_status: "missing" };
 }
 
 export function mergeHookClaims(
