@@ -8,12 +8,19 @@ import { createSupabaseMiddlewareClient } from "@/infrastructure/auth/supabase-m
 import { env } from "@/lib/env";
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (
+    env.MANUTENCAO === "1" &&
+    !pathname.startsWith("/manutencao") &&
+    !pathname.startsWith("/api/health")
+  ) {
+    return NextResponse.rewrite(new URL("/manutencao", request.url));
+  }
   if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next();
   }
 
-  const response = NextResponse.next({ request });
-  const supabase = createSupabaseMiddlewareClient(request, response);
+  const { supabase, getResponse } = createSupabaseMiddlewareClient(request);
   try {
     await comTimeoutDeAuth(supabase.auth.getUser());
   } catch (error) {
@@ -21,7 +28,7 @@ export async function middleware(request: NextRequest) {
     if (!(error instanceof AuthTimeoutError)) throw error;
     console.warn(error.message);
   }
-  return response;
+  return getResponse();
 }
 
 export const config = {

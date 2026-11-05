@@ -18,6 +18,9 @@ export const env = createEnv({
     // Opcional em I1 (ainda sem projeto Supabase). I2 torna obrigatorio.
     DATABASE_URL: z.url().optional(),
 
+    // Modo manutenção: "1" responde /manutencao em todas as rotas (exceto health).
+    MANUTENCAO: z.enum(["0", "1"]).optional(),
+
     // Supabase (ADR-005 / ADR-008)
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
     SUPABASE_AUTH_HOOK_SECRET: z.string().min(1).optional(),
@@ -64,6 +67,7 @@ export const env = createEnv({
     WHATSAPP_APP_SECRET: process.env.WHATSAPP_APP_SECRET,
     WHATSAPP_WEBHOOK_VERIFY_TOKEN: process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN,
     LABEL_EXTRACTOR_API_KEY: process.env.LABEL_EXTRACTOR_API_KEY,
+    MANUTENCAO: process.env.MANUTENCAO,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_ORG: process.env.SENTRY_ORG,
     SENTRY_PROJECT: process.env.SENTRY_PROJECT,
