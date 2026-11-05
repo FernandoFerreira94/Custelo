@@ -1,6 +1,9 @@
 import { PackageCheckIcon } from "lucide-react";
 
-import { ContextoAtivo } from "@/components/shell/contexto-ativo";
+import {
+  ContextoAtivo,
+  estadoVazioPaginaClass,
+} from "@/components/shell/contexto-ativo";
 import { EmptyState } from "@/components/ui/empty";
 
 /** DASH-001 — gestão WEB para gestor/admin/auditor. Sem número falso até haver dado. */
@@ -14,6 +17,7 @@ export default function GestaoPage() {
         title="Tudo pronto para começar"
         description="O painel do dia chega quando as encomendas começarem a ser registradas."
         headingLevel="h2"
+        className={estadoVazioPaginaClass}
       />
     </main>
   );

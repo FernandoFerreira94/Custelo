@@ -44,3 +44,7 @@ export async function ContextoAtivo() {
     />
   );
 }
+
+/** Estado vazio das páginas iniciais: respiro do topo e ícone da brasa legível sobre a Névoa. */
+export const estadoVazioPaginaClass =
+  "py-16 md:py-24 [&_[data-slot=empty-icon]]:bg-card [&_[data-slot=empty-icon]]:ring-1 [&_[data-slot=empty-icon]]:ring-brand/40";

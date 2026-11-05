@@ -1,6 +1,9 @@
 import { ScanLineIcon } from "lucide-react";
 
-import { ContextoAtivo } from "@/components/shell/contexto-ativo";
+import {
+  ContextoAtivo,
+  estadoVazioPaginaClass,
+} from "@/components/shell/contexto-ativo";
 import { EmptyState } from "@/components/ui/empty";
 
 /** REC-001 — início OPS para a recepção. Sem número falso até haver dado. */
@@ -14,6 +17,7 @@ export default function ReceberPage() {
         title="Turno pronto"
         description="O registro de encomendas chega na próxima fase. Esta tela já funciona no celular."
         headingLevel="h2"
+        className={estadoVazioPaginaClass}
       />
     </main>
   );
