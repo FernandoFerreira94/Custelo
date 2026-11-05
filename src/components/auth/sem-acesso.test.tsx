@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { SemAcesso } from "@/components/auth/sem-acesso";
@@ -36,5 +36,23 @@ describe("SemAcesso", () => {
     expect(
       screen.getByText("Conectado como carlos@vilaverde.com.br"),
     ).toBeInTheDocument();
+  });
+
+  it("mostra o aviso e mantém o botão quando sair falha", async () => {
+    const falha = {
+      ok: false as const,
+      codigo: "INDISPONIVEL" as const,
+      mensagem: "Sem conexão. Verifique a internet e tente de novo.",
+    };
+    render(<SemAcesso email={null} signOutAction={async () => falha} />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Entrar com outra conta" }),
+    );
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(falha.mensagem);
+    expect(
+      screen.getByRole("button", { name: "Entrar com outra conta" }),
+    ).toBeEnabled();
   });
 });

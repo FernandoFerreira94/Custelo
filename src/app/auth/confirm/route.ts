@@ -1,14 +1,15 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
+import { motivoDoLink } from "@/application/auth/link-erro";
 import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-server";
 
 const supportedTypes = new Set<EmailOtpType>(["invite", "recovery"]);
 const supportedViews = new Set(["convite", "senha"]);
 
-function errorRedirect(requestUrl: URL) {
+function errorRedirect(requestUrl: URL, erro?: unknown) {
   return NextResponse.redirect(
-    new URL("/entrar?auth_error=invalid_link", requestUrl.origin),
+    new URL(`/entrar?link=${motivoDoLink(erro)}`, requestUrl.origin),
   );
 }
 
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      return errorRedirect(requestUrl);
+      return errorRedirect(requestUrl, error);
     }
 
     return NextResponse.redirect(
@@ -44,7 +45,7 @@ export async function GET(request: Request) {
   });
 
   if (error) {
-    return errorRedirect(requestUrl);
+    return errorRedirect(requestUrl, error);
   }
 
   const view = type === "invite" ? "convite" : "senha";
