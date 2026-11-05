@@ -1,173 +1,5 @@
 [
  {
-  "aba": "entrada",
-  "id": "SPLASH",
-  "titulo": "Abertura",
-  "file": "entrada/splash-abertura.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-001",
-  "titulo": "Entrar (celular)",
-  "file": "entrada/auth-001-entrar-celular.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-001",
-  "titulo": "Entrar (desktop)",
-  "file": "entrada/auth-001-entrar-desktop.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-006",
-  "titulo": "Sem acesso",
-  "file": "entrada/auth-006-sem-acesso.webp"
- },
- {
-  "aba": "entrada",
-  "id": "SPLASH",
-  "titulo": "Abertura no computador",
-  "file": "entrada/splash-abertura-no-computador.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-AJUDA",
-  "titulo": "Ajuda para entrar (aberta)",
-  "file": "entrada/auth-ajuda-ajuda-para-entrar-aberta.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-002 + AUTH-004",
-  "titulo": "Convite e criar senha",
-  "file": "entrada/auth-002-auth-004-convite-e-criar-senha.webp"
- },
- {
-  "aba": "entrada",
-  "id": "AUTH-003",
-  "titulo": "Recuperar senha",
-  "file": "entrada/auth-003-recuperar-senha.webp"
- },
- {
-  "aba": "portaria",
-  "id": "AUTH-001",
-  "titulo": "Entrar",
-  "file": "portaria/auth-001-entrar.webp"
- },
- {
-  "aba": "portaria",
-  "id": "AUTH-005",
-  "titulo": "Escolher empreendimento",
-  "file": "portaria/auth-005-escolher-empreendimento.webp"
- },
- {
-  "aba": "portaria",
-  "id": "REC-002",
-  "titulo": "Fotografar etiqueta",
-  "file": "portaria/rec-002-fotografar-etiqueta.webp"
- },
- {
-  "aba": "portaria",
-  "id": "REC-003",
-  "titulo": "Confirmar destino",
-  "file": "portaria/rec-003-confirmar-destino.webp"
- },
- {
-  "aba": "portaria",
-  "id": "CUS-001",
-  "titulo": "Fila (offline)",
-  "file": "portaria/cus-001-fila-offline.webp"
- },
- {
-  "aba": "portaria",
-  "id": "RET-004",
-  "titulo": "Retirada com assinatura",
-  "file": "portaria/ret-004-retirada-com-assinatura.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-004",
-  "titulo": "Escolher unidade",
-  "file": "fluxo/rec-004-escolher-unidade.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-006",
-  "titulo": "Registrar sem foto",
-  "file": "fluxo/rec-006-registrar-sem-foto.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-008",
-  "titulo": "Lote concluído e QR",
-  "file": "fluxo/rec-008-lote-concluido-e-qr.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-009",
-  "titulo": "Pendências no aparelho",
-  "file": "fluxo/rec-009-pendencias-no-aparelho.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-010",
-  "titulo": "Resolver conflito",
-  "file": "fluxo/rec-010-resolver-conflito.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "CUS-002 + 003",
-  "titulo": "Detalhe e linha do tempo",
-  "file": "fluxo/cus-002-003-detalhe-e-linha-do-tempo.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "CUS-004",
-  "titulo": "Correção depois do aviso",
-  "file": "fluxo/cus-004-correcao-depois-do-aviso.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "CUS-007",
-  "titulo": "Não identificadas",
-  "file": "fluxo/cus-007-nao-identificadas.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-001",
-  "titulo": "Escolher encomendas",
-  "file": "fluxo/ret-001-escolher-encomendas.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-002",
-  "titulo": "Quem retira",
-  "file": "fluxo/ret-002-quem-retira.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-003",
-  "titulo": "Assinatura",
-  "file": "fluxo/ret-003-assinatura.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-004",
-  "titulo": "Comprovante",
-  "file": "fluxo/ret-004-comprovante.webp"
- },
- {
-  "aba": "painel",
-  "id": "DASH-A",
-  "titulo": "Bento",
-  "file": "painel/dash-a-bento.webp"
- },
- {
-  "aba": "painel",
-  "id": "MOB-C",
-  "titulo": "Portaria",
-  "file": "painel/mob-c-portaria.webp"
- },
- {
   "aba": "cadastros",
   "id": "UNI-002",
   "titulo": "Unidades",
@@ -214,42 +46,6 @@
   "id": "PES-002",
   "titulo": "Vínculos da pessoa",
   "file": "estrutura/pes-002-vinculos-da-pessoa.webp"
- },
- {
-  "aba": "gestao",
-  "id": "USR-001 + USR-003",
-  "titulo": "Equipe e convite",
-  "file": "gestao/usr-001-usr-003-equipe-e-convite.webp"
- },
- {
-  "aba": "gestao",
-  "id": "USR-002",
-  "titulo": "Papéis e permissões",
-  "file": "gestao/usr-002-papeis-e-permissoes.webp"
- },
- {
-  "aba": "gestao",
-  "id": "CFG-002 + CFG-003",
-  "titulo": "Janela de envio e modelos",
-  "file": "gestao/cfg-002-cfg-003-janela-de-envio-e-modelos.webp"
- },
- {
-  "aba": "gestao",
-  "id": "CFG-004 + NOT-003",
-  "titulo": "WhatsApp e falhas",
-  "file": "gestao/cfg-004-not-003-whatsapp-e-falhas.webp"
- },
- {
-  "aba": "gestao",
-  "id": "AUD-001",
-  "titulo": "Auditoria",
-  "file": "gestao/aud-001-auditoria.webp"
- },
- {
-  "aba": "gestao",
-  "id": "CFG-008",
-  "titulo": "Retenção e dados",
-  "file": "gestao/cfg-008-retencao-e-dados.webp"
  },
  {
   "aba": "estados",
@@ -372,6 +168,294 @@
   "file": "importar/imp-015-concluir.webp"
  },
  {
+  "aba": "estados",
+  "id": "e-avisos",
+  "titulo": "Avisos e alertas",
+  "file": "estados/bloco-e-avisos.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-erros",
+  "titulo": "Páginas de erro",
+  "file": "estados/bloco-e-erros.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-carregar",
+  "titulo": "Carregamento e esqueleto",
+  "file": "estados/bloco-e-carregar.webp"
+ },
+ {
+  "aba": "estados",
+  "id": "e-vazio",
+  "titulo": "Telas vazias",
+  "file": "estados/bloco-e-vazio.webp"
+ },
+ {
+  "aba": "formularios",
+  "id": "FORMS",
+  "titulo": "Formulários de cadastro (página inteira)",
+  "file": "formularios/formularios-completo.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "SPLASH",
+  "titulo": "Abertura",
+  "file": "entrada/splash-abertura.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-001",
+  "titulo": "Entrar",
+  "file": "entrada/auth-001-entrar.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-006",
+  "titulo": "Sem acesso",
+  "file": "entrada/auth-006-sem-acesso.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "SPLASH",
+  "titulo": "Abertura no computador",
+  "file": "entrada/splash-abertura-no-computador.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-001",
+  "titulo": "Entrar",
+  "file": "entrada/auth-001-entrar-2.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-001 · animação",
+  "titulo": "animação · Ciclo do pacote no painel azul (3 variações)",
+  "file": "entrada/auth-001-animacao-animacao-ciclo-do-pacote-no-painel-azul-3-variacoes.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-AJUDA",
+  "titulo": "Ajuda para entrar (aberta)",
+  "file": "entrada/auth-ajuda-ajuda-para-entrar-aberta.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-002 + AUTH-004",
+  "titulo": "Convite e criar senha",
+  "file": "entrada/auth-002-auth-004-convite-e-criar-senha.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-003",
+  "titulo": "Recuperar senha",
+  "file": "entrada/auth-003-recuperar-senha.webp"
+ },
+ {
+  "aba": "entrada",
+  "id": "AUTH-006",
+  "titulo": "Sem acesso",
+  "file": "entrada/auth-006-sem-acesso-2.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "AUTH-001",
+  "titulo": "Entrar",
+  "file": "portaria/auth-001-entrar.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "AUTH-005",
+  "titulo": "Escolher empreendimento",
+  "file": "portaria/auth-005-escolher-empreendimento.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "REC-002",
+  "titulo": "Fotografar etiqueta",
+  "file": "portaria/rec-002-fotografar-etiqueta.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "REC-003",
+  "titulo": "Confirmar destino",
+  "file": "portaria/rec-003-confirmar-destino.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "CUS-001",
+  "titulo": "Fila (offline)",
+  "file": "portaria/cus-001-fila-offline.webp"
+ },
+ {
+  "aba": "portaria",
+  "id": "RET-004",
+  "titulo": "Retirada com assinatura",
+  "file": "portaria/ret-004-retirada-com-assinatura.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-004",
+  "titulo": "Escolher unidade",
+  "file": "fluxo/rec-004-escolher-unidade.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-005",
+  "titulo": "Escolher pessoa",
+  "file": "fluxo/rec-005-escolher-pessoa.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-006",
+  "titulo": "Registrar sem foto",
+  "file": "fluxo/rec-006-registrar-sem-foto.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-007",
+  "titulo": "Onde guardou",
+  "file": "fluxo/rec-007-onde-guardou.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-008",
+  "titulo": "Lote concluído e QR",
+  "file": "fluxo/rec-008-lote-concluido-e-qr.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-009",
+  "titulo": "Pendências no aparelho",
+  "file": "fluxo/rec-009-pendencias-no-aparelho.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "REC-010",
+  "titulo": "Resolver conflito",
+  "file": "fluxo/rec-010-resolver-conflito.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-002 + 003",
+  "titulo": "Detalhe e linha do tempo",
+  "file": "fluxo/cus-002-003-detalhe-e-linha-do-tempo.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-004",
+  "titulo": "Correção depois do aviso",
+  "file": "fluxo/cus-004-correcao-depois-do-aviso.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-005",
+  "titulo": "Mover de lugar",
+  "file": "fluxo/cus-005-mover-de-lugar.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-007",
+  "titulo": "Não identificadas",
+  "file": "fluxo/cus-007-nao-identificadas.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "CUS-008",
+  "titulo": "Etiqueta e QR",
+  "file": "fluxo/cus-008-etiqueta-e-qr.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-001",
+  "titulo": "Escolher encomendas",
+  "file": "fluxo/ret-001-escolher-encomendas.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-002",
+  "titulo": "Quem retira",
+  "file": "fluxo/ret-002-quem-retira.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-003",
+  "titulo": "Assinatura",
+  "file": "fluxo/ret-003-assinatura.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-004",
+  "titulo": "Comprovante",
+  "file": "fluxo/ret-004-comprovante.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-005",
+  "titulo": "Histórico no celular",
+  "file": "fluxo/ret-005-historico-no-celular.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-006",
+  "titulo": "Corrigir retirada",
+  "file": "fluxo/ret-006-corrigir-retirada.webp"
+ },
+ {
+  "aba": "fluxo",
+  "id": "RET-005",
+  "titulo": "Histórico de retiradas na web",
+  "file": "fluxo/ret-005-historico-de-retiradas-na-web.webp"
+ },
+ {
+  "aba": "painel",
+  "id": "DASH-A",
+  "titulo": "Bento",
+  "file": "painel/dash-a-bento.webp"
+ },
+ {
+  "aba": "painel",
+  "id": "MOB-C",
+  "titulo": "Portaria",
+  "file": "painel/mob-c-portaria.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "USR-001 + USR-003",
+  "titulo": "Equipe e convite",
+  "file": "gestao/usr-001-usr-003-equipe-e-convite.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "USR-002",
+  "titulo": "Papéis e permissões",
+  "file": "gestao/usr-002-papeis-e-permissoes.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-002 + CFG-003",
+  "titulo": "Janela de envio e modelos",
+  "file": "gestao/cfg-002-cfg-003-janela-de-envio-e-modelos.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-004 + NOT-003",
+  "titulo": "WhatsApp e falhas",
+  "file": "gestao/cfg-004-not-003-whatsapp-e-falhas.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "AUD-001",
+  "titulo": "Auditoria",
+  "file": "gestao/aud-001-auditoria.webp"
+ },
+ {
+  "aba": "gestao",
+  "id": "CFG-008",
+  "titulo": "Retenção e dados",
+  "file": "gestao/cfg-008-retencao-e-dados.webp"
+ },
+ {
   "aba": "config",
   "id": "CFG-001",
   "titulo": "Dados do empreendimento",
@@ -454,78 +538,6 @@
   "id": "SAAS-006 + BIL-003",
   "titulo": "Consumo",
   "file": "plataforma/saas-006-bil-003-consumo.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-avisos",
-  "titulo": "Avisos e alertas",
-  "file": "estados/bloco-e-avisos.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-erros",
-  "titulo": "Páginas de erro",
-  "file": "estados/bloco-e-erros.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-carregar",
-  "titulo": "Carregamento e esqueleto",
-  "file": "estados/bloco-e-carregar.webp"
- },
- {
-  "aba": "estados",
-  "id": "e-vazio",
-  "titulo": "Telas vazias",
-  "file": "estados/bloco-e-vazio.webp"
- },
- {
-  "aba": "formularios",
-  "id": "FORMS",
-  "titulo": "Formulários de cadastro (página inteira)",
-  "file": "formularios/formularios-completo.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-005",
-  "titulo": "Escolher pessoa",
-  "file": "fluxo/rec-005-escolher-pessoa.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "REC-007",
-  "titulo": "Onde guardou",
-  "file": "fluxo/rec-007-onde-guardou.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "CUS-005",
-  "titulo": "Mover de lugar",
-  "file": "fluxo/cus-005-mover-de-lugar.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "CUS-008",
-  "titulo": "Etiqueta e QR",
-  "file": "fluxo/cus-008-etiqueta-e-qr.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-005",
-  "titulo": "Histórico no celular",
-  "file": "fluxo/ret-005-historico-no-celular.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-006",
-  "titulo": "Corrigir retirada",
-  "file": "fluxo/ret-006-corrigir-retirada.webp"
- },
- {
-  "aba": "fluxo",
-  "id": "RET-005",
-  "titulo": "Histórico de retiradas na web",
-  "file": "fluxo/ret-005-historico-de-retiradas-na-web.webp"
  },
  {
   "aba": "prestadora",
@@ -736,5 +748,167 @@
   "id": "PRE-002 · pronto",
   "titulo": "pronto · Funcionário atribuído",
   "file": "prestadora/pre-002-pronto-pronto-funcionario-atribuido.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-001",
+  "titulo": "Pelo link do convite",
+  "file": "piloto/opt-001-pelo-link-do-convite.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-001",
+  "titulo": "Pelo QR do cartaz",
+  "file": "piloto/opt-001-pelo-qr-do-cartaz.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-001",
+  "titulo": "Número inválido",
+  "file": "piloto/opt-001-numero-invalido.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-001",
+  "titulo": "Enviando",
+  "file": "piloto/opt-001-enviando.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-002",
+  "titulo": "Pronto",
+  "file": "piloto/opt-002-pronto.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-003",
+  "titulo": "Link vencido",
+  "file": "piloto/opt-003-link-vencido.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "OPT-004",
+  "titulo": "Já cadastrado",
+  "file": "piloto/opt-004-ja-cadastrado.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "LGPD-001",
+  "titulo": "Seus dados (público)",
+  "file": "piloto/lgpd-001-seus-dados-publico.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "LGPD-002",
+  "titulo": "Pedido registrado",
+  "file": "piloto/lgpd-002-pedido-registrado.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "CFG-008",
+  "titulo": "Pedidos de titular",
+  "file": "piloto/cfg-008-pedidos-de-titular.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "CFG-008 · folha",
+  "titulo": "folha · Registrar pedido",
+  "file": "piloto/cfg-008-folha-folha-registrar-pedido.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "CFG-008 · diálogo",
+  "titulo": "diálogo · Excluir dados",
+  "file": "piloto/cfg-008-dialogo-dialogo-excluir-dados.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "LEG-001",
+  "titulo": "Política de privacidade",
+  "file": "piloto/leg-001-politica-de-privacidade.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "LEG-002",
+  "titulo": "Atualizamos os termos",
+  "file": "piloto/leg-002-atualizamos-os-termos.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "AUTH-001",
+  "titulo": "Checkbox da entrada",
+  "file": "piloto/auth-001-checkbox-da-entrada.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "IMP-020",
+  "titulo": "Revisão e ativação",
+  "file": "piloto/imp-020-revisao-e-ativacao.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "IMP-016..019",
+  "titulo": "Moradores, equipe, regras e WhatsApp",
+  "file": "piloto/imp-016-019-moradores-equipe-regras-e-whatsapp.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "SYS-001",
+  "titulo": "Portaria com dois avisos",
+  "file": "piloto/sys-001-portaria-com-dois-avisos.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "SYS-002",
+  "titulo": "Lista de avisos",
+  "file": "piloto/sys-002-lista-de-avisos.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "SYS-003",
+  "titulo": "Gestão com WhatsApp fora",
+  "file": "piloto/sys-003-gestao-com-whatsapp-fora.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "NAV-001",
+  "titulo": "Menu do perfil aberto",
+  "file": "piloto/nav-001-menu-do-perfil-aberto.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "PES-010",
+  "titulo": "Sugestões de cadastro",
+  "file": "piloto/pes-010-sugestoes-de-cadastro.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "REC-003",
+  "titulo": "Marcar como especial",
+  "file": "piloto/rec-003-marcar-como-especial.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "CUS-001",
+  "titulo": "Selo na fila",
+  "file": "piloto/cus-001-selo-na-fila.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "SAAS-002",
+  "titulo": "Custos do provedor",
+  "file": "piloto/saas-002-custos-do-provedor.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "ORG-005",
+  "titulo": "Relatórios da organização",
+  "file": "piloto/org-005-relatorios-da-organizacao.webp"
+ },
+ {
+  "aba": "piloto",
+  "id": "CFG-009",
+  "titulo": "Aprovar acesso de suporte",
+  "file": "piloto/cfg-009-aprovar-acesso-de-suporte.webp"
  }
 ]
