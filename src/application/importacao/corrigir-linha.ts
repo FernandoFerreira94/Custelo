@@ -42,7 +42,7 @@ export async function corrigirLinha(
     vistos,
   });
   await deps.repo.atualizarLinha(ctx, alvo.id, {
-    dados: v.dados,
+    dados: { ...v.dados, _entrada: e.dados },
     situacao: v.situacao,
     problemas: v.problemas,
     // A decisão anterior vale para a linha antiga; corrigida, começa de novo.

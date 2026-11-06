@@ -6,6 +6,7 @@ import {
   MSG_FUNCIONARIOS,
   type ResultadoDaGravacao,
 } from "@/application/importacao/ports";
+import { linhaEntra } from "@/application/importacao/selecao";
 import { falha, type Resultado, sucesso } from "@/lib/resultado";
 
 const PLURAL = (n: number, um: string, varios: string) =>
@@ -46,13 +47,7 @@ export async function confirmarImportacao(
   }
 
   const todas = await deps.repo.listarLinhas(ctx, e.loteId);
-  const entram = todas.filter(
-    (l) =>
-      l.situacao === "ok" ||
-      l.situacao === "aviso" ||
-      (l.situacao === "duplicado" &&
-        (l.decisao === "atualizar" || l.decisao === "criar")),
-  );
+  const entram = todas.filter(linhaEntra);
 
   const resultado = await deps.repo.gravarLote(ctx, {
     lote,

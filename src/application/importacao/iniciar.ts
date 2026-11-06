@@ -79,7 +79,12 @@ export async function iniciarImportacao(
     else if (v.situacao === "aviso") contagem.avisos += 1;
     else if (v.situacao === "erro") contagem.erros += 1;
     else contagem.duplicadas += 1;
-    return { numeroLinha: i + 1, ...v };
+    // `_entrada` guarda o que veio na célula, para a conferência mostrar e corrigir.
+    return {
+      numeroLinha: i + 1,
+      ...v,
+      dados: { ...v.dados, _entrada: dados },
+    };
   });
 
   const { id } = await deps.repo.criarLote(ctx, {
