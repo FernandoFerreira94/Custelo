@@ -9,6 +9,7 @@ import {
 } from "@/components/estrutura/filtros-de-unidades";
 import { ListaDeUnidades } from "@/components/estrutura/lista-de-unidades";
 import { UnidadeSheet } from "@/components/estrutura/unidade-sheet";
+import { BotaoImportar } from "@/components/importacao/botao-importar";
 import { SemPermissao } from "@/components/feedback/sem-permissao";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,6 +50,7 @@ export default async function UnidadesPage({
     return <SemPermissao voltarPara="/gestao" />;
   }
   const podeEditar = pode(ctx.data.papel, "cadastro.editar");
+  const podeImportar = pode(ctx.data.papel, "importacao.executar");
   const parametros = await searchParams;
   const filtro = filtroDaUrl(parametros);
   const busca = parametros.q?.trim() ?? "";
@@ -76,7 +78,10 @@ export default async function UnidadesPage({
             aparece na portaria.
           </p>
         </div>
-        {podeEditar ? <UnidadeSheet salvar={criarUnidadeAction} /> : null}
+        <div className="flex flex-wrap gap-3">
+          {podeImportar ? <BotaoImportar slug="unidades" /> : null}
+          {podeEditar ? <UnidadeSheet salvar={criarUnidadeAction} /> : null}
+        </div>
       </div>
 
       {semNenhuma ? (

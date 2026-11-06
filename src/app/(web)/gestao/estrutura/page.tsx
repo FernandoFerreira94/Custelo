@@ -5,6 +5,7 @@ import { pode } from "@/application/permissoes";
 import { ArvoreEstrutura } from "@/components/estrutura/arvore-estrutura";
 import { BannerSemContato } from "@/components/estrutura/banner-sem-contato";
 import { GerarUnidadesSheet } from "@/components/estrutura/gerar-unidades-sheet";
+import { BotaoImportar } from "@/components/importacao/botao-importar";
 import { SemPermissao } from "@/components/feedback/sem-permissao";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,6 +25,7 @@ export default async function EstruturaPage() {
     return <SemPermissao voltarPara="/gestao" />;
   }
   const podeEditar = pode(ctx.data.papel, "cadastro.editar");
+  const podeImportar = pode(ctx.data.papel, "importacao.executar");
   const [areas, unidades] = await Promise.all([
     estruturaRepo.arvore(ctx.data),
     estruturaRepo.resumoDeUnidades(ctx.data),
@@ -40,9 +42,12 @@ export default async function EstruturaPage() {
             Blocos, andares e unidades. É o primeiro filtro de toda encomenda.
           </p>
         </div>
-        {podeEditar && !vazio ? (
-          <GerarUnidadesSheet gerar={gerarUnidadesAction} />
-        ) : null}
+        <div className="flex flex-wrap gap-3">
+          {podeImportar ? <BotaoImportar slug="areas-comuns" /> : null}
+          {podeEditar && !vazio ? (
+            <GerarUnidadesSheet gerar={gerarUnidadesAction} />
+          ) : null}
+        </div>
       </div>
 
       {vazio ? (

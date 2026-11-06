@@ -11,6 +11,7 @@ import {
 } from "@/components/pessoas/filtros";
 import { FiltrosDePessoas } from "@/components/pessoas/filtros-de-pessoas";
 import { ListaDePessoas } from "@/components/pessoas/lista-de-pessoas";
+import { BotaoImportar } from "@/components/importacao/botao-importar";
 import { MoradorSheet } from "@/components/pessoas/morador-sheet";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -53,6 +54,7 @@ export default async function PessoasPage({
     return <SemPermissao voltarPara="/gestao" />;
   }
   const podeEditar = pode(ctx.data.papel, "cadastro.editar");
+  const podeImportar = pode(ctx.data.papel, "importacao.executar");
   const parametros = await searchParams;
   const filtro = filtroDaUrl(parametros.filtro);
   const busca = parametros.q?.trim() ?? "";
@@ -79,12 +81,15 @@ export default async function PessoasPage({
             Quem mora, quem retira e quem recebe aviso em cada unidade.
           </p>
         </div>
-        {podeEditar ? (
-          <MoradorSheet
-            unidades={unidades.map((u) => ({ id: u.id, codigo: u.codigo }))}
-            criar={criarPessoaAction}
-          />
-        ) : null}
+        <div className="flex flex-wrap gap-3">
+          {podeImportar ? <BotaoImportar slug="moradores" /> : null}
+          {podeEditar ? (
+            <MoradorSheet
+              unidades={unidades.map((u) => ({ id: u.id, codigo: u.codigo }))}
+              criar={criarPessoaAction}
+            />
+          ) : null}
+        </div>
       </div>
 
       {semNenhuma ? (
