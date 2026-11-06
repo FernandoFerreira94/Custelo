@@ -297,6 +297,25 @@ export const importacaoRepo: ImportacaoRepo = {
   async gravarLote(ctx, { lote, linhas, agora }) {
     // Uma transação só: o lote inteiro entra, ou nada entra.
     return withTenantDb(tenant(ctx), async (db) => {
+      // Reserva o lote antes de gravar: dois cliques ao mesmo tempo disputam esta linha
+      // e só um segue (o outro espera o commit e não acha mais "conferindo").
+      const reservado = await db
+        .update(importacoes)
+        .set({
+          status: "confirmada",
+          confirmadoPor: ctx.usuarioId,
+          confirmadoEm: agora,
+        })
+        .where(
+          and(
+            eq(importacoes.empreendimentoId, ctx.empreendimentoId),
+            eq(importacoes.id, lote.id),
+            eq(importacoes.status, "conferindo"),
+          ),
+        )
+        .returning({ id: importacoes.id });
+      if (reservado.length === 0) return null;
+
       const refs = await carregarReferencias(db, ctx);
       const total: ResultadoDaGravacao = {
         criados: 0,
@@ -327,14 +346,6 @@ export const importacaoRepo: ImportacaoRepo = {
           .set({ registroId })
           .where(eq(importacaoLinhas.id, linhaId));
       }
-      await db
-        .update(importacoes)
-        .set({
-          status: "confirmada",
-          confirmadoPor: ctx.usuarioId,
-          confirmadoEm: agora,
-        })
-        .where(eq(importacoes.id, lote.id));
       return total;
     });
   },
@@ -447,9 +458,17 @@ async function gravarLinha(
         areaId,
       };
       if (duplicada && existente) {
+        // Célula vazia na planilha não apaga o que já está cadastrado.
         await db
           .update(unidades)
-          .set(valores)
+          .set({
+            tipo: valores.tipo,
+            ...(valores.numero ? { numero: valores.numero } : {}),
+            ...(valores.apelidos.length > 0
+              ? { apelidos: valores.apelidos }
+              : {}),
+            ...(areaId ? { areaId } : {}),
+          })
           .where(eq(unidades.id, existente.id));
         return { acao: "atualizou" };
       }
@@ -482,10 +501,11 @@ async function gravarLinha(
       if (duplicada && existente) {
         await db
           .update(unidades)
-          .set({
-            responsavelPessoaId,
-            avisarResponsavel: responsavelPessoaId !== null,
-          })
+          .set(
+            responsavelPessoaId
+              ? { responsavelPessoaId, avisarResponsavel: true }
+              : {},
+          )
           .where(eq(unidades.id, existente.id));
         return { acao: "atualizou" };
       }
@@ -536,9 +556,23 @@ async function gravarLinha(
       }
 
       if (duplicada) {
-        const achada = (refs.pessoasPorNome.get(nomeNormalizado(nome)) ??
-          [])[0];
-        if (!achada) return { acao: "ignorou" };
+        const candidatas = refs.pessoasPorNome.get(nomeNormalizado(nome)) ?? [];
+        const naUnidade = candidatas.length
+          ? await db
+              .select({ pessoaId: vinculos.pessoaId })
+              .from(vinculos)
+              .where(
+                and(
+                  eq(vinculos.empreendimentoId, ctx.empreendimentoId),
+                  eq(vinculos.unidadeId, unidade.id),
+                  eq(vinculos.status, "ativo"),
+                  inArray(vinculos.pessoaId, candidatas),
+                ),
+              )
+          : [];
+        // Homônimo em outra unidade não pode receber o contato desta linha.
+        if (naUnidade.length !== 1) return { acao: "ignorou" };
+        const achada = naUnidade[0]!.pessoaId;
         if (texto(dados, "whatsapp"))
           await garantirContato(
             db,
@@ -638,7 +672,7 @@ async function gravarLinha(
         recebeAviso: false,
         relacao: texto(dados, "relacao") || null,
         emNomeDePessoaId: emNome,
-        vigenciaFim: valeAte ? new Date(`${valeAte}T23:59:59Z`) : null,
+        vigenciaFim: valeAte ? new Date(`${valeAte}T23:59:59-03:00`) : null,
       });
       return { acao: "criou", registroId: pessoa!.id };
     }

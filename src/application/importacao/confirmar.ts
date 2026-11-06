@@ -54,6 +54,13 @@ export async function confirmarImportacao(
     linhas: entram,
     agora: deps.agora(),
   });
+  // Outro clique confirmou o lote entre a leitura e a gravação.
+  if (!resultado) {
+    return sucesso(
+      { criados: 0, atualizados: 0, ignorados: 0 },
+      "Este lote já foi importado.",
+    );
+  }
   // Cadastro e contagens, nunca dado pessoal.
   await registrarAuditoria(deps.auditoria, ctx, {
     acao: "IMPORTACAO_CONFIRMADA",

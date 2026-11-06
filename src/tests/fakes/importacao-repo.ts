@@ -82,6 +82,7 @@ export function criarImportacaoRepoFake(banco: Partial<ContextoDoBanco> = {}) {
       estado.gravacoes += 1;
       estado.cadastrosTocados += linhas.length;
       const alvo = estado.lotes.find((l) => l.id === lote.id)!;
+      if (alvo.status !== "conferindo") return null;
       alvo.status = "confirmada";
       alvo.confirmadoEm = agora;
       return {

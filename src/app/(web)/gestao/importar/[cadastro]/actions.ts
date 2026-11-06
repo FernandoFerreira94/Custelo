@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { negarSemPermissao } from "@/application/estrutura/guarda";
 import { confirmarImportacao } from "@/application/importacao/confirmar";
 import { corrigirLinha } from "@/application/importacao/corrigir-linha";
 import { decidirDuplicado } from "@/application/importacao/decidir-duplicado";
@@ -49,18 +50,17 @@ export async function enviarPlanilhaAction(formData: FormData) {
     });
   }
 
+  const conteudo = new Uint8Array(await arquivo.arrayBuffer());
   const formato = validarArquivo({
     nome: arquivo.name,
     tipo: arquivo.type,
     bytes: arquivo.size,
+    inicio: conteudo.slice(0, 4),
   });
   if (!formato.ok) return formato;
 
   try {
-    const tabela = await lerArquivo(
-      formato.data,
-      new Uint8Array(await arquivo.arrayBuffer()),
-    );
+    const tabela = await lerArquivo(formato.data, conteudo);
     if (!tabela.ok) return tabela;
     return await iniciarImportacao(deps, ctx.data, {
       cadastro: cadastro.data,
@@ -109,6 +109,8 @@ export async function cancelarLoteAction(
   return executarAcao(esquemaDeLote, entrada, {
     revalidar: ["/gestao/importar"],
     executar: async (ctx, { loteId }) => {
+      const negado = negarSemPermissao(ctx, "importacao.executar");
+      if (negado) return negado;
       const lote = await importacaoRepo.buscarLote(ctx, loteId);
       if (!lote) return falha("NAO_ENCONTRADO", "Não achamos esse lote.");
       if (lote.status !== "conferindo") {

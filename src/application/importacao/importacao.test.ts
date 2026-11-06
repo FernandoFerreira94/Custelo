@@ -87,6 +87,17 @@ describe("validarArquivo", () => {
     ).toEqual({ ok: true, data: "xlsx" });
   });
 
+  it("xlsx que não é zip é recusado pela assinatura", () => {
+    expect(
+      validarArquivo({
+        nome: "a.xlsx",
+        tipo: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        bytes: 10,
+        inicio: new Uint8Array([0x4d, 0x5a, 0, 0]),
+      }),
+    ).toMatchObject({ ok: false });
+  });
+
   it("csv com tipo genérico do navegador passa pela extensão", () => {
     expect(
       validarArquivo({

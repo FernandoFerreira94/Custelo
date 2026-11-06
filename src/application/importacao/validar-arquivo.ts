@@ -22,6 +22,8 @@ export function validarArquivo(e: {
   nome: string;
   tipo: string;
   bytes: number;
+  /** Primeiros bytes do arquivo, para conferir a assinatura do .xlsx (zip: "PK"). */
+  inicio?: Uint8Array;
 }): Resultado<FormatoDoArquivo> {
   if (e.bytes > TAMANHO_MAXIMO_EM_BYTES) {
     return falha(
@@ -30,7 +32,10 @@ export function validarArquivo(e: {
     );
   }
   const extensao = e.nome.toLowerCase().split(".").pop();
-  if (e.tipo === TIPO_DE_XLSX && extensao === "xlsx") return sucesso("xlsx");
+  if (e.tipo === TIPO_DE_XLSX && extensao === "xlsx") {
+    const ehZip = !e.inicio || (e.inicio[0] === 0x50 && e.inicio[1] === 0x4b);
+    if (ehZip) return sucesso("xlsx");
+  }
   if (extensao === "csv" && TIPOS_DE_CSV.has(e.tipo)) return sucesso("csv");
   return falha(
     "ENTRADA_INVALIDA",

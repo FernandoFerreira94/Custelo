@@ -86,7 +86,7 @@ export interface ImportacaoRepo {
   gravarLote(
     ctx: Contexto,
     e: { lote: Lote; linhas: LinhaDoLote[]; agora: Date },
-  ): Promise<ResultadoDaGravacao>;
+  ): Promise<ResultadoDaGravacao | null>;
   /** Inativa e encerra o que o lote criou. Nunca apaga. */
   desfazerLote(
     ctx: Contexto,
