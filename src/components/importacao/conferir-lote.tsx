@@ -259,6 +259,7 @@ export function ConferirLote({
       <div className="flex flex-wrap gap-3">
         <Button
           size="lg"
+          className="h-auto min-h-12 max-w-full whitespace-normal"
           disabled={c.entram === 0 || pendente}
           onClick={() => setEtapa("confirmar")}
         >
