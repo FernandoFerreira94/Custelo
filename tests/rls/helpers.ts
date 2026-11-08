@@ -22,6 +22,7 @@ const MIGRATIONS = [
   "0012_i3_importacao.sql",
   "0013_ip_prestadora.sql",
   "0014_ip_pareamento.sql",
+  "0015_i4_custodia.sql",
 ] as const;
 
 export const FIXTURE_ORG_A: TenantFixture = {
@@ -177,6 +178,14 @@ async function migrationApplied(
         (
           await sql<{ ready: boolean }[]>`
             select to_regclass('public.locais_codigo') is not null as ready
+          `
+        )[0]?.ready,
+      );
+    case "0015_i4_custodia.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regclass('public.custody_events') is not null as ready
           `
         )[0]?.ready,
       );
