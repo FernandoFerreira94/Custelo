@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { MSG, comMensagemDeFalha, mensagemDeFalha } from "@/lib/mensagens";
+import {
+  MSG,
+  MSG_CUSTODIA,
+  comMensagemDeFalha,
+  mensagemDeFalha,
+} from "@/lib/mensagens";
 
 describe("mensagemDeFalha", () => {
   afterEach(() => vi.unstubAllGlobals());
@@ -42,5 +47,21 @@ describe("comMensagemDeFalha", () => {
       codigo: "INDISPONIVEL",
       mensagem: MSG.instavel,
     });
+  });
+});
+
+describe("MSG_CUSTODIA", () => {
+  it("recusa de transição diz o estado atual e o que fazer", () => {
+    expect(MSG_CUSTODIA.transicaoProibida("RETIRADA")).toMatch(
+      /entregue.*Atualize/,
+    );
+    expect(MSG_CUSTODIA.transicaoProibida(null)).toMatch(
+      /Registre o recebimento/,
+    );
+  });
+
+  it("textos com número concordam no plural", () => {
+    expect(MSG_CUSTODIA.prateleiraComEncomenda(1)).toContain("1 encomenda.");
+    expect(MSG_CUSTODIA.prateleiraComEncomenda(3)).toContain("3 encomendas.");
   });
 });
