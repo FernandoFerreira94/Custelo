@@ -18,6 +18,8 @@ const MIGRATIONS = [
   "0008_rls_fixture_hardening.sql",
   "0009_revoke_seed_fixtures.sql",
   "0010_base_auditoria.sql",
+  "0011_i3_modelo.sql",
+  "0012_i3_importacao.sql",
 ] as const;
 
 export const FIXTURE_ORG_A: TenantFixture = {
@@ -141,6 +143,22 @@ async function migrationApplied(
         (
           await sql<{ ready: boolean }[]>`
             select to_regclass('public.audit_log') is not null as ready
+          `
+        )[0]?.ready,
+      );
+    case "0011_i3_modelo.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regclass('public.contatos') is not null as ready
+          `
+        )[0]?.ready,
+      );
+    case "0012_i3_importacao.sql":
+      return Boolean(
+        (
+          await sql<{ ready: boolean }[]>`
+            select to_regclass('public.importacoes') is not null as ready
           `
         )[0]?.ready,
       );
