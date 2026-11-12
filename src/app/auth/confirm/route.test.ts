@@ -62,13 +62,13 @@ describe("GET /auth/confirm", () => {
     );
 
     expect(response.headers.get("location")).toBe(
-      "https://custelo.example/entrar?auth_error=invalid_link",
+      "https://custelo.example/entrar?link=invalido",
     );
     expect(mocks.verifyOtp).not.toHaveBeenCalled();
   });
 
   it("recusa token rejeitado pelo Supabase", async () => {
-    mocks.verifyOtp.mockResolvedValue({ error: { message: "expired" } });
+    mocks.verifyOtp.mockResolvedValue({ error: { message: "unexpected" } });
 
     const response = await GET(
       new Request(
@@ -77,7 +77,7 @@ describe("GET /auth/confirm", () => {
     );
 
     expect(response.headers.get("location")).toBe(
-      "https://custelo.example/entrar?auth_error=invalid_link",
+      "https://custelo.example/entrar?link=invalido",
     );
   });
 
@@ -93,6 +93,23 @@ describe("GET /auth/confirm", () => {
     expect(mocks.exchangeCodeForSession).toHaveBeenCalledWith("codigo-pkce");
     expect(response.headers.get("location")).toBe(
       "https://custelo.example/entrar?view=senha",
+    );
+  });
+
+  it.each([
+    [{ code: "otp_expired", message: "Token has expired" }, "vencido"],
+    [{ code: "email_link_used" }, "usado"],
+  ])("link %j volta ao login com motivo %s", async (erro, motivo) => {
+    mocks.verifyOtp.mockResolvedValue({ error: erro });
+
+    const response = await GET(
+      new Request(
+        "https://custelo.example/auth/confirm?token_hash=x&type=recovery",
+      ),
+    );
+
+    expect(response.headers.get("location")).toBe(
+      `https://custelo.example/entrar?link=${motivo}`,
     );
   });
 });

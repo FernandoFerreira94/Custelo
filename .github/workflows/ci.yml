@@ -70,6 +70,14 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Papéis do Supabase
+        # As migrations fazem GRANT/REVOKE nos papéis que o Supabase já traz; o postgres:16 puro não tem.
+        run: >-
+          psql "$DATABASE_URL"
+          -c "CREATE ROLE anon NOLOGIN"
+          -c "CREATE ROLE authenticated NOLOGIN"
+          -c "CREATE ROLE service_role NOLOGIN BYPASSRLS"
+          -c "CREATE ROLE supabase_auth_admin NOLOGIN"
       - name: Migrations
         run: pnpm db:migrate
       - name: Testes negativos cross-tenant

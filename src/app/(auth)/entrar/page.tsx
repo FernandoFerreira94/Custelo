@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ehMotivoDoLink, MENSAGEM_DO_LINK } from "@/application/auth/link-erro";
 import { LoginDesktop } from "@/components/auth/login-desktop";
 import type { AuthCardView } from "@/components/auth/auth-card-stage";
 import { getPendingInviteForSession } from "@/infrastructure/auth/invite-service";
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 type EntrarPageProps = {
   searchParams: Promise<{
     view?: string | string[];
+    link?: string | string[];
     auth_error?: string | string[];
   }>;
 };
@@ -31,10 +33,12 @@ export default async function EntrarPage({ searchParams }: EntrarPageProps) {
     requestedView && callbackViews.has(requestedView as AuthCardView)
       ? (requestedView as AuthCardView)
       : "entrar";
-  const initialError =
-    params.auth_error === "invalid_link"
-      ? "Link inválido ou expirado. Solicite um novo link."
+  const motivoDoLink = ehMotivoDoLink(params.link)
+    ? params.link
+    : params.auth_error === "invalid_link"
+      ? "invalido"
       : null;
+  const initialError = motivoDoLink ? MENSAGEM_DO_LINK[motivoDoLink] : null;
 
   return (
     <LoginDesktop

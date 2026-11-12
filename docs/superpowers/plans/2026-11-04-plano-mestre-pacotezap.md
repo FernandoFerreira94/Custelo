@@ -341,18 +341,18 @@ export type Resultado<T> =
 
 ### 4.5 Páginas de sistema
 
-| Página                                    | Rota / arquivo                                                | Prancha             | Fase                                 |
+| Página | Rota / arquivo | Prancha | Fase |
 | ----------------------------------------- | ------------------------------------------------------------- | ------------------- | ------------------------------------ | -------------------------------------------- | ----------------- |
-| 404 global                                | `src/app/not-found.tsx`                                       | `Erros` (#estados)  | Parte 1                              |
-| 500 global                                | `src/app/error.tsx`, `global-error.tsx`                       | `Erros`             | Parte 1                              |
-| Carregando global                         | `src/app/loading.tsx`                                         | `EsqueletoDesktop`  | Parte 1                              |
+| 404 global | `src/app/not-found.tsx` | `Erros` (#estados) | Parte 1 |
+| 500 global | `src/app/error.tsx`, `global-error.tsx` | `Erros` | Parte 1 |
+| Carregando global | `src/app/loading.tsx` | `EsqueletoDesktop` | Parte 1 |
 | 404, erro e carregando **por superfície** | `src/app/(web                                                 | ops                 | saas)/{not-found,error,loading}.tsx` | `Erros`, `EsqueletoDesktop`, `EsqueletoFila` | Fase 0 (Task 0.6) |
-| Sem permissão (403) dentro da superfície  | componente `SemPermissao` (usa `TelaDeEstado status="403"`)   | `Erros`             | Fase 0                               |
-| Sessão expirada                           | `/sessao-expirada`                                            | `ERR-SESSAO`        | Fase 0                               |
-| Manutenção                                | `/manutencao` (middleware desvia quando `MANUTENCAO=1`)       | `ERR-MANUT`         | Fase 0                               |
-| Sem internet ao abrir (PWA)               | fallback do Service Worker `/offline`                         | `ERR-OFFLINE`       | I6                                   |
-| Preparando o aparelho (1º uso)            | estado da casca `(ops)` enquanto baixa o cadastro local       | `LOAD-1A-VEZ`       | I6                                   |
-| Integração fora do ar                     | `Banner` global por superfície, lendo a saúde (`/api/health`) | `Avisos` (#estados) | I7 (WhatsApp), I11 (todas)           |
+| Sem permissão (403) dentro da superfície | componente `SemPermissao` (usa `TelaDeEstado status="403"`) | `Erros` | Fase 0 |
+| Sessão expirada | `/sessao-expirada` | `ERR-SESSAO` | Fase 0 |
+| Manutenção | `/manutencao` (middleware desvia quando `MANUTENCAO=1`) | `ERR-MANUT` | Fase 0 |
+| Sem internet ao abrir (PWA) | fallback do Service Worker `/offline` | `ERR-OFFLINE` | I6 |
+| Preparando o aparelho (1º uso) | estado da casca `(ops)` enquanto baixa o cadastro local | `LOAD-1A-VEZ` | I6 |
+| Integração fora do ar | `Banner` global por superfície, lendo a saúde (`/api/health`) | `Avisos` (#estados) | I7 (WhatsApp), I11 (todas) |
 
 ---
 
@@ -1389,9 +1389,8 @@ vi.mock("@/lib/env", () => ({
 
 describe("createSupabaseMiddlewareClient", () => {
   it("cookie renovado vai para a request repassada e para a resposta", async () => {
-    const { createSupabaseMiddlewareClient } = await import(
-      "./supabase-middleware"
-    );
+    const { createSupabaseMiddlewareClient } =
+      await import("./supabase-middleware");
     const req = new NextRequest("http://localhost/gestao", {
       headers: { cookie: "sb=velho" },
     });
@@ -2053,12 +2052,7 @@ describe("gerarUnidades", () => {
 ```ts
 // src/domain/estrutura/unidade.ts
 export type TipoUnidade =
-  | "apartamento"
-  | "casa"
-  | "sala"
-  | "loja"
-  | "area_comum"
-  | "outro";
+  "apartamento" | "casa" | "sala" | "loja" | "area_comum" | "outro";
 
 /** Mesma regra da coluna gerada unidades.codigo_normalizado (0011). */
 export function normalizarCodigo(texto: string): string {
@@ -5060,10 +5054,7 @@ O teste falha se uma propriedade fora da allowlist for enviada (ADR-017). A cons
 ```ts
 // src/domain/sync/saida.ts
 export type EstadoItem =
-  | "LOCAL"
-  | "SINCRONIZANDO"
-  | "SINCRONIZADO"
-  | "CONFLITO";
+  "LOCAL" | "SINCRONIZANDO" | "SINCRONIZADO" | "CONFLITO";
 export type RespostaItem =
   | { status: "ok" | "repetido" }
   | { status: "conflito"; conflitoId: string }

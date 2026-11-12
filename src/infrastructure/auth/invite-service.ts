@@ -108,6 +108,12 @@ export async function sendInviteByEmail(input: {
     },
   );
 
+  if (
+    error?.code === "email_exists" ||
+    /already been registered/i.test(error?.message ?? "")
+  ) {
+    return { ok: false, code: "DUPLICATE" };
+  }
   if (error || !data.user) {
     return { ok: false, code: "INVITE_FAILED" };
   }
