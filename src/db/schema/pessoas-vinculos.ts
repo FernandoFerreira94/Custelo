@@ -1,7 +1,9 @@
+import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
   pgTable,
+  smallint,
   text,
   timestamp,
   uniqueIndex,
@@ -24,6 +26,8 @@ export const pessoas = pgTable(
       .notNull()
       .references(() => empreendimentos.id, { onDelete: "restrict" }),
     nome: text("nome").notNull(),
+    /** So digitos; a UI mostra mascarado e nunca vai para log ou auditoria. */
+    cpf: text("cpf"),
     ativo: boolean("ativo").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -61,6 +65,11 @@ export const vinculos = pgTable(
       .notNull()
       .defaultNow(),
     vigenciaFim: timestamp("vigencia_fim", { withTimezone: true }),
+    recebeAviso: boolean("recebe_aviso").notNull().default(false),
+    ordemAviso: smallint("ordem_aviso").notNull().default(0),
+    relacao: text("relacao"),
+    emNomeDePessoaId: uuid("em_nome_de_pessoa_id"),
+    motivoEncerramento: text("motivo_encerramento"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -73,9 +82,8 @@ export const vinculos = pgTable(
     index("vinculos_org_id_idx").on(table.orgId),
     index("vinculos_pessoa_id_idx").on(table.pessoaId),
     index("vinculos_unidade_id_idx").on(table.unidadeId),
-    uniqueIndex("vinculos_pessoa_unidade_uidx").on(
-      table.pessoaId,
-      table.unidadeId,
-    ),
+    uniqueIndex("vinculos_ativo_pessoa_unidade_uidx")
+      .on(table.pessoaId, table.unidadeId)
+      .where(sql`status = 'ativo'`),
   ],
 );

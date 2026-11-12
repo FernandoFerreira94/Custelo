@@ -25,8 +25,13 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   no worktree compartilhado e a configuracao humana do Supabase Auth ser concluida.
 - **I3 estrutura fisica + pessoas** — migration `0007` com `areas`, `unidades`,
   `pontos_recebimento`, `pessoas`, `vinculos` + RLS. Schema Drizzle no repo.
-  Fase 0 entregue (ver DONE); proximo: a secao 8 do plano mestre (I3), que
-  comeca pela migration `0011` corrigindo os bugs do handoff.
+  Migrations `0011` (modelo) e `0012` (importacao) aplicadas; telas de
+  importacao IMP-010..015 (enviar, conferir, confirmar, concluir/desfazer) na
+  PR #31. Gate local em 06/11: `test:rls` 65/65 em Postgres 16 e e2e "importar
+  3 unidades e 2 moradores" verde no Supabase local (`supabase start`, sem tocar
+  no PacoteZap-SP). O CI cria os papeis do Supabase antes das migrations.
+  Pendente: revisao humana da PR #31 e do visual da `(web)` em 390px (o rail
+  lateral do shell ocupa ~100px; a tabela de conferencia rola na horizontal).
 - **I1 nuvem** — contas humanas: Supabase x3, GitHub remote, DSN Sentry,
   chaves Inngest. Codigo da fundacao ja esta no repo.
 

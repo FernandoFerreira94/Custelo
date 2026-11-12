@@ -64,3 +64,14 @@ test("papéis e permissões abre em só leitura", async ({ page }) => {
   await expect(page.getByText("Registrar encomenda")).toBeVisible();
   await expect(page.getByText("Ninguém apaga evidência")).toBeVisible();
 });
+
+test("o item Equipe do trilho leva à tela e fica marcado", async ({ page }) => {
+  await entrarComoGestor(page);
+
+  await page.getByRole("link", { name: "Equipe", exact: true }).click();
+
+  await expect(page).toHaveURL(/\/gestao\/equipe$/);
+  await expect(
+    page.getByRole("link", { name: "Equipe", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+});

@@ -1,0 +1,366 @@
+{
+  "unidades": {
+    "nome": "Unidades",
+    "descricao": "Apartamentos, casas, lojas e salas do empreendimento.",
+    "colunas": [
+      {
+        "cabecalho": "Tipo",
+        "obrigatoria": true,
+        "formato": "Lista",
+        "valores": ["Apartamento", "Casa", "Loja", "Sala", "Outro"],
+        "dica": "Escolha da lista."
+      },
+      {
+        "cabecalho": "Bloco/Torre/Quadra",
+        "obrigatoria": false,
+        "formato": "Texto curto",
+        "valores": null,
+        "dica": "Deixe vazio se o condomínio não tem bloco. Ex.: A, Torre 2, Quadra 5."
+      },
+      {
+        "cabecalho": "Número",
+        "obrigatoria": true,
+        "formato": "Texto (mantém zero à esquerda)",
+        "valores": null,
+        "dica": "Como está na porta. Ex.: 112, 01, 5B."
+      },
+      {
+        "cabecalho": "Andar",
+        "obrigatoria": false,
+        "formato": "Número",
+        "valores": null,
+        "dica": "Opcional. Térreo = 0."
+      },
+      {
+        "cabecalho": "Como aparece na etiqueta",
+        "obrigatoria": false,
+        "formato": "Texto; separe por ;",
+        "valores": null,
+        "dica": "Outros jeitos de escrever a unidade. Ex.: A112; Bl A ap 112."
+      }
+    ],
+    "exemplos": [
+      ["Apartamento", "A", "112", 11, "A112; Bl A ap 112"],
+      ["Apartamento", "A", "114", 11, ""],
+      ["Casa", "Quadra 5", "23", "", ""],
+      ["Loja", "Térreo", "L-04", 0, "Loja 4"]
+    ]
+  },
+  "moradores": {
+    "nome": "Moradores",
+    "descricao": "Pessoas que recebem encomendas numa unidade residencial.",
+    "colunas": [
+      {
+        "cabecalho": "Bloco/Torre/Quadra",
+        "obrigatoria": false,
+        "formato": "Texto curto",
+        "valores": null,
+        "dica": "Deixe vazio se o condomínio não tem bloco. Ex.: A, Torre 2, Quadra 5."
+      },
+      {
+        "cabecalho": "Unidade",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Número da unidade já cadastrada. Ex.: 112."
+      },
+      {
+        "cabecalho": "Nome completo",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Como aparece na etiqueta da encomenda."
+      },
+      {
+        "cabecalho": "Papel",
+        "obrigatoria": true,
+        "formato": "Lista",
+        "valores": ["Titular", "Morador", "Inquilino"],
+        "dica": "Titular é o contato principal da unidade."
+      },
+      {
+        "cabecalho": "WhatsApp",
+        "obrigatoria": false,
+        "formato": "Celular com DDD, só números",
+        "valores": null,
+        "dica": "11 dígitos com DDD. Sem +55. Vazio = aviso só pela portaria."
+      },
+      {
+        "cabecalho": "E-mail",
+        "obrigatoria": false,
+        "formato": "nome@dominio.com",
+        "valores": null,
+        "dica": "Opcional."
+      }
+    ],
+    "exemplos": [
+      [
+        "A",
+        "112",
+        "Helena Prado",
+        "Titular",
+        "11987654321",
+        "helena@exemplo.com"
+      ],
+      ["A", "112", "Bruno Prado", "Morador", "11991230000", ""],
+      ["B", "201", "Carla Nunes", "Inquilino", "11970013321", ""]
+    ]
+  },
+  "lojistas": {
+    "nome": "Lojistas",
+    "descricao": "Lojas e quem recebe por elas (shopping, galeria, térreo comercial).",
+    "colunas": [
+      {
+        "cabecalho": "Piso/Bloco",
+        "obrigatoria": false,
+        "formato": "Texto curto",
+        "valores": null,
+        "dica": "Ex.: Térreo, Piso 1, Bloco C."
+      },
+      {
+        "cabecalho": "Loja",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Número da loja já cadastrada como unidade. Ex.: L-04."
+      },
+      {
+        "cabecalho": "Nome da loja",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Nome fantasia. Ajuda a ler a etiqueta."
+      },
+      {
+        "cabecalho": "Nome do contato",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Pessoa que recebe ou responde pela loja."
+      },
+      {
+        "cabecalho": "Função",
+        "obrigatoria": true,
+        "formato": "Lista",
+        "valores": ["Responsável", "Funcionário da loja"],
+        "dica": "Responsável recebe os avisos da loja."
+      },
+      {
+        "cabecalho": "WhatsApp",
+        "obrigatoria": false,
+        "formato": "Celular com DDD, só números",
+        "valores": null,
+        "dica": "11 dígitos com DDD. Sem +55. Vazio = aviso só pela portaria."
+      },
+      {
+        "cabecalho": "E-mail",
+        "obrigatoria": false,
+        "formato": "nome@dominio.com",
+        "valores": null,
+        "dica": "Opcional."
+      }
+    ],
+    "exemplos": [
+      [
+        "Térreo",
+        "L-04",
+        "Café Aurora",
+        "Paula Teixeira",
+        "Responsável",
+        "11988776655",
+        "contato@cafeaurora.com"
+      ],
+      [
+        "Piso 1",
+        "L-12",
+        "Ótica Lume",
+        "Renato Dias",
+        "Responsável",
+        "11977661234",
+        ""
+      ],
+      [
+        "Piso 1",
+        "L-12",
+        "Ótica Lume",
+        "Sara Lima",
+        "Funcionário da loja",
+        "",
+        ""
+      ]
+    ]
+  },
+  "funcionarios": {
+    "nome": "Funcionários",
+    "descricao": "Equipe que usa o PacoteZap. Cada linha vira um convite pendente; nada é enviado sem você mandar.",
+    "colunas": [
+      {
+        "cabecalho": "Nome completo",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Nome da pessoa."
+      },
+      {
+        "cabecalho": "E-mail",
+        "obrigatoria": true,
+        "formato": "nome@dominio.com",
+        "valores": null,
+        "dica": "Usado para entrar. Um e-mail por pessoa, sem e-mail compartilhado."
+      },
+      {
+        "cabecalho": "Papel",
+        "obrigatoria": true,
+        "formato": "Lista",
+        "valores": ["Porteiro", "Zelador", "Síndico", "Gestor"],
+        "dica": "Você só pode convidar papéis iguais ou abaixo do seu."
+      },
+      {
+        "cabecalho": "Turno",
+        "obrigatoria": false,
+        "formato": "Lista",
+        "valores": ["Manhã", "Tarde", "Noite"],
+        "dica": "Opcional."
+      },
+      {
+        "cabecalho": "Ponto de recebimento",
+        "obrigatoria": false,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Nome do ponto já cadastrado. Ex.: Portaria principal."
+      },
+      {
+        "cabecalho": "Começa em",
+        "obrigatoria": false,
+        "formato": "Data dd/mm/aaaa",
+        "valores": null,
+        "dica": "Opcional. Vazio = hoje."
+      }
+    ],
+    "exemplos": [
+      [
+        "José Almeida",
+        "jose.almeida@exemplo.com",
+        "Porteiro",
+        "Manhã",
+        "Portaria principal",
+        "10/11/2026"
+      ],
+      [
+        "Marta Silva",
+        "marta.silva@exemplo.com",
+        "Porteiro",
+        "Noite",
+        "Portaria principal",
+        ""
+      ],
+      ["Ana Souza", "ana.souza@exemplo.com", "Gestor", "", "", ""]
+    ]
+  },
+  "autorizados": {
+    "nome": "Autorizados a retirar",
+    "descricao": "Pessoas de fora que podem retirar em nome de um morador.",
+    "colunas": [
+      {
+        "cabecalho": "Bloco/Torre/Quadra",
+        "obrigatoria": false,
+        "formato": "Texto curto",
+        "valores": null,
+        "dica": "Deixe vazio se o condomínio não tem bloco. Ex.: A, Torre 2, Quadra 5."
+      },
+      {
+        "cabecalho": "Unidade",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Unidade do morador."
+      },
+      {
+        "cabecalho": "Em nome de",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Nome do morador já cadastrado na unidade."
+      },
+      {
+        "cabecalho": "Nome do autorizado",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Nome completo de quem vai retirar."
+      },
+      {
+        "cabecalho": "Relação",
+        "obrigatoria": true,
+        "formato": "Lista",
+        "valores": ["Familiar", "Diarista", "Vizinho", "Outro"],
+        "dica": ""
+      },
+      {
+        "cabecalho": "CPF",
+        "obrigatoria": false,
+        "formato": "000.000.000-00",
+        "valores": null,
+        "dica": "Opcional. Ajuda o porteiro a conferir o documento."
+      },
+      {
+        "cabecalho": "Vale até",
+        "obrigatoria": false,
+        "formato": "Data dd/mm/aaaa",
+        "valores": null,
+        "dica": "Vazio = sem prazo."
+      }
+    ],
+    "exemplos": [
+      [
+        "B",
+        "304",
+        "Mariana Souza",
+        "Lúcia Ferreira",
+        "Diarista",
+        "",
+        "31/12/2026"
+      ],
+      ["A", "112", "Helena Prado", "Roberto Prado", "Familiar", "", ""]
+    ]
+  },
+  "areas-comuns": {
+    "nome": "Áreas comuns",
+    "descricao": "Destinos que não são unidade: administração, academia, zeladoria.",
+    "colunas": [
+      {
+        "cabecalho": "Nome",
+        "obrigatoria": true,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Ex.: Administração, Academia."
+      },
+      {
+        "cabecalho": "Bloco/Torre/Quadra",
+        "obrigatoria": false,
+        "formato": "Texto curto",
+        "valores": null,
+        "dica": "Deixe vazio se o condomínio não tem bloco. Ex.: A, Torre 2, Quadra 5."
+      },
+      {
+        "cabecalho": "Responsável",
+        "obrigatoria": false,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Quem retira pela área."
+      },
+      {
+        "cabecalho": "Observação",
+        "obrigatoria": false,
+        "formato": "Texto",
+        "valores": null,
+        "dica": "Opcional."
+      }
+    ],
+    "exemplos": [
+      ["Administração", "", "Ana Souza", "Recebe boletos e correspondência"],
+      ["Academia", "B", "Zeladoria", ""],
+      ["Salão de festas", "A", "", ""]
+    ]
+  }
+}

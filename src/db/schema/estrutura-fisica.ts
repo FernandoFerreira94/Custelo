@@ -1,6 +1,8 @@
+import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -8,6 +10,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
+import { unidadeTipoEnum } from "./enums";
 import { empreendimentos, organizacoes } from "./tenancy";
 
 /** Camada generica configuravel (bloco, torre, quadra…). */
@@ -23,6 +26,7 @@ export const areas = pgTable(
       .references(() => empreendimentos.id, { onDelete: "restrict" }),
     parentId: uuid("parent_id"),
     nome: text("nome").notNull(),
+    ordem: integer("ordem").notNull().default(0),
     ativo: boolean("ativo").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -53,6 +57,18 @@ export const unidades = pgTable(
       onDelete: "set null",
     }),
     codigo: text("codigo").notNull(),
+    tipo: unidadeTipoEnum("tipo").notNull().default("apartamento"),
+    numero: text("numero"),
+    /** Gerada no banco: maiusculas, so letras e digitos ("B-304" -> "B304"). */
+    codigoNormalizado: text("codigo_normalizado").generatedAlwaysAs(
+      sql`upper(regexp_replace(codigo, '[^[:alnum:]]', '', 'g'))`,
+    ),
+    apelidos: text("apelidos")
+      .array()
+      .notNull()
+      .default(sql`'{}'`),
+    responsavelPessoaId: uuid("responsavel_pessoa_id"),
+    avisarResponsavel: boolean("avisar_responsavel").notNull().default(false),
     nome: text("nome"),
     ativo: boolean("ativo").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -66,9 +82,9 @@ export const unidades = pgTable(
     index("unidades_empreendimento_id_idx").on(table.empreendimentoId),
     index("unidades_org_id_idx").on(table.orgId),
     index("unidades_area_id_idx").on(table.areaId),
-    uniqueIndex("unidades_emp_codigo_uidx").on(
+    uniqueIndex("unidades_emp_codigo_norm_uidx").on(
       table.empreendimentoId,
-      table.codigo,
+      table.codigoNormalizado,
     ),
   ],
 );
@@ -85,6 +101,7 @@ export const pontosRecebimento = pgTable(
       .notNull()
       .references(() => empreendimentos.id, { onDelete: "restrict" }),
     nome: text("nome").notNull(),
+    funcionamento: text("funcionamento"),
     ativo: boolean("ativo").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
