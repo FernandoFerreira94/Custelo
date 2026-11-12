@@ -48,9 +48,9 @@ IMP-001,WEB,05 Importacao,Upload da planilha,tela,/(web)/importacao,sim,P1,06,I1
 IMP-002,WEB,05 Importacao,Preview e normalizacao,tela,/(web)/importacao/[lote],sim,P1,06,I10,APPROVED,DONE,NOT_STARTED,importacao,NOT_STARTED,N/A,NOT_STARTED,nao,IA nao grava
 IMP-003,WEB,05 Importacao,Inconsistencias,tela,/(web)/importacao/[lote]/erros,sim,P1,06,I10,APPROVED,DONE,NOT_STARTED,importacao,NOT_STARTED,N/A,NOT_STARTED,nao,
 IMP-004,WEB,05 Importacao,Relatorio do lote,tela,/(web)/importacao/[lote]/ok,sim,P2,06,I10,APPROVED,DONE,NOT_STARTED,importacao,NOT_STARTED,N/A,NOT_STARTED,nao,
-USR-001,WEB,01 Tenancy,Usuarios,tela,/(web)/usuarios,sim,P0,07,I2,APPROVED,DONE,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,
-USR-002,WEB,01 Tenancy,Papeis e escopo,tela,/(web)/usuarios/papeis,sim,P0,07,I2,APPROVED,DONE,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,
-USR-003,WEB,01 Tenancy,Convite,tela,/(web)/usuarios/convite,sim,P0,07,I2,APPROVED,DONE,NOT_STARTED,auth-rbac,NOT_STARTED,N/A,NOT_STARTED,nao,Confirmar nome na spec Notion
+USR-001,WEB,01 Tenancy,Usuarios,tela,/gestao/equipe,sim,P0,07,I2,APPROVED,DONE,DONE,auth-rbac,DONE,N/A,DONE,nao,Lista com e-mail mascarado; desativar com motivo. Detalhe do membro (e-mail completo) pendente
+USR-002,WEB,01 Tenancy,Papeis e escopo,tela,/gestao/equipe/papeis,sim,P0,07,I2,APPROVED,DONE,DONE,auth-rbac,DONE,N/A,DONE,nao,Matriz so leitura gerada de PERMISSOES
+USR-003,WEB,01 Tenancy,Convite,tela,/gestao/equipe,sim,P0,07,I2,APPROVED,DONE,DONE,auth-rbac,DONE,N/A,DONE,nao,Convite em painel lateral na tela de equipe. Confirmar nome na spec Notion
 CFG-001,WEB,01 Tenancy,Empreendimento / geral,tela,/(web)/config,sim,P1,07,I11,APPROVED,DONE,NOT_STARTED,tenancy,NOT_STARTED,N/A,NOT_STARTED,nao,Confirmar nome na spec Notion
 CFG-002,WEB,04 Comunicacao,Janelas de notificacao,tela,/(web)/config/janelas,sim,P0,07,I7,APPROVED,DONE,NOT_STARTED,whatsapp,NOT_STARTED,N/A,NOT_STARTED,nao,
 CFG-003,WEB,04 Comunicacao,Templates,tela,/(web)/config/templates,sim,P0,07,I7,APPROVED,DONE,NOT_STARTED,whatsapp,NOT_STARTED,N/A,NOT_STARTED,nao,
