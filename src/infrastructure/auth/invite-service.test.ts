@@ -114,7 +114,7 @@ describe("acceptInviteForSession", () => {
       }),
     ).resolves.toEqual({
       ok: false,
-      message: "Convite inválido ou já utilizado.",
+      mensagem: "Convite inválido ou já utilizado.",
     });
 
     expect(mocks.updateUser).not.toHaveBeenCalled();

@@ -68,7 +68,7 @@ export function LoginForm({
     setSubmitError(null);
     const result = await requestSession(values);
     if (!result.ok) {
-      setSubmitError(result.message);
+      setSubmitError(result.mensagem);
       registrarFalha();
       return;
     }

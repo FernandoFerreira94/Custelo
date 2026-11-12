@@ -33,7 +33,7 @@ describe("RecoverAccessForm", () => {
   it("mostra mensagem de sucesso sem revelar se o e-mail existe", async () => {
     requestRecovery.mockResolvedValue({
       ok: true,
-      message:
+      mensagem:
         "Se existir uma conta com esse e-mail, o link será enviado. Por segurança, não confirmamos quais e-mails estão cadastrados.",
     });
 
@@ -56,7 +56,7 @@ describe("RecoverAccessForm", () => {
   it("mostra erro retornado pela acao de recuperacao", async () => {
     requestRecovery.mockResolvedValue({
       ok: false,
-      message:
+      mensagem:
         "Não foi possível enviar o link agora. Tente novamente em instantes.",
     });
 

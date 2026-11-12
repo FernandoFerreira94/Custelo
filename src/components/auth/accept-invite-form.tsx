@@ -106,7 +106,7 @@ export function AcceptInviteForm({
     const result = await requestAcceptInvite(values);
 
     if (!result.ok) {
-      setFormError(result.message);
+      setFormError(result.mensagem);
       return;
     }
 

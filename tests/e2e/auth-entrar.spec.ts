@@ -63,7 +63,7 @@ test("I2 login real do usuario seed redireciona para recebimento", async ({
   const authResponse = page.waitForResponse((response) =>
     response.url().includes("/auth/v1/token"),
   );
-  await page.getByRole("button", { name: "Entrar" }).click();
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
   const response = await authResponse;
   expect(response.status()).toBe(200);
   await expect(page).toHaveURL(/\/receber$/);

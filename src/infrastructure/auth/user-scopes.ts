@@ -1,7 +1,6 @@
-import postgres from "postgres";
-
 import type { UserScope } from "@/application/auth/user-scope";
 import { getDatabaseUrl } from "@/db/client";
+import { getClient } from "@/infrastructure/db/tenant-db";
 
 type RawScope = {
   org_id: string;
@@ -42,17 +41,13 @@ export async function listAccessibleScopes(
     return [];
   }
 
-  const sql = postgres(url, { prepare: false, max: 1 });
-
-  try {
-    const rows = await sql<ListScopesRow[]>`
+  const rows = await getClient().begin(async (tx) => {
+    await tx`select set_config('app.current_user_id', ${userId}, true)`;
+    return tx<ListScopesRow[]>`
       select app.list_escopos_acessiveis(${userId}::uuid) as scopes
     `;
-    const raw = rows[0]?.scopes ?? [];
-    return raw.map(mapScope);
-  } finally {
-    await sql.end({ timeout: 2 });
-  }
+  });
+  return (rows[0]?.scopes ?? []).map(mapScope);
 }
 
 export async function defineActiveContext(
@@ -67,24 +62,21 @@ export async function defineActiveContext(
     return { ok: false, code: "INVALID_SCOPE" };
   }
 
-  const sql = postgres(url, { prepare: false, max: 1 });
-
-  try {
-    const rows = await sql<DefineContextRow[]>`
+  const rows = await getClient().begin(async (tx) => {
+    await tx`select set_config('app.current_user_id', ${userId}, true)`;
+    return tx<DefineContextRow[]>`
       select app.definir_contexto_ativo(
         ${userId}::uuid,
         ${orgId}::uuid,
         ${empreendimentoId}::uuid
       ) as result
     `;
-    const result = rows[0]?.result;
+  });
+  const result = rows[0]?.result;
 
-    if (!result?.ok) {
-      return { ok: false, code: "INVALID_SCOPE" };
-    }
-
-    return { ok: true, papelCodigo: result.papel_codigo };
-  } finally {
-    await sql.end({ timeout: 2 });
+  if (!result?.ok) {
+    return { ok: false, code: "INVALID_SCOPE" };
   }
+
+  return { ok: true, papelCodigo: result.papel_codigo };
 }

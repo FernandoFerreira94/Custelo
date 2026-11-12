@@ -4,6 +4,8 @@ import { comMensagemDeFalha } from "@/lib/mensagens";
 
 export async function requestSetPassword(
   input: SetPasswordInput,
-): Promise<{ ok: true; redirectTo?: string } | { ok: false; message: string }> {
+): Promise<
+  { ok: true; redirectTo?: string } | { ok: false; mensagem: string }
+> {
   return comMensagemDeFalha(() => setPasswordAction(input));
 }

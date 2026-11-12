@@ -39,7 +39,9 @@ export async function getPendingInviteForSession(): Promise<
 export async function acceptInviteForSession(input: {
   fullName: string;
   password: string;
-}): Promise<{ ok: true; redirectTo: string } | { ok: false; message: string }> {
+}): Promise<
+  { ok: true; redirectTo: string } | { ok: false; mensagem: string }
+> {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -48,7 +50,7 @@ export async function acceptInviteForSession(input: {
   if (!user) {
     return {
       ok: false,
-      message: "Sessão expirada. Abra novamente o link do convite.",
+      mensagem: "Sessão expirada. Abra novamente o link do convite.",
     };
   }
 
@@ -56,7 +58,7 @@ export async function acceptInviteForSession(input: {
   if (!pendingInvite.ok) {
     return {
       ok: false,
-      message: "Convite inválido ou já utilizado.",
+      mensagem: "Convite inválido ou já utilizado.",
     };
   }
 
@@ -68,7 +70,7 @@ export async function acceptInviteForSession(input: {
   if (passwordError) {
     return {
       ok: false,
-      message: "Não foi possível definir a senha. Tente novamente.",
+      mensagem: "Não foi possível definir a senha. Tente novamente.",
     };
   }
 
@@ -76,7 +78,7 @@ export async function acceptInviteForSession(input: {
   if (!accepted.ok) {
     return {
       ok: false,
-      message: "Convite inválido ou já utilizado.",
+      mensagem: "Convite inválido ou já utilizado.",
     };
   }
 
@@ -106,6 +108,12 @@ export async function sendInviteByEmail(input: {
     },
   );
 
+  if (
+    error?.code === "email_exists" ||
+    /already been registered/i.test(error?.message ?? "")
+  ) {
+    return { ok: false, code: "DUPLICATE" };
+  }
   if (error || !data.user) {
     return { ok: false, code: "INVITE_FAILED" };
   }

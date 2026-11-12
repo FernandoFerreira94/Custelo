@@ -49,13 +49,22 @@ describe("EntrarPage", () => {
     });
   });
 
-  it("mostra erro seguro para callback invalido", async () => {
+  it.each([
+    [{ link: "usado" }, "Este link já foi usado. Peça um novo para entrar."],
+    [
+      { link: "vencido" },
+      "Este link venceu. Peça um novo; ele vale por 1 hora.",
+    ],
+    [{ link: "invalido" }, "Não conseguimos abrir este link. Peça um novo."],
+    [
+      { auth_error: "invalid_link" },
+      "Não conseguimos abrir este link. Peça um novo.",
+    ],
+  ])("mostra a mensagem do link %j", async (params, mensagem) => {
     const element = await EntrarPage({
-      searchParams: Promise.resolve({ auth_error: "invalid_link" }),
+      searchParams: Promise.resolve(params),
     });
 
-    expect(element.props.initialError).toBe(
-      "Link inválido ou expirado. Solicite um novo link.",
-    );
+    expect(element.props.initialError).toBe(mensagem);
   });
 });

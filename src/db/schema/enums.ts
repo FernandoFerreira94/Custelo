@@ -34,10 +34,30 @@ export const vinculoTipoEnum = pgEnum("vinculo_tipo", [
   "titular",
   "morador",
   "dependente",
+  "inquilino",
+  "autorizado",
 ]);
 
 /** Ciclo de vida do vinculo pessoa-unidade. */
 export const vinculoStatusEnum = pgEnum("vinculo_status", [
   "ativo",
   "encerrado",
+]);
+
+/** Tipo da unidade-destino (area comum tem responsavel). */
+export const unidadeTipoEnum = pgEnum("unidade_tipo", [
+  "apartamento",
+  "casa",
+  "sala",
+  "loja",
+  "area_comum",
+  "outro",
+]);
+
+export const contatoCanalEnum = pgEnum("contato_canal", ["whatsapp", "email"]);
+
+export const contatoStatusEnum = pgEnum("contato_status", [
+  "valido",
+  "falha",
+  "precisa_confirmacao",
 ]);

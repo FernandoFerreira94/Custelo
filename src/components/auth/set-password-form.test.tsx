@@ -64,7 +64,7 @@ describe("SetPasswordForm", () => {
   it("mostra erro retornado pela acao de definir senha", async () => {
     requestSetPassword.mockResolvedValue({
       ok: false,
-      message: "Link expirado. Solicite um novo link de recuperação.",
+      mensagem: "Link expirado. Solicite um novo link de recuperação.",
     });
 
     render(<SetPasswordForm onBack={vi.fn()} onSaved={vi.fn()} />);

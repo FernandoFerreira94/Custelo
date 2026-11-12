@@ -64,11 +64,11 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
     const result = await requestRecovery(values);
 
     if (!result.ok) {
-      setFormError(result.message);
+      setFormError(result.mensagem);
       return;
     }
 
-    setSuccessMessage(result.message || RECOVERY_ACCEPTED);
+    setSuccessMessage(result.mensagem || RECOVERY_ACCEPTED);
   }
 
   if (successMessage) {

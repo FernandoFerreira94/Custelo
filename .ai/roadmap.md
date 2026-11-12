@@ -25,16 +25,18 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
   no worktree compartilhado e a configuracao humana do Supabase Auth ser concluida.
 - **I3 estrutura fisica + pessoas** — migration `0007` com `areas`, `unidades`,
   `pontos_recebimento`, `pessoas`, `vinculos` + RLS. Schema Drizzle no repo.
-  Proximo: Fase 0 do plano mestre e depois a secao 8 (I3), que comeca pela
-  migration `0011` corrigindo os bugs do handoff.
+  Migrations `0011` (modelo) e `0012` (importacao) aplicadas; telas de
+  importacao IMP-010..015 (enviar, conferir, confirmar, concluir/desfazer) na
+  PR #31. Gate local em 06/11: `test:rls` 65/65 em Postgres 16 e e2e "importar
+  3 unidades e 2 moradores" verde no Supabase local (`supabase start`, sem tocar
+  no PacoteZap-SP). O CI cria os papeis do Supabase antes das migrations.
+  Pendente: revisao humana da PR #31 e do visual da `(web)` em 390px (o rail
+  lateral do shell ocupa ~100px; a tabela de conferencia rola na horizontal).
 - **I1 nuvem** — contas humanas: Supabase x3, GitHub remote, DSN Sentry,
   chaves Inngest. Codigo da fundacao ja esta no repo.
 
 ## NEXT
 
-- Fase 0 do plano mestre (resultado padrao das acoes, contexto validado,
-  `0010` com `audit_log`, middleware, paginas de sistema por superficie,
-  telas de equipe USR-001..003).
 - I3: importacao Excel/CSV de cadastros (IMP-010..015) junto de UNI/PES —
   recomendado em 04/11 (D1), aguarda ok. PDF assistido fica na I10.
 
@@ -53,13 +55,19 @@ Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 - Configuracao humana do Supabase Auth em staging/producao (redirect allowlist,
   templates/SMTP e leaked-password protection). Sem CLI/token de Management API
   neste ambiente para auditar ou aplicar essa configuracao.
-- Gate global de qualidade: `pnpm verify` bloqueado em arquivos paralelos
-  `tenant-db.ts` e `vitest.config.ts`; a11y da raiz falha por contraste do texto
-  "Zap". Auth especifico, RLS e E2E passaram.
+- Gate global de qualidade: `pnpm verify` falha so no `format:check` de
+  `brand-kit/GUIA.md` e do plano mestre; testes e build passam. A11y da raiz
+  falha por contraste do texto "Zap".
 - Homologacao Meta/WABA — I7.
 - Prazos de retencao — I12 (motor parametrizavel ja e a regra).
 
 ## DONE
+
+- **Fase 0 do plano mestre (05/11/2026)** — PRs #27 (resultado padrao, contexto
+  validado, `0010` com `audit_log`, trilha, middleware), #28 (paginas de sistema,
+  mensagens) e #29 (telas de equipe USR-001..003). `0010` aplicada so no projeto
+  de teste PacoteZap-SP; falta o ok do Fernando para os demais ambientes.
+  Pendente: detalhe do membro e item Equipe no menu do perfil.
 
 - **04/11/2026 (PRs #12–#14):** journal Drizzle 0003–0008 + `0009` revoga
   seeds; typecheck/Prettier verdes; catalogo de mensagens `src/lib/mensagens.ts`

@@ -39,9 +39,9 @@ function messageForStatus(status: CusteloAccessClaims["user_status"]): string {
 
 export async function requestSession(
   input: LoginInput,
-): Promise<{ ok: true; redirectTo: string } | { ok: false; message: string }> {
+): Promise<{ ok: true; redirectTo: string } | { ok: false; mensagem: string }> {
   if (!isSupabaseBrowserConfigured()) {
-    return { ok: false, message: AUTH_UNAVAILABLE };
+    return { ok: false, mensagem: AUTH_UNAVAILABLE };
   }
 
   const supabase = createSupabaseBrowserClient();
@@ -52,30 +52,30 @@ export async function requestSession(
       password: input.password,
     });
   } catch (falha) {
-    return { ok: false, message: mensagemDeFalha(falha) };
+    return { ok: false, mensagem: mensagemDeFalha(falha) };
   }
 
   const { data, error } = resposta;
   if (error) {
     // Só credencial errada vira "senha incorreta". Rede, limite e servidor têm texto próprio.
     if (error.code === "email_not_confirmed") {
-      return { ok: false, message: LOGIN_EMAIL_NAO_CONFIRMADO };
+      return { ok: false, mensagem: LOGIN_EMAIL_NAO_CONFIRMADO };
     }
     if (error.code === "invalid_credentials" || error.status === 400) {
-      return { ok: false, message: LOGIN_FAILED };
+      return { ok: false, mensagem: LOGIN_FAILED };
     }
-    return { ok: false, message: mensagemDeFalha(error) };
+    return { ok: false, mensagem: mensagemDeFalha(error) };
   }
 
   if (!data.session) {
-    return { ok: false, message: LOGIN_FAILED };
+    return { ok: false, mensagem: LOGIN_FAILED };
   }
 
   const claims = readCusteloClaims(decodeJwtPayload(data.session.access_token));
 
   if (claims.user_status !== "ativo") {
     await supabase.auth.signOut();
-    return { ok: false, message: messageForStatus(claims.user_status) };
+    return { ok: false, mensagem: messageForStatus(claims.user_status) };
   }
 
   return { ok: true, redirectTo: "/contexto" };

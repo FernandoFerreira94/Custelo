@@ -66,7 +66,7 @@ export function SetPasswordForm({ onBack, onSaved }: SetPasswordFormProps) {
     const result = await requestSetPassword(values);
 
     if (!result.ok) {
-      setFormError(result.message);
+      setFormError(result.mensagem);
       return;
     }
 
