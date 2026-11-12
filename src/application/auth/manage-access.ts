@@ -62,7 +62,8 @@ export type ManageAccessErrorCode =
   | "ROLE_ESCALATION"
   | "INVALID_SCOPE"
   | "UNAVAILABLE"
-  | "INVITE_FAILED";
+  | "INVITE_FAILED"
+  | "DUPLICATE";
 
 export type ManageAccessResult =
   { ok: true } | { ok: false; code: ManageAccessErrorCode };
@@ -246,6 +247,7 @@ export async function deactivateUser(
   input: {
     actorUserId: string;
     targetUserId: string;
+    motivo?: string;
   },
   deps: ManageAccessDeps = depsPadrao,
 ): Promise<ManageAccessResult> {
@@ -275,6 +277,7 @@ export async function deactivateUser(
     acao: "USUARIO_DESATIVADO",
     alvoTipo: "usuario",
     alvoId: input.targetUserId,
+    motivo: input.motivo,
     origem: "web",
   });
 
