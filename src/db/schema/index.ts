@@ -1,5 +1,6 @@
 export * from "./contatos";
 export * from "./contratos";
+export * from "./dispositivos";
 export * from "./enums";
 export * from "./auditoria";
 export * from "./estrutura-fisica";
