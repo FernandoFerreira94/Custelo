@@ -11,6 +11,7 @@ import {
 import {
   empreendimentoStatusEnum,
   organizacaoStatusEnum,
+  organizacaoTipoEnum,
   papelCodigoEnum,
   usuarioStatusEnum,
 } from "./enums";
@@ -25,6 +26,7 @@ export const organizacoes = pgTable(
     nome: text("nome").notNull(),
     slug: text("slug").notNull(),
     status: organizacaoStatusEnum("status").notNull().default("ativa"),
+    tipo: organizacaoTipoEnum("tipo").notNull().default("contratante"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -118,6 +120,11 @@ export const escoposUsuario = pgTable(
       .notNull()
       .references(() => papeis.id, { onDelete: "restrict" }),
     ativo: boolean("ativo").notNull().default(true),
+    /**
+     * Nulo = vinculo direto. Preenchido = entrou pelo contrato da prestadora (D20).
+     * FK composta para `contratos_servico` vive na migration 0013 (evita import circular).
+     */
+    viaContratoId: uuid("via_contrato_id"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -126,6 +133,7 @@ export const escoposUsuario = pgTable(
       .defaultNow(),
   },
   (table) => [
+    index("escopos_usuario_via_contrato_idx").on(table.viaContratoId),
     index("escopos_usuario_empreendimento_id_idx").on(table.empreendimentoId),
     index("escopos_usuario_org_id_idx").on(table.orgId),
     index("escopos_usuario_usuario_id_idx").on(table.usuarioId),

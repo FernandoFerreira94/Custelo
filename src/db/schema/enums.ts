@@ -29,6 +29,26 @@ export const papelCodigoEnum = pgEnum("papel_codigo", [
   "auditor",
 ]);
 
+/** Conta contratante (condominio) ou prestadora de servico (D20). */
+export const organizacaoTipoEnum = pgEnum("organizacao_tipo", [
+  "contratante",
+  "prestadora",
+]);
+
+/** Servico prestado por contrato (D20). */
+export const contratoServicoTipoEnum = pgEnum("contrato_servico_tipo", [
+  "portaria",
+  "vigilancia",
+]);
+
+/** Ciclo de vida do contrato: so o condominio ativa (aceite). */
+export const contratoStatusEnum = pgEnum("contrato_status", [
+  "proposto",
+  "ativo",
+  "suspenso",
+  "encerrado",
+]);
+
 /** Papel da pessoa na unidade (pessoas-vinculos). */
 export const vinculoTipoEnum = pgEnum("vinculo_tipo", [
   "titular",

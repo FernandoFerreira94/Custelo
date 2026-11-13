@@ -92,6 +92,13 @@
       "when": 1755567600000,
       "tag": "0012_i3_importacao",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1755567700000,
+      "tag": "0013_ip_prestadora",
+      "breakpoints": true
     }
   ]
 }
