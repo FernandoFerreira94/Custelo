@@ -176,6 +176,26 @@ AS $$
   );
 $$;
 
+-- Nome da prestadora para quem enxerga o contrato (o condominio nao le organizacoes de outra conta).
+CREATE OR REPLACE FUNCTION app.prestadora_nome_do_contrato(p_contrato_id uuid) RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT o.nome
+  FROM contratos_servico c
+  JOIN organizacoes o ON o.id = c.prestadora_org_id
+  WHERE c.id = p_contrato_id
+    AND (
+      c.prestadora_org_id = app.current_org_id()
+      OR (
+        c.local_org_id = app.current_org_id()
+        AND (app.is_org_scope() OR c.empreendimento_id = app.current_empreendimento_id())
+      )
+    );
+$$;
+
 -- Funcoes do contrato: presas ao usuario da sessao (app.current_user_id()).
 
 CREATE OR REPLACE FUNCTION app.propor_contrato(
@@ -433,6 +453,7 @@ $$;
 REVOKE ALL ON FUNCTION app.validar_escopo_via_contrato() FROM PUBLIC, custelo_app;
 REVOKE ALL ON FUNCTION app.audit_log_contrato() FROM PUBLIC, custelo_app;
 REVOKE ALL ON FUNCTION app.eh_org_admin_direto(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.prestadora_nome_do_contrato(uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.propor_contrato(uuid, uuid, contrato_servico_tipo, papel_codigo[], date, date) FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.aceitar_contrato(uuid) FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.atribuir_funcionario_contrato(uuid, uuid, papel_codigo) FROM PUBLIC;
@@ -440,6 +461,7 @@ REVOKE ALL ON FUNCTION app.suspender_funcionario_no_local(uuid, uuid, text) FROM
 REVOKE ALL ON FUNCTION app.encerrar_contrato(uuid, text) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION app.eh_org_admin_direto(uuid) TO custelo_app;
+GRANT EXECUTE ON FUNCTION app.prestadora_nome_do_contrato(uuid) TO custelo_app;
 GRANT EXECUTE ON FUNCTION app.propor_contrato(uuid, uuid, contrato_servico_tipo, papel_codigo[], date, date) TO custelo_app;
 GRANT EXECUTE ON FUNCTION app.aceitar_contrato(uuid) TO custelo_app;
 GRANT EXECUTE ON FUNCTION app.atribuir_funcionario_contrato(uuid, uuid, papel_codigo) TO custelo_app;

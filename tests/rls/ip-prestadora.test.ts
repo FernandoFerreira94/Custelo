@@ -407,4 +407,31 @@ describe("IP.1 — prestadora, contratos e escopo via contrato", () => {
       expect.objectContaining({ org_id: PRESTADORA_P, via_contrato: false }),
     );
   });
+  it("nome da prestadora só para quem enxerga o contrato", async () => {
+    const consulta = (contexto: typeof gestorA) =>
+      withRls(
+        sql,
+        contexto,
+        async (tx) =>
+          tx<{ nome: string | null }[]>`
+          select app.prestadora_nome_do_contrato(${CONTRATO_P_A}::uuid) as nome
+        `,
+      );
+    expect((await consulta(gestorA))[0]?.nome).toBe("Selva Servicos");
+    expect((await consulta(gestorQ))[0]?.nome).toBeNull();
+    expect((await consulta(gestorB))[0]?.nome).toBeNull();
+  });
+
+  it("encerramento fica na trilha do condomínio com o código do plano", async () => {
+    const rows = await withRls(
+      sql,
+      gestorA,
+      async (tx) =>
+        tx<{ acao: string }[]>`
+        select acao from audit_log
+        where contrato_id = ${CONTRATO_P_A_ENCERRAR} and acao = 'CONTRATO_ENCERRADO'
+      `,
+    );
+    expect(rows.length).toBeGreaterThan(0);
+  });
 });
