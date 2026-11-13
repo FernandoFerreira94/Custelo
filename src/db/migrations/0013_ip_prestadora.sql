@@ -212,7 +212,7 @@ BEGIN
   RETURNING id INTO v_id;
 
   INSERT INTO audit_log (org_id, empreendimento_id, ator_usuario_id, acao, alvo_tipo, alvo_id, contrato_id, origem)
-  VALUES (p_local_org_id, p_empreendimento_id, app.current_user_id(), 'contrato.propor', 'contrato_servico', v_id, v_id, 'web');
+  VALUES (p_local_org_id, p_empreendimento_id, app.current_user_id(), 'CONTRATO_PROPOSTO', 'contrato_servico', v_id, v_id, 'web');
 
   RETURN v_id;
 END;
@@ -241,7 +241,7 @@ BEGIN
   WHERE id = p_contrato_id;
 
   INSERT INTO audit_log (org_id, empreendimento_id, ator_usuario_id, acao, alvo_tipo, alvo_id, contrato_id, origem)
-  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'contrato.aceitar', 'contrato_servico', c.id, c.id, 'web');
+  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'CONTRATO_ACEITO', 'contrato_servico', c.id, c.id, 'web');
 END;
 $$;
 
@@ -298,7 +298,7 @@ BEGIN
   RETURNING id INTO v_escopo_id;
 
   INSERT INTO audit_log (org_id, empreendimento_id, ator_usuario_id, acao, alvo_tipo, alvo_id, depois, contrato_id, origem)
-  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'contrato.atribuir_funcionario',
+  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'FUNCIONARIO_ATRIBUIDO',
           'escopo_usuario', v_escopo_id, jsonb_build_object('usuario_id', p_usuario_id, 'papel', p_papel), c.id, 'web');
 
   RETURN v_escopo_id;
@@ -336,7 +336,7 @@ BEGIN
   END IF;
 
   INSERT INTO audit_log (org_id, empreendimento_id, ator_usuario_id, acao, alvo_tipo, alvo_id, motivo, contrato_id, origem)
-  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'contrato.suspender_funcionario',
+  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'FUNCIONARIO_SUSPENSO',
           'escopo_usuario', v_escopo_id, p_motivo, c.id, 'web');
 END;
 $$;
@@ -374,7 +374,7 @@ BEGIN
   WHERE via_contrato_id = c.id AND ativo = true;
 
   INSERT INTO audit_log (org_id, empreendimento_id, ator_usuario_id, acao, alvo_tipo, alvo_id, motivo, contrato_id, origem)
-  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'contrato.encerrar',
+  VALUES (c.local_org_id, c.empreendimento_id, app.current_user_id(), 'CONTRATO_ENCERRADO',
           'contrato_servico', c.id, p_motivo, c.id, 'web');
 END;
 $$;
