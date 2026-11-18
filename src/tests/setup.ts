@@ -10,6 +10,19 @@ globalThis.ResizeObserver ??= class {
   disconnect() {}
 };
 
+// Nem IntersectionObserver; a NavigationBar usa para encolher o título ao rolar.
+globalThis.IntersectionObserver ??= class {
+  readonly root = null;
+  readonly rootMargin = "";
+  readonly thresholds = [];
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+} as unknown as typeof IntersectionObserver;
+
 afterEach(() => {
   cleanup();
 });

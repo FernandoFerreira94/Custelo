@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BellIcon,
   HomeIcon,
@@ -6,15 +8,19 @@ import {
   ScanLineIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { BottomBar } from "@/components/ui/bottom-bar";
 import { Button } from "@/components/ui/button";
 
 const CLASSE_ABA = "h-auto flex-col gap-1 py-2 text-xs";
 
-// Só "Hoje" existe até a I5: as outras abas e o registrar ficam desabilitados,
-// nunca um link para tela que não há.
-const ABAS_ESQUERDA = [{ label: "Fila", icon: <PackageIcon aria-hidden /> }];
+// Só aba de tela que existe vira link; as outras e o registrar ficam
+// desabilitados, nunca um link para tela que não há.
+const ABAS_LINK = [
+  { label: "Hoje", href: "/receber", icon: <HomeIcon aria-hidden /> },
+  { label: "Fila", href: "/fila", icon: <PackageIcon aria-hidden /> },
+];
 const ABAS_DIREITA = [
   { label: "Avisos", icon: <BellIcon aria-hidden /> },
   { label: "Mais", icon: <MoreHorizontalIcon aria-hidden /> },
@@ -41,6 +47,9 @@ function AbaDesabilitada({
 
 /** Barra inferior da portaria (ops): 4 abas e o registrar no centro. */
 export function NavPortaria() {
+  const pathname = usePathname();
+  // O detalhe da encomenda é parte da fila.
+  const ativa = pathname.startsWith("/encomendas") ? "/fila" : pathname;
   return (
     <BottomBar
       position="fixed"
@@ -49,15 +58,22 @@ export function NavPortaria() {
       role="navigation"
       className="mx-auto grid max-w-lg grid-cols-5 items-center gap-1 px-3"
     >
-      <Button asChild variant="secondary" className={CLASSE_ABA}>
-        <Link href="/receber" aria-current="page">
-          <HomeIcon aria-hidden />
-          Hoje
-        </Link>
-      </Button>
-      {ABAS_ESQUERDA.map((a) => (
-        <AbaDesabilitada key={a.label} {...a} />
-      ))}
+      {ABAS_LINK.map((a) => {
+        const atual = ativa === a.href || ativa.startsWith(`${a.href}/`);
+        return (
+          <Button
+            key={a.href}
+            asChild
+            variant={atual ? "secondary" : "ghost"}
+            className={CLASSE_ABA}
+          >
+            <Link href={a.href} aria-current={atual ? "page" : undefined}>
+              {a.icon}
+              {a.label}
+            </Link>
+          </Button>
+        );
+      })}
       <Button
         shape="pill"
         size="icon-lg"
