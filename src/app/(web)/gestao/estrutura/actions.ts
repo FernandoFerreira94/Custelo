@@ -1,5 +1,8 @@
 "use server";
 
+import { z } from "zod";
+
+import { salvarPrateleiras } from "@/application/custodia/locais";
 import { auditoriaRepo } from "@/infrastructure/auditoria/auditoria-repo";
 import { criarArea } from "@/application/estrutura/criar-area";
 import { criarPonto, editarPonto } from "@/application/estrutura/criar-ponto";
@@ -16,6 +19,7 @@ import {
   esquemaDePonto,
 } from "@/application/estrutura/schemas";
 import { executarAcao } from "@/infrastructure/auth/executar-acao";
+import { locaisRepo } from "@/infrastructure/custodia/custodia-repo";
 import { estruturaRepo } from "@/infrastructure/estrutura/estrutura-repo";
 
 const deps: DepsDeEstrutura = { repo: estruturaRepo, auditoria: auditoriaRepo };
@@ -60,5 +64,22 @@ export async function editarPontoAction(entrada: unknown) {
   return executarAcao(esquemaDeEdicaoDePonto, entrada, {
     revalidar: ["/gestao/estrutura"],
     executar: (ctx, { id, ...campos }) => editarPonto(deps, ctx, id, campos),
+  });
+}
+
+/** A lista é validada pelo caso de uso (`esquemaDePrateleiras`), com o erro por campo. */
+const esquemaDoPedidoDePrateleiras = z.object({
+  pontoId: z.uuid(),
+  prateleiras: z.array(z.unknown()),
+});
+
+export async function salvarPrateleirasAction(entrada: unknown) {
+  return executarAcao(esquemaDoPedidoDePrateleiras, entrada, {
+    revalidar: ["/gestao/estrutura"],
+    executar: (ctx, d) =>
+      salvarPrateleiras(ctx, d.pontoId, d.prateleiras, {
+        repo: locaisRepo,
+        auditoria: auditoriaRepo,
+      }),
   });
 }

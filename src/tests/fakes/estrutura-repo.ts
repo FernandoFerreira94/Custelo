@@ -16,6 +16,7 @@ export function criarEstruturaRepoFake() {
     lotes: [] as PlanoDeEstrutura[],
     unidadesAtivasNaArea: new Map<string, number>(),
     vinculosAtivosNaUnidade: new Map<string, number>(),
+    encomendasAtivasNaUnidade: new Map<string, number>(),
     cicloAoAtualizarArea: false,
     listagens: [] as unknown[],
     atualizacoesDeUnidade: [] as { id: string; patch: unknown }[],
@@ -94,6 +95,9 @@ export function criarEstruturaRepoFake() {
     },
     async contarVinculosAtivosDaUnidade(_ctx, unidadeId) {
       return estado.vinculosAtivosNaUnidade.get(unidadeId) ?? 0;
+    },
+    async contarEncomendasAtivasDaUnidade(_ctx, unidadeId) {
+      return estado.encomendasAtivasNaUnidade.get(unidadeId) ?? 0;
     },
     async criarPonto() {
       return { id: id() };

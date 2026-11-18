@@ -2,6 +2,7 @@ import {
   Building2Icon,
   HomeIcon,
   LayersIcon,
+  PackageIcon,
   SettingsIcon,
   UsersIcon,
   UsersRoundIcon,
@@ -18,6 +19,11 @@ export const dynamic = "force-dynamic";
 // Só rotas que existem; o resto entra com a sua tela.
 const ITENS_WEB: ItemTrilho[] = [
   { label: "Hoje", href: "/gestao", icon: <HomeIcon aria-hidden /> },
+  {
+    label: "Encomendas",
+    href: "/gestao/encomendas",
+    icon: <PackageIcon aria-hidden />,
+  },
   {
     label: "Estrutura",
     href: "/gestao/estrutura",

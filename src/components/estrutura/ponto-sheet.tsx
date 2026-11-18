@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import type { LocalGuarda } from "@/application/custodia/ports";
 import type { Ponto } from "@/application/estrutura/ports";
+import {
+  type PrateleiraEditavel,
+  PrateleirasCampos,
+  paraEnvio,
+} from "@/components/estrutura/prateleiras-campos";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,13 +36,35 @@ import type { Falha, Resultado } from "@/lib/resultado";
 type Acao = (entrada: unknown) => Promise<Resultado<unknown>>;
 
 /**
- * Ponto de recebimento (UNI-004): portaria ou sala onde a encomenda fica.
- * As prateleiras entram na I4, junto dos locais de guarda.
+ * Ponto de recebimento (UNI-004): portaria ou sala onde a encomenda fica, com as
+ * prateleiras (locais de guarda). Salva o ponto e depois a lista de prateleiras.
  */
-export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
+export function PontoSheet({
+  ponto,
+  salvar,
+  prateleiras = [],
+  salvarPrateleiras,
+}: {
+  ponto?: Ponto;
+  salvar: Acao;
+  prateleiras?: LocalGuarda[];
+  salvarPrateleiras?: Acao;
+}) {
   const router = useRouter();
-  const editando = Boolean(ponto);
+  // Ponto criado nesta abertura: se as prateleiras falharem, o reenvio edita, não duplica.
+  const [criadoId, setCriadoId] = useState<string | null>(null);
+  const pontoId = ponto?.id ?? criadoId;
   const [aberto, setAberto] = useState(false);
+  const [lista, setLista] = useState<PrateleiraEditavel[]>(() =>
+    prateleiras.map((l) => ({
+      chave: l.id,
+      id: l.id,
+      codigo: l.codigo,
+      capacidade: l.capacidade === null ? "" : String(l.capacidade),
+      volumeGrande: l.volumeGrande,
+      usado: l.usado,
+    })),
+  );
   const [nome, setNome] = useState(ponto?.nome ?? "");
   const [funcionamento, setFuncionamento] = useState(
     ponto?.funcionamento ?? "",
@@ -47,13 +75,26 @@ export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
   function enviar() {
     iniciar(async () => {
       const r = await salvar(
-        editando
-          ? { id: ponto!.id, nome, funcionamento }
+        pontoId
+          ? { id: pontoId, nome, funcionamento }
           : { nome, funcionamento },
       );
       if (!r.ok) {
         setFalha(r);
         return;
+      }
+      const id = pontoId ?? (r.data as { id: string }).id;
+      if (!pontoId) setCriadoId(id);
+      if (salvarPrateleiras) {
+        const p = await salvarPrateleiras({
+          pontoId: id,
+          prateleiras: paraEnvio(lista),
+        });
+        if (!p.ok) {
+          setFalha(p);
+          router.refresh();
+          return;
+        }
       }
       setFalha(null);
       setAberto(false);
@@ -67,7 +108,7 @@ export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
   return (
     <Sheet open={aberto} onOpenChange={setAberto}>
       <SheetTrigger asChild>
-        {editando ? (
+        {ponto ? (
           <Button variant="ghost" size="sm">
             <PencilIcon aria-hidden />
             Editar
@@ -82,7 +123,7 @@ export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
-            {editando ? `Editar ${ponto!.nome}` : "Novo ponto de recebimento"}
+            {ponto ? `Editar ${ponto.nome}` : "Novo ponto de recebimento"}
           </SheetTitle>
           <SheetDescription>
             Portaria ou sala onde as encomendas ficam guardadas.
@@ -97,7 +138,7 @@ export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
           className="grid gap-4"
         >
           <SheetBody className="grid content-start gap-4">
-            {falha && !falha.campos ? (
+            {falha && (!falha.campos || !erroNome) ? (
               <Alert variant="danger" role="alert">
                 <AlertDescription>{falha.mensagem}</AlertDescription>
               </Alert>
@@ -124,6 +165,13 @@ export function PontoSheet({ ponto, salvar }: { ponto?: Ponto; salvar: Acao }) {
               />
               <FieldDescription>Ex.: 24 h, ou 07:00 às 19:00.</FieldDescription>
             </Field>
+            {salvarPrateleiras ? (
+              <PrateleirasCampos
+                lista={lista}
+                mudar={setLista}
+                erros={falha?.campos}
+              />
+            ) : null}
           </SheetBody>
           <SheetFooter>
             <Button type="submit" shape="pill" size="lg" disabled={pendente}>

@@ -16,11 +16,11 @@ REC-007,OPS,06 Recebimento,Localizacao fisica,tela,/(ops)/receber/local,sim,P1,0
 REC-008,OPS,06 Recebimento,Conclusao / QR,tela,/(ops)/receber/concluir,sim,P0,02,I5,APPROVED,DONE,NOT_STARTED,custodia,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,QR e locator opaco
 REC-009,OPS,06 Recebimento,Fila local offline,tela,/(ops)/pendencias,sim,P0,02,I6,APPROVED,DONE,NOT_STARTED,offline-sync,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,
 REC-010,OPS,06 Recebimento,Resolver conflito,tela,/(ops)/pendencias/conflito,sim,P0,02,I6,APPROVED,DONE,NOT_STARTED,offline-sync,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Sem last-write-wins
-CUS-001,OPS+WEB,07 Custodia,Fila de custodia,tela,/(ops)/fila | /(web)/custodia,sim,P0,03,I4,APPROVED,DONE,NOT_STARTED,custodia-eventos,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Sobreposicao OPS x WEB
-CUS-002,OPS+WEB,07 Custodia,Detalhe da encomenda,tela,/(ops)/encomendas/[id],sim,P0,03,I4,APPROVED,DONE,NOT_STARTED,custodia-eventos,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Bug Penpot StatusBadge
-CUS-003,OPS+WEB,07 Custodia,Timeline,tela,secao do detalhe,sim,P1,03,I4,APPROVED,DONE,NOT_STARTED,custodia-eventos,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Append-only
+CUS-001,OPS+WEB,07 Custodia,Fila de custodia,tela,/(ops)/fila | /(web)/gestao/encomendas,sim,P0,03,I4,APPROVED,DONE,DONE,custodia-eventos,DONE,DONE,UNIT_DONE,nao,"fila por unidade (ops) e tabela/cartoes (web); e2e escrito, aguarda 0015 no remoto"
+CUS-002,OPS+WEB,07 Custodia,Detalhe da encomenda,tela,/(ops)/encomendas/[id] | /(web)/gestao/encomendas/[id],sim,P0,03,I4,APPROVED,DONE,DONE,custodia-eventos,DONE,DONE,UNIT_DONE,nao,Corrigir escondido ate a I9; e2e escrito
+CUS-003,OPS+WEB,07 Custodia,Timeline,tela,secao do detalhe,sim,P1,03,I4,APPROVED,DONE,DONE,custodia-eventos,DONE,DONE,UNIT_DONE,nao,Timeline com selo Corrigido
 CUS-004,OPS+WEB,07 Correcoes,Correcao critica,sheet,sobre CUS-002,sim,P0,05,I9,APPROVED,DONE,NOT_STARTED,correcoes,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Permissao elevada + motivo
-CUS-005,OPS+WEB,07 Custodia,Movimentacao interna,sheet,sobre CUS-001/002,sim,P1,03,I4,APPROVED,DONE,NOT_STARTED,custodia-eventos,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Sheet LocationPicker
+CUS-005,OPS+WEB,07 Custodia,Movimentacao interna,sheet,sobre CUS-001/002,sim,P1,03,I4,APPROVED,DONE,DONE,custodia-eventos,DONE,DONE,UNIT_DONE,nao,Sheet bottom (ops) / right (web); e2e escrito
 CUS-006,OPS+WEB,07 Custodia,pos-MVP,tela,pos-MVP,nao,P3,09,pos-MVP,NOT_STARTED,NOT_STARTED,NOT_STARTED,custodia-eventos,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Nao desenhar antes do piloto
 CUS-007,OPS+WEB,07 Custodia,Nao identificadas,tela,/(ops)/pendencias/nao-identificadas,sim,P0,03,I5,APPROVED,DONE,NOT_STARTED,recebimento,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,
 CUS-008,OPS,07 Custodia,Etiqueta / QR,tela,a partir de CUS-002,sim,P1,03,I5,APPROVED,DONE,NOT_STARTED,recebimento,NOT_STARTED,NOT_STARTED,NOT_STARTED,nao,Confirmar nome na spec Notion
@@ -40,7 +40,7 @@ NOT-004,WEB,04 Comunicacao,Envio manual fora da janela,sheet,sobre NOT-001,sim,P
 UNI-001,WEB,02 Estrutura,Estrutura do empreendimento,tela,/(web)/estrutura,sim,P0,06,I3,APPROVED,DONE,NOT_STARTED,estrutura-fisica,NOT_STARTED,N/A,NOT_STARTED,nao,
 UNI-002,WEB,02 Estrutura,Unidades,tela,/(web)/unidades,sim,P0,06,I3,APPROVED,DONE,NOT_STARTED,estrutura-fisica,NOT_STARTED,N/A,NOT_STARTED,nao,Camada intermediaria generica
 UNI-003,WEB,02 Estrutura,Areas genericas,tela,/(web)/estrutura/areas,sim,P1,06,I3,APPROVED,DONE,NOT_STARTED,estrutura-fisica,NOT_STARTED,N/A,NOT_STARTED,nao,Confirmar nome na spec Notion
-UNI-004,WEB,02 Estrutura,Pontos de recebimento,tela,/(web)/pontos,sim,P1,06,I3,APPROVED,DONE,NOT_STARTED,estrutura-fisica,NOT_STARTED,N/A,NOT_STARTED,nao,
+UNI-004,WEB,02 Estrutura,Pontos de recebimento,tela,/(web)/pontos,sim,P1,06,I3,APPROVED,DONE,DONE,estrutura-fisica,DONE,N/A,UNIT_DONE,nao,prateleiras com UsageMeter (I4 4.5); e2e escrito
 PES-001,WEB,03 Pessoas,Pessoas,tela,/(web)/pessoas,sim,P0,06,I3,APPROVED,DONE,NOT_STARTED,pessoas-vinculos,NOT_STARTED,N/A,NOT_STARTED,nao,
 PES-002,WEB,03 Pessoas,Vinculos,tela,/(web)/pessoas/[id]/vinculos,sim,P0,06,I3,APPROVED,DONE,NOT_STARTED,pessoas-vinculos,NOT_STARTED,N/A,NOT_STARTED,nao,Vigencia
 PES-003,WEB,03 Pessoas,Detalhe / contatos,tela,/(web)/pessoas/[id],sim,P1,06,I3,APPROVED,DONE,NOT_STARTED,pessoas-vinculos,NOT_STARTED,N/A,NOT_STARTED,nao,Confirmar nome na spec Notion

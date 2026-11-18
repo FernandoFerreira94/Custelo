@@ -4,10 +4,16 @@ import { pode } from "@/application/permissoes";
 import { AreasEPontos } from "@/components/estrutura/areas-e-pontos";
 import { SemPermissao } from "@/components/feedback/sem-permissao";
 import { contextoDaSessao } from "@/infrastructure/auth/contexto";
+import type { LocalGuarda } from "@/application/custodia/ports";
+import { consultasCustodiaRepo } from "@/infrastructure/custodia/custodia-repo";
 import { estruturaRepo } from "@/infrastructure/estrutura/estrutura-repo";
 import { pessoasRepo } from "@/infrastructure/pessoas/pessoas-repo";
 
-import { criarPontoAction, editarPontoAction } from "../actions";
+import {
+  criarPontoAction,
+  editarPontoAction,
+  salvarPrateleirasAction,
+} from "../actions";
 import {
   criarUnidadeAction,
   editarUnidadeAction,
@@ -23,11 +29,15 @@ export default async function AreasEPontosPage() {
     return <SemPermissao voltarPara="/gestao" />;
   }
   const podeEditar = pode(ctx.data.papel, "cadastro.editar");
-  const [areas, pontos, pessoas] = await Promise.all([
+  const [areas, pontos, pessoas, locais] = await Promise.all([
     estruturaRepo.areasComuns(ctx.data),
     estruturaRepo.pontos(ctx.data),
     pessoasRepo.listarPessoas(ctx.data, {}),
+    consultasCustodiaRepo.locaisComOcupacao(ctx.data),
   ]);
+  const prateleiras: Record<string, LocalGuarda[]> = {};
+  for (const { pontoNome: _n, ...l } of locais)
+    (prateleiras[l.pontoId] ??= []).push(l);
 
   return (
     <main className="grid content-start gap-6">
@@ -54,6 +64,8 @@ export default async function AreasEPontosPage() {
             : undefined
         }
         alternarPonto={podeEditar ? editarPontoAction : undefined}
+        prateleiras={prateleiras}
+        salvarPrateleiras={podeEditar ? salvarPrateleirasAction : undefined}
       />
     </main>
   );

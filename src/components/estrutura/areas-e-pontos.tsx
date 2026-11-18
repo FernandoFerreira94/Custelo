@@ -1,5 +1,6 @@
 import { AlertTriangleIcon, CheckCircle2Icon, MapPinIcon } from "lucide-react";
 
+import type { LocalGuarda } from "@/application/custodia/ports";
 import type { AreaComum, Ponto } from "@/application/estrutura/ports";
 import {
   AreaComumSheet,
@@ -16,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { UsageMeter } from "@/components/ui/usage-meter";
 import type { Resultado } from "@/lib/resultado";
 
 type Acao = (entrada: unknown) => Promise<Resultado<unknown>>;
@@ -46,6 +48,8 @@ export function AreasEPontos({
   salvarArea,
   salvarPonto,
   alternarPonto,
+  prateleiras = {},
+  salvarPrateleiras,
 }: {
   areas: AreaComum[];
   pontos: Ponto[];
@@ -53,6 +57,9 @@ export function AreasEPontos({
   salvarArea?: { criar: Acao; editar: Acao };
   salvarPonto?: { criar: Acao; editar: Acao };
   alternarPonto?: Acao;
+  /** Prateleiras ativas de cada ponto, com a ocupação (chave = id do ponto). */
+  prateleiras?: Record<string, LocalGuarda[]>;
+  salvarPrateleiras?: Acao;
 }) {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -110,7 +117,10 @@ export function AreasEPontos({
           <CardDescription>Onde a encomenda fica guardada.</CardDescription>
           {salvarPonto ? (
             <CardAction>
-              <PontoSheet salvar={salvarPonto.criar} />
+              <PontoSheet
+                salvar={salvarPonto.criar}
+                salvarPrateleiras={salvarPrateleiras}
+              />
             </CardAction>
           ) : null}
         </CardHeader>
@@ -123,30 +133,50 @@ export function AreasEPontos({
           ) : (
             <ul className="grid gap-2">
               {pontos.map((p) => (
-                <li
-                  key={p.id}
-                  className="flex items-center justify-between gap-3 rounded-2xl border p-3"
-                >
-                  <div className="grid">
-                    <span className="flex items-center gap-2 font-medium">
-                      <MapPinIcon aria-hidden className="size-4 text-brand" />
-                      {p.nome}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      {p.funcionamento || "Horário não informado"}
-                    </span>
+                <li key={p.id} className="grid gap-3 rounded-2xl border p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="grid">
+                      <span className="flex items-center gap-2 font-medium">
+                        <MapPinIcon aria-hidden className="size-4 text-brand" />
+                        {p.nome}
+                      </span>
+                      <span className="text-sm text-muted-foreground">
+                        {p.funcionamento || "Horário não informado"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {p.ativo ? null : (
+                        <Badge variant="secondary">Desativado</Badge>
+                      )}
+                      {salvarPonto ? (
+                        <PontoSheet
+                          ponto={p}
+                          salvar={salvarPonto.editar}
+                          prateleiras={prateleiras[p.id]}
+                          salvarPrateleiras={salvarPrateleiras}
+                        />
+                      ) : null}
+                      {alternarPonto ? (
+                        <PontoAtivo ponto={p} alternar={alternarPonto} />
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {p.ativo ? null : (
-                      <Badge variant="secondary">Desativado</Badge>
-                    )}
-                    {salvarPonto ? (
-                      <PontoSheet ponto={p} salvar={salvarPonto.editar} />
-                    ) : null}
-                    {alternarPonto ? (
-                      <PontoAtivo ponto={p} alternar={alternarPonto} />
-                    ) : null}
-                  </div>
+                  {prateleiras[p.id]?.length ? (
+                    <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                      {prateleiras[p.id]!.map((l) => (
+                        <UsageMeter
+                          key={l.id}
+                          label={`Prateleira ${l.codigo}`}
+                          value={l.usado}
+                          max={l.capacidade}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Sem prateleiras cadastradas.
+                    </p>
+                  )}
                 </li>
               ))}
             </ul>

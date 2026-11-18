@@ -2,6 +2,7 @@ import { registrarAuditoria } from "@/application/auditoria/registrar";
 import type { Contexto } from "@/application/auth/contexto";
 import { negarSemPermissao } from "@/application/estrutura/guarda";
 import type { DepsDeEstrutura } from "@/application/estrutura/ports";
+import { MSG_CUSTODIA } from "@/lib/mensagens";
 import { falha, type Resultado, sucesso } from "@/lib/resultado";
 
 /** Ninguém apaga cadastro: desativa, e só quando nada ativo depende dele. */
@@ -41,7 +42,16 @@ export async function desativarUnidade(
   const unidade = await deps.repo.unidadePorId(ctx, unidadeId);
   if (!unidade) return falha("NAO_ENCONTRADO", "Não achamos essa unidade.");
 
-  // Na I4 também checa encomenda em custódia.
+  const encomendas = await deps.repo.contarEncomendasAtivasDaUnidade(
+    ctx,
+    unidadeId,
+  );
+  if (encomendas > 0) {
+    return falha(
+      "CONFLITO",
+      MSG_CUSTODIA.unidadeComEncomenda(unidade.codigo, encomendas),
+    );
+  }
   const vinculos = await deps.repo.contarVinculosAtivosDaUnidade(
     ctx,
     unidadeId,

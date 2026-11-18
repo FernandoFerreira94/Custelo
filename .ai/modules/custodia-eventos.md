@@ -57,3 +57,18 @@ justificar.
 ## Telas
 
 CUS-001, CUS-002, CUS-003, CUS-005. Fase I4 — **antes** de I5 (recebimento).
+
+## Implementado (I4, PR #36)
+
+- Trigger de projeção `aplicar_evento_custodia`: trava a linha, confere sequência
+  e estado anterior (40001 se divergir) e projeta estado, versão e os campos de
+  `dados.para`. `custelo_app` não tem UPDATE em `encomendas`: o estado só muda
+  pelo evento. Por isso o repo não usa `FOR UPDATE`; a trava é a do trigger.
+- `registrarEvento`/`anexarEvento` é a entrada única. Idempotente pelo id do
+  evento (UUIDv7 do cliente); eventos elevados exigem motivo e entram no
+  `audit_log` na mesma transação.
+- Repo em `src/infrastructure/custodia/custodia-repo.ts`: erro do banco vira
+  código (`CONFLITO`, `SEM_PERMISSAO` com alerta cross-tenant…); PK repetida ou
+  `TRANSICAO_PROIBIDA` repete a transação uma vez para devolver o estado real.
+- Consultas paginadas por cursor `(ocorrido_em, id)` em texto do banco
+  (microssegundos). Busca sem acento por `translate`, sem depender de `unaccent`.
