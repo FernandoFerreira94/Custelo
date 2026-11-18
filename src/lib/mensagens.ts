@@ -68,3 +68,40 @@ export async function comMensagemDeFalha<T extends { ok: boolean }>(
     return falha(codigoDeFalha(erro), mensagemDeFalha(erro));
   }
 }
+
+const ROTULO_ESTADO: Record<string, string> = {
+  RECEBIDA: "recebida",
+  IDENTIFICADA: "recebida",
+  NAO_IDENTIFICADA: "sem destino identificado",
+  AGUARDANDO_NOTIFICACAO: "aguardando aviso",
+  NOTIFICADA: "pronta para retirada",
+  FALHA_NOTIFICACAO: "com falha no aviso",
+  RETIRADA: "entregue",
+  DEVOLVIDA: "devolvida",
+  CANCELADA: "cancelada",
+};
+
+export const MSG_CUSTODIA = {
+  transicaoProibida: (estado: string | null) =>
+    estado
+      ? `Esta encomenda está ${ROTULO_ESTADO[estado] ?? "em outro estado"}. Esta ação não vale mais para ela. Atualize a tela.`
+      : "Esta encomenda ainda não foi registrada. Registre o recebimento primeiro.",
+  naoEncontrada:
+    "Não achamos esta encomenda neste empreendimento. Confira o código ou volte para a fila.",
+  foraDeOrdem:
+    "Outra pessoa mexeu nesta encomenda agora. Atualizamos a tela: confira e tente de novo.",
+  idRepetido:
+    "Este registro já foi usado em outra encomenda. Atualize a tela e registre de novo.",
+  guardada: (local: string) => `Guardada na ${local}.`,
+  movida: (de: string, para: string) =>
+    `Movida de ${de} para ${para}. Está na linha do tempo.`,
+  mesmoLocal: (local: string) =>
+    `Ela já está na ${local}. Escolha outro lugar.`,
+  localCheio: (local: string, uso: number, capacidade: number) =>
+    `A ${local} passou da capacidade (${uso} de ${capacidade}). Guardamos assim mesmo; considere outra prateleira.`,
+  localInativo: "Esta prateleira foi desativada. Escolha outra.",
+  prateleiraComEncomenda: (n: number) =>
+    `Esta prateleira tem ${n} ${n === 1 ? "encomenda" : "encomendas"}. Mova antes de remover.`,
+  unidadeComEncomenda: (codigo: string, n: number) =>
+    `${codigo} tem ${n} ${n === 1 ? "encomenda" : "encomendas"} na portaria. Entregue, devolva ou corrija antes de desativar.`,
+} as const;

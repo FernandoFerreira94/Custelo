@@ -7,3 +7,4 @@ export * from "./estrutura-fisica";
 export * from "./importacao";
 export * from "./pessoas-vinculos";
 export * from "./tenancy";
+export * from "./custodia";
