@@ -105,3 +105,9 @@ export const MSG_CUSTODIA = {
   unidadeComEncomenda: (codigo: string, n: number) =>
     `${codigo} tem ${n} ${n === 1 ? "encomenda" : "encomendas"} na portaria. Entregue, devolva ou corrija antes de desativar.`,
 } as const;
+
+/** Correções de custódia. O restante do objeto chega na I9. */
+export const MSG_CORRECAO = {
+  motivoObrigatorio:
+    "Escreva o motivo com pelo menos 10 caracteres. Ele fica na auditoria.",
+} as const;
