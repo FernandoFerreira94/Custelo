@@ -1,11 +1,11 @@
 import {
-  Building2Icon,
+  ContactRoundIcon,
+  DoorOpenIcon,
   HomeIcon,
-  LayersIcon,
+  IdCardIcon,
+  NetworkIcon,
   PackageIcon,
   SettingsIcon,
-  UsersIcon,
-  UsersRoundIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -27,19 +27,19 @@ const ITENS_WEB: ItemTrilho[] = [
   {
     label: "Estrutura",
     href: "/gestao/estrutura",
-    icon: <LayersIcon aria-hidden />,
+    icon: <NetworkIcon aria-hidden />,
   },
   {
     label: "Unidades",
     href: "/gestao/unidades",
-    icon: <Building2Icon aria-hidden />,
+    icon: <DoorOpenIcon aria-hidden />,
   },
   {
     label: "Pessoas",
     href: "/gestao/pessoas",
-    icon: <UsersRoundIcon aria-hidden />,
+    icon: <ContactRoundIcon aria-hidden />,
   },
-  { label: "Equipe", href: "/gestao/equipe", icon: <UsersIcon aria-hidden /> },
+  { label: "Equipe", href: "/gestao/equipe", icon: <IdCardIcon aria-hidden /> },
   {
     label: "Configurações",
     href: "/gestao/config",

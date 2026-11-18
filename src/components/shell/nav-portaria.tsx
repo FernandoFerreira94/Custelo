@@ -5,7 +5,6 @@ import {
   HomeIcon,
   MoreHorizontalIcon,
   PackageIcon,
-  ScanLineIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -45,7 +44,10 @@ function AbaDesabilitada({
   );
 }
 
-/** Barra inferior da portaria (ops): 4 abas e o registrar no centro. */
+/**
+ * Barra inferior da portaria (ops). O botão central de registrar entra com a I5:
+ * desabilitado no centro, ele parecia a ação principal apagada (relatório UX 12/11).
+ */
 export function NavPortaria() {
   const pathname = usePathname();
   // O detalhe da encomenda é parte da fila.
@@ -56,7 +58,7 @@ export function NavPortaria() {
       material="glass"
       aria-label="Menu da portaria"
       role="navigation"
-      className="mx-auto grid max-w-lg grid-cols-5 items-center gap-1 px-3"
+      className="mx-auto grid max-w-lg grid-cols-4 items-center gap-1 px-3"
     >
       {ABAS_LINK.map((a) => {
         const atual = ativa === a.href || ativa.startsWith(`${a.href}/`);
@@ -74,16 +76,6 @@ export function NavPortaria() {
           </Button>
         );
       })}
-      <Button
-        shape="pill"
-        size="icon-lg"
-        variant="elevated"
-        aria-label="Registrar encomenda"
-        disabled
-        className="mx-auto"
-      >
-        <ScanLineIcon aria-hidden />
-      </Button>
       {ABAS_DIREITA.map((a) => (
         <AbaDesabilitada key={a.label} {...a} />
       ))}

@@ -132,7 +132,7 @@ export function RecoverAccessForm({ onBack }: RecoverAccessFormProps) {
                 type="email"
                 autoComplete="email"
                 inputMode="email"
-                placeholder="condominio@condominio.com.br"
+                placeholder="nome@empresa.com.br"
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={
                   errors.email ? "recover-email-error" : "recover-email-help"

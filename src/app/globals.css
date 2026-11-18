@@ -347,6 +347,20 @@
   --wc-density-control-sm: 36px;
   --wc-density-control-md: 44px;
   --wc-density-control-lg: 52px;
+  /* Toque (pointer: coarse) e celular. Valores do tema custelo no DS; sem eles
+     FilterCounters, SearchBar, TabBar e BottomBar ficavam sem altura no toque. */
+  --wc-mobile-control-sm: 44px;
+  --wc-mobile-control-md: 48px;
+  --wc-mobile-control-lg: 56px;
+  --wc-mobile-row: 56px;
+  --wc-mobile-gutter: 16px;
+  --wc-mobile-text-caption: 12px;
+  --wc-mobile-text-footnote: 13px;
+  --wc-mobile-text-subhead: 15px;
+  --wc-mobile-text-body: 17px;
+  --wc-mobile-text-title: 22px;
+  --wc-mobile-text-title-lg: 28px;
+  --wc-mobile-text-large-title: 34px;
 
   --wc-shadow-xs: var(--shadow-elevation-1);
   --wc-shadow: var(--shadow-elevation-1);

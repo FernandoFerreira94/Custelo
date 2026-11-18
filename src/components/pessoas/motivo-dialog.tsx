@@ -69,9 +69,7 @@ export function MotivoDialog({
   return (
     <Dialog open={aberto} onOpenChange={setAberto}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          {rotuloDoGatilho}
-        </Button>
+        <Button variant="ghost">{rotuloDoGatilho}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

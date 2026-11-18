@@ -43,7 +43,8 @@ rodam e passam nos testes no banco local.
 
 ## Itens abertos durante a execução
 
-| Data  | Tarefa | O que falta                                                                                                                     | Onde ficou o stub   |
-| ----- | ------ | ------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 18/11 | 4.4    | Revisar: `travarEncomenda` sem `FOR UPDATE` (trava no trigger)                                                                  | PR #36              |
-| 18/11 | 4.5    | Rodar o e2e `tests/e2e/prateleiras.spec.ts` e a revisão visual de `/gestao/estrutura/areas` depois que a 0015 estiver no remoto | escrito, não rodado |
+| Data  | Tarefa   | O que falta                                                                                                                                                                      | Onde ficou o stub   |
+| ----- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 18/11 | 4.4      | Revisar: `travarEncomenda` sem `FOR UPDATE` (trava no trigger)                                                                                                                   | PR #36              |
+| 18/11 | 4.5      | Rodar o e2e `tests/e2e/prateleiras.spec.ts` e a revisão visual de `/gestao/estrutura/areas` depois que a 0015 estiver no remoto                                                  | escrito, não rodado |
+| 18/11 | UX 12/11 | Conferir logado, em 390 px e 1440 px, a nova barra inferior da gestão, o trilho com rótulos, Unidades em cartões e Papéis um por vez (eu não entro com senha no Supabase remoto) | PR do lote UX       |

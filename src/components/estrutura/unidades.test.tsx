@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 const router = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
@@ -152,9 +152,10 @@ describe("FiltrosDeUnidades", () => {
 describe("ListaDeUnidades", () => {
   it("só leitura: sem coluna de ações quando não há como editar", () => {
     render(<ListaDeUnidades unidades={[unidade]} />);
+    const tabela = within(screen.getByRole("table"));
 
-    expect(screen.getByText("B-304")).toBeInTheDocument();
-    expect(screen.getByText("BL B AP 304")).toBeInTheDocument();
+    expect(tabela.getByText("B-304")).toBeInTheDocument();
+    expect(tabela.getByText("BL B AP 304")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Desativar/ })).toBeNull();
   });
 
@@ -168,7 +169,18 @@ describe("ListaDeUnidades", () => {
     );
 
     expect(screen.queryByRole("button", { name: "Desativar" })).toBeNull();
-    expect(screen.getByRole("button", { name: /Editar/ })).toBeInTheDocument();
+    const tabela = within(screen.getByRole("table"));
+    expect(tabela.getByRole("button", { name: /Editar/ })).toBeInTheDocument();
+  });
+
+  it("no celular cada unidade vira um cartão com tipo e ações", () => {
+    render(<ListaDeUnidades unidades={[unidade]} editar={ok} desativar={ok} />);
+    const cartoes = within(screen.getByRole("list", { name: "Unidades" }));
+    expect(cartoes.getByText("B-304")).toBeInTheDocument();
+    expect(cartoes.getByText("Apartamento")).toBeInTheDocument();
+    expect(
+      cartoes.getByRole("button", { name: "Desativar" }),
+    ).toBeInTheDocument();
   });
 });
 

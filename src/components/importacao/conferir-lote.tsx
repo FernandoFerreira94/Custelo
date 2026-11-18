@@ -338,7 +338,6 @@ function LinhaDaTabela({
             {duplicada ? (
               <>
                 <Button
-                  size="sm"
                   variant={
                     linha.decisao === "atualizar" ? "default" : "outline"
                   }
@@ -348,7 +347,6 @@ function LinhaDaTabela({
                   Atualizar
                 </Button>
                 <Button
-                  size="sm"
                   variant={linha.decisao === "ignorar" ? "default" : "outline"}
                   disabled={pendente}
                   onClick={() => aoDecidir("ignorar")}
@@ -358,7 +356,6 @@ function LinhaDaTabela({
               </>
             ) : null}
             <Button
-              size="sm"
               variant="ghost"
               disabled={pendente}
               onClick={aoEditar}
@@ -385,10 +382,10 @@ function LinhaDaTabela({
               ))}
             </div>
             <div className="mt-3 flex gap-2">
-              <Button size="sm" disabled={pendente} onClick={aoSalvar}>
+              <Button disabled={pendente} onClick={aoSalvar}>
                 Salvar correção
               </Button>
-              <Button size="sm" variant="ghost" onClick={aoCancelar}>
+              <Button variant="ghost" onClick={aoCancelar}>
                 Cancelar
               </Button>
             </div>

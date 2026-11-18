@@ -109,12 +109,12 @@ export function PontoSheet({
     <Sheet open={aberto} onOpenChange={setAberto}>
       <SheetTrigger asChild>
         {ponto ? (
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost">
             <PencilIcon aria-hidden />
             Editar
           </Button>
         ) : (
-          <Button variant="outline" shape="pill" size="sm">
+          <Button variant="outline" shape="pill">
             <PlusIcon aria-hidden />
             Ponto
           </Button>

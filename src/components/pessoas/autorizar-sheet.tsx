@@ -101,7 +101,7 @@ export function AutorizarSheet({
   return (
     <Sheet open={aberto} onOpenChange={setAberto}>
       <SheetTrigger asChild>
-        <Button variant="outline" shape="pill" size="sm">
+        <Button variant="outline" shape="pill">
           <ShieldCheckIcon aria-hidden />
           Autorizar retirada
         </Button>

@@ -32,7 +32,7 @@ export function AuthPasswordField({
   error,
   help,
   autoComplete = "new-password",
-  placeholder = "••••••••",
+  placeholder,
   cardItem = false,
   showLabel = "Mostrar senha",
   hideLabel = "Ocultar senha",

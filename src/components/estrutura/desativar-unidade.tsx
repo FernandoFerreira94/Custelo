@@ -52,9 +52,7 @@ export function DesativarUnidade({
   return (
     <Dialog open={aberto} onOpenChange={setAberto}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          Desativar
-        </Button>
+        <Button variant="ghost">Desativar</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

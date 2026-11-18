@@ -24,7 +24,7 @@ export function BannerSemContato({ total }: { total: number }) {
         </BannerDescription>
       </BannerContent>
       <BannerAction>
-        <Button asChild variant="outline" size="sm" shape="pill">
+        <Button asChild variant="outline" shape="pill">
           <Link href="/gestao/unidades?semContato=1">Ver unidades</Link>
         </Button>
       </BannerAction>

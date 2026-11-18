@@ -109,7 +109,7 @@ export function UnidadeSheet({
     <Sheet open={aberto} onOpenChange={setAberto}>
       <SheetTrigger asChild>
         {editando ? (
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost">
             <PencilIcon aria-hidden />
             Editar
           </Button>

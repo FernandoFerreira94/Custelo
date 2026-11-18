@@ -105,7 +105,7 @@ export function LoginForm({
                 type="email"
                 autoComplete="email"
                 inputMode="email"
-                placeholder="condominio@condominio.com.br"
+                placeholder="nome@empresa.com.br"
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 className="h-12 min-h-[var(--size-touch-min)]"

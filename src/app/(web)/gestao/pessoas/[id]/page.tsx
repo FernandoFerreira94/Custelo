@@ -55,7 +55,7 @@ export default async function PessoaPage({
     <main className="grid content-start gap-6">
       <h1 className="sr-only">Pessoa: {pessoa.nome}</h1>
       <div>
-        <Button asChild variant="ghost" size="sm">
+        <Button asChild variant="ghost">
           <Link href="/gestao/pessoas">
             <ArrowLeftIcon aria-hidden />
             Pessoas
