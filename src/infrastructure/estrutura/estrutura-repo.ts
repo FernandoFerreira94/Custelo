@@ -9,6 +9,7 @@ import {
   ilike,
   inArray,
   notExists,
+  notInArray,
   or,
   sql,
 } from "drizzle-orm";
@@ -24,6 +25,7 @@ import {
   areas,
   contatos,
   empreendimentos,
+  encomendas,
   pessoas,
   pontosRecebimento,
   unidades,
@@ -517,6 +519,26 @@ export const estruturaRepo: EstruturaRepo = {
             eq(vinculos.empreendimentoId, ctx.empreendimentoId),
             eq(vinculos.unidadeId, unidadeId),
             eq(vinculos.status, "ativo"),
+          ),
+        );
+      return r?.total ?? 0;
+    });
+  },
+
+  async contarEncomendasAtivasDaUnidade(ctx, unidadeId) {
+    return withTenantDb(tenant(ctx), async (db) => {
+      const [r] = await db
+        .select({ total: count() })
+        .from(encomendas)
+        .where(
+          and(
+            eq(encomendas.empreendimentoId, ctx.empreendimentoId),
+            eq(encomendas.unidadeId, unidadeId),
+            notInArray(encomendas.estado, [
+              "RETIRADA",
+              "DEVOLVIDA",
+              "CANCELADA",
+            ]),
           ),
         );
       return r?.total ?? 0;

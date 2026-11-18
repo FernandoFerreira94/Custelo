@@ -1,7 +1,10 @@
 import type { EntradaAuditoria } from "@/application/auditoria/ports";
 import type { Contexto } from "@/application/auth/contexto";
 import type { Estado, TipoEvento } from "@/domain/custodia/estados";
+import type { Prazos } from "@/domain/custodia/situacao";
 import type { Resultado } from "@/lib/resultado";
+
+import type { EventoDaLinha, Rotulos } from "./linha-do-tempo";
 
 export type CampoProjetado =
   | "unidade_id"
@@ -64,14 +67,29 @@ export type EncomendaTravada = {
   pontoId: string | null;
 };
 
+/** Prateleira com a ocupação atual (encomendas ativas guardadas nela). */
+export type LocalGuarda = {
+  id: string;
+  codigo: string;
+  pontoId: string;
+  capacidade: number | null;
+  volumeGrande: boolean;
+  ativo: boolean;
+  usado: number;
+};
+
 export interface CustodiaTx {
   eventoPorId(id: string): Promise<{
     encomendaId: string;
     sequencia: number;
     estadoNovo: Estado;
   } | null>;
-  /** SELECT ... FOR UPDATE: segura a encomenda até o fim da transação. */
+  /**
+   * Lê o estado atual. A garantia de ordem é do banco: o trigger trava a linha ao
+   * gravar o evento e recusa sequência divergente (vira CONFLITO).
+   */
   travarEncomenda(id: string): Promise<EncomendaTravada | null>;
+  localPorId(id: string): Promise<LocalGuarda | null>;
   /** Usada pelo recebimento (I5). */
   criarEncomenda(e: NovaEncomenda): Promise<void>;
   inserirEvento(e: EventoParaGravar): Promise<void>;
@@ -85,4 +103,132 @@ export interface CustodiaRepo {
     ctx: Contexto,
     fn: (tx: CustodiaTx) => Promise<Resultado<T>>,
   ): Promise<Resultado<T>>;
+}
+
+export type PrateleiraEntrada = {
+  /** Ausente = prateleira nova. */
+  id?: string;
+  codigo: string;
+  capacidade: number | null;
+  volumeGrande: boolean;
+};
+
+export type PlanoPrateleiras = {
+  criar: PrateleiraEntrada[];
+  atualizar: (PrateleiraEntrada & { id: string })[];
+  desativar: string[];
+};
+
+export interface LocaisRepo {
+  /** Prateleiras ativas do ponto com a ocupação; `null` se o ponto não é deste empreendimento. */
+  locaisDoPonto(ctx: Contexto, pontoId: string): Promise<LocalGuarda[] | null>;
+  /**
+   * Aplica tudo numa transação. Reconfere sob trava as prateleiras a desativar e
+   * desfaz se alguma ganhou encomenda: devolve quantas encomendas bloquearam.
+   */
+  aplicarPrateleiras(
+    ctx: Contexto,
+    pontoId: string,
+    plano: PlanoPrateleiras,
+  ): Promise<{ comEncomenda: number }>;
+}
+
+// ---- Consultas (leitura) ----
+
+export type FiltroFila = "prontas" | "falha" | "prazo" | "naoIdent";
+
+export type Pagina<T> = { itens: T[]; proximo: string | null };
+
+export type EstadoComIdade = { estado: Estado; ocorridoEm: Date };
+
+/** Uma linha por unidade com encomenda ativa; sem destino = uma linha por encomenda. */
+export type LinhaFilaRepo = {
+  chave: string;
+  unidadeId: string | null;
+  unidadeCodigo: string | null;
+  destinatario: string | null;
+  encomendas: number;
+  volumes: number;
+  localMaisAntiga: string | null;
+  idMaisAntiga: string;
+  ocorridoEmMaisAntiga: Date;
+  itens: EstadoComIdade[];
+};
+
+export type LinhaEncomendaRepo = {
+  id: string;
+  codigoCurto: string;
+  estado: Estado;
+  unidadeCodigo: string | null;
+  destinatario: string | null;
+  local: string | null;
+  ocorridoEm: Date;
+  recebidoPor: string | null;
+};
+
+export type FiltrosLista = {
+  estado?: Estado;
+  filtro?: FiltroFila;
+  busca?: string;
+  unidadeId?: string;
+  de?: Date;
+  ate?: Date;
+  cursor?: string;
+};
+
+export type DetalheRepo = {
+  id: string;
+  codigoCurto: string;
+  estado: Estado;
+  versao: number;
+  ocorridoEm: Date;
+  registradoEm: Date;
+  origem: "online" | "offline";
+  volumes: number;
+  porte: string | null;
+  excepcional: string | null;
+  transportadora: string | null;
+  rastreio: string | null;
+  unidade: { id: string; codigo: string } | null;
+  destinatario: string | null;
+  local: { id: string; codigo: string } | null;
+  ponto: { id: string; nome: string } | null;
+  recebidoPor: string | null;
+  outrasAtivas: { id: string; codigoCurto: string; estado: Estado }[];
+};
+
+export type LocalComOcupacao = LocalGuarda & { pontoNome: string };
+
+export interface ConsultasCustodiaRepo {
+  prazos(ctx: Contexto): Promise<Prazos>;
+  filaPorUnidade(
+    ctx: Contexto,
+    f: { busca?: string; filtro?: FiltroFila; cursor?: string },
+    p: Prazos,
+  ): Promise<Pagina<LinhaFilaRepo>>;
+  listaEncomendas(
+    ctx: Contexto,
+    f: FiltrosLista,
+    p: Prazos,
+  ): Promise<Pagina<LinhaEncomendaRepo>>;
+  /** Contagem por estado e as atrasadas, só das ativas. */
+  contadores(
+    ctx: Contexto,
+    p: Prazos,
+  ): Promise<{
+    todas: number;
+    prontas: number;
+    falha: number;
+    prazo: number;
+    naoIdent: number;
+  }>;
+  detalhe(ctx: Contexto, id: string): Promise<DetalheRepo | null>;
+  eventos(
+    ctx: Contexto,
+    id: string,
+  ): Promise<{ eventos: EventoDaLinha[]; rotulos: Rotulos }>;
+  locaisComOcupacao(
+    ctx: Contexto,
+    pontoId?: string,
+  ): Promise<LocalComOcupacao[]>;
 }

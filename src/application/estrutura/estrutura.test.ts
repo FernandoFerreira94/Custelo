@@ -14,6 +14,7 @@ import {
   MSG_ESTRUTURA,
   type DepsDeEstrutura,
 } from "@/application/estrutura/ports";
+import { MSG_CUSTODIA } from "@/lib/mensagens";
 import { criarAuditoriaFake } from "@/tests/fakes/auditoria";
 import { criarEstruturaRepoFake } from "@/tests/fakes/estrutura-repo";
 
@@ -256,6 +257,25 @@ describe("desativar", () => {
       codigo: "CONFLITO",
       mensagem: "Encerre os vínculos de B-304 antes de desativar.",
     });
+  });
+
+  it("unidade com 2 encomendas na portaria: CONFLITO pedindo para entregar ou corrigir", async () => {
+    const criada = await criarUnidade(deps, gestor, {
+      bloco: "B",
+      numero: "304",
+      tipo: "apartamento",
+    });
+    if (!criada.ok) throw new Error(criada.mensagem);
+    fake.estado.encomendasAtivasNaUnidade.set(criada.data.id, 2);
+
+    const r = await desativarUnidade(deps, gestor, criada.data.id);
+
+    expect(r).toEqual({
+      ok: false,
+      codigo: "CONFLITO",
+      mensagem: MSG_CUSTODIA.unidadeComEncomenda("B-304", 2),
+    });
+    expect(fake.estado.atualizacoesDeUnidade).toHaveLength(0);
   });
 
   it("unidade sem vínculo desativa", async () => {

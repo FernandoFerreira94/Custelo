@@ -4,9 +4,10 @@ import type {
   CustodiaTx,
   EncomendaTravada,
   EventoParaGravar,
+  LocalGuarda,
   NovaEncomenda,
 } from "@/application/custodia/ports";
-import type { Estado } from "@/domain/custodia/estados";
+import { type Estado, ehTerminal } from "@/domain/custodia/estados";
 
 type EncomendaFake = EncomendaTravada & {
   id: string;
@@ -38,6 +39,21 @@ const copiar = (d: Dados): Dados => ({
  */
 export function criarCustodiaRepoFake() {
   let dados: Dados = { encomendas: [], eventos: [], auditoria: [] };
+  const locais: (Omit<LocalGuarda, "usado"> & { empreendimentoId: string })[] =
+    [];
+
+  const semearLocal = (
+    l: Partial<Omit<LocalGuarda, "usado">> & { id: string; codigo: string },
+  ) => {
+    locais.push({
+      pontoId: "p1",
+      capacidade: null,
+      volumeGrande: false,
+      ativo: true,
+      empreendimentoId: "e1",
+      ...l,
+    });
+  };
 
   const semear = (
     e: Partial<EncomendaFake> & { id: string; estado: Estado; versao: number },
@@ -77,6 +93,17 @@ export function criarCustodiaRepoFake() {
           const { id: _id, empreendimentoId: _emp, ...travada } = e;
           return travada;
         },
+        async localPorId(id) {
+          const l = locais.find(
+            (x) => x.id === id && x.empreendimentoId === ctx.empreendimentoId,
+          );
+          if (!l) return null;
+          const { empreendimentoId: _emp, ...local } = l;
+          const usado = rascunho.encomendas.filter(
+            (e) => e.localGuardaId === id && !ehTerminal(e.estado),
+          ).length;
+          return { ...local, usado };
+        },
         async criarEncomenda(e: NovaEncomenda) {
           rascunho.encomendas.push({
             id: e.id,
@@ -115,6 +142,7 @@ export function criarCustodiaRepoFake() {
   return {
     repo,
     semear,
+    semearLocal,
     get encomendas() {
       return dados.encomendas;
     },

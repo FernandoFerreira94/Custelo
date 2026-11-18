@@ -152,6 +152,11 @@ export interface EstruturaRepo {
     ctx: Contexto,
     unidadeId: string,
   ): Promise<number>;
+  /** Encomendas ainda na portaria (não retiradas, devolvidas nem canceladas). */
+  contarEncomendasAtivasDaUnidade(
+    ctx: Contexto,
+    unidadeId: string,
+  ): Promise<number>;
   criarPonto(ctx: Contexto, p: NovoPonto): Promise<{ id: string }>;
   atualizarPonto(
     ctx: Contexto,
