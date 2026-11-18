@@ -38,7 +38,7 @@ export default async function EncomendaGestaoPage({
         <Button
           asChild
           variant="ghost"
-          size="sm"
+
           className="justify-self-start"
         >
           <Link href="/gestao/encomendas">

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { BarraWeb } from "@/components/shell/barra-web";
 import { Trilho, type ItemTrilho } from "@/components/shell/trilho";
 
 /** Item cujo href é o prefixo mais longo da rota atual. */
@@ -14,6 +15,11 @@ function itemAtivo(itens: ItemTrilho[], pathname: string): string {
   return casa[0]?.label ?? "";
 }
 
+/**
+ * Casca web/admin. Trilho a partir de `md`; abaixo, barra inferior. O conteúdo
+ * não leva `overflow-hidden`: tabela e matriz precisam do próprio scroll
+ * (relatório UX 12/11, P0).
+ */
 export function CascaWeb({
   itens,
   children,
@@ -23,9 +29,10 @@ export function CascaWeb({
 }) {
   const ativo = itemAtivo(itens, usePathname());
   return (
-    <div className="grid min-h-dvh grid-cols-[auto_1fr] gap-6 bg-background p-6">
-      <Trilho itens={itens} ativo={ativo} />
-      <div className="relative min-w-0 overflow-hidden">{children}</div>
+    <div className="min-h-dvh bg-background md:grid md:grid-cols-[auto_minmax(0,1fr)] md:gap-6 md:p-6">
+      <Trilho itens={itens} ativo={ativo} className="hidden md:flex" />
+      <div className="relative min-w-0 px-4 pt-4 pb-28 md:p-0">{children}</div>
+      <BarraWeb itens={itens} ativo={ativo} />
     </div>
   );
 }

@@ -99,7 +99,7 @@ export function AbaDados({
                 cpfCompleto ? (
                   <Button
                     variant="ghost"
-                    size="sm"
+
                     onClick={() => setCpfCompleto(null)}
                   >
                     <EyeOffIcon aria-hidden />
@@ -108,7 +108,7 @@ export function AbaDados({
                 ) : (
                   <Button
                     variant="ghost"
-                    size="sm"
+
                     disabled={pendente}
                     onClick={mostrarCpf}
                   >
@@ -157,7 +157,7 @@ export function AbaDados({
                       {podeEditar ? (
                         <Button
                           variant="outline"
-                          size="sm"
+
                           shape="pill"
                           disabled={pendente}
                           onClick={() => registrar(c.id)}

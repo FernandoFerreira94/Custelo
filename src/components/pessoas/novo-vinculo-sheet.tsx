@@ -68,7 +68,7 @@ export function NovoVinculoSheet({
   return (
     <Sheet open={aberto} onOpenChange={setAberto}>
       <SheetTrigger asChild>
-        <Button variant="outline" shape="pill" size="sm">
+        <Button variant="outline" shape="pill">
           <LinkIcon aria-hidden />
           Vincular unidade
         </Button>
