@@ -13,6 +13,9 @@ const eslintConfig = [
       ".next/**",
       "node_modules/**",
       "src/db/migrations/**",
+      // Service worker gerado pelo build (Serwist).
+      "public/sw.js",
+      "public/swe-worker-*.js",
       "playwright-report/**",
       "test-results/**",
       "coverage/**",
