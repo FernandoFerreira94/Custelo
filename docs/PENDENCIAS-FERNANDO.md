@@ -35,16 +35,16 @@ O plano segue a recomendação de cada uma até a resposta. O piloto (Task 13.2)
 
 ## Banco de produção (Supabase PacoteZap-SP)
 
-Nenhuma migration é aplicada em produção sem o seu OK escrito na thread. Todas já
-rodam e passam nos testes no banco local.
+Toda migration nova é conferida antes de aplicar (roda e passa nos testes no
+banco local). Conferido em 18/11 no remoto:
 
-- [ ] 0013 e 0014 (fase IP, PR #33)
-- [ ] 0015 (I4 custódia, PR #35)
+- [x] 0013 e 0014 (fase IP, PR #33): tabelas presentes
+- [x] 0015 (I4 custódia, PR #35): aplicada em 18/11 às 21:09 UTC
 
 ## Itens abertos durante a execução
 
-| Data  | Tarefa   | O que falta                                                                                                                                                                      | Onde ficou o stub   |
-| ----- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 18/11 | 4.4      | Revisar: `travarEncomenda` sem `FOR UPDATE` (trava no trigger)                                                                                                                   | PR #36              |
-| 18/11 | 4.5      | Rodar o e2e `tests/e2e/prateleiras.spec.ts` e a revisão visual de `/gestao/estrutura/areas` depois que a 0015 estiver no remoto                                                  | escrito, não rodado |
-| 18/11 | UX 12/11 | Conferir logado, em 390 px e 1440 px, a nova barra inferior da gestão, o trilho com rótulos, Unidades em cartões e Papéis um por vez (eu não entro com senha no Supabase remoto) | PR do lote UX       |
+| Data  | Tarefa   | O que falta                                                                                                                                                                                   | Onde ficou o stub   |
+| ----- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 18/11 | 4.4      | Revisar: `travarEncomenda` sem `FOR UPDATE` (trava no trigger)                                                                                                                                | PR #36              |
+| 18/11 | 4.5–4.8  | Rodar os e2e `tests/e2e/prateleiras.spec.ts` e `custodia.spec.ts` (precisam de `E2E_DATABASE_URL`; a 0015 já está no remoto) e conferir logado `/gestao/estrutura/areas`, `/fila` e o detalhe | escrito, não rodado |
+| 18/11 | UX 12/11 | Conferir logado, em 390 px e 1440 px, a nova barra inferior da gestão, o trilho com rótulos, Unidades em cartões e Papéis um por vez (eu não entro com senha no Supabase remoto)              | PR do lote UX       |
