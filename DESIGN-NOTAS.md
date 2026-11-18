@@ -91,3 +91,15 @@ system faltou. Levar ao repo `webcode-design`.
   para funcionar sem provider na raiz.
 - **Botão de suporte:** tooltip no lugar do `title` nativo.
 - **Ícones nos botões:** Entrar, Aceitar convite, Criar acesso e Voltar.
+
+## I4 — custódia (fila, detalhe, mover)
+
+- **Cancelada não está na prancha:** `EstadoBadge` usa `secondary` +
+  `XCircleIcon` + "Cancelada" (`src/components/custodia/estado-badge.tsx`).
+- **Prancha × backend:** o botão "Corrigir" do detalhe fica escondido até a I9;
+  o rodapé "Entregar" até a I8 e o botão de QR até a I5.
+- **Lista da gestão no celular:** a prancha só tem a tabela. Abaixo de `md`
+  a lista vira cartões (`Item`), para não repetir o corte do relatório UX de 12/11.
+- **Fila da portaria:** a busca usa `SearchBar` sem vidro (`material` padrão).
+- **Rodapé do Mover:** a prancha cita o nome do operador ("por Carlos"); a tela
+  diz "por você", porque o contexto da sessão não traz o nome.

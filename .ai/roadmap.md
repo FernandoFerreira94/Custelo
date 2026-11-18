@@ -3,9 +3,18 @@
 Ordem **por dependencia**, nao por tela. Fases I1–I13:
 `docs/product/implementation-roadmap.md`. Telas: `.ai/page-map.md`.
 
-Atualizado: **04/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
+Atualizado: **18/11/2026**. Fonte de progresso = repo, nao o cabecalho Notion.
 
 ## IN PROGRESS
+
+- **I4 cadeia de custodia** — PR #36 (rascunho). Base (0015, dominio) no #35;
+  `registrarEvento`, repo, consultas, prateleiras do ponto, CUS-001 fila (ops e
+  web), CUS-002/003 detalhe + linha do tempo e CUS-005 mover. Unidade + RLS
+  verdes no banco local. Pendente: 0015 no remoto (OK do Fernando) para rodar os
+  e2e `custodia.spec.ts` e `prateleiras.spec.ts` e a revisao visual. Lista unica
+  do que so o Fernando resolve: `docs/PENDENCIAS-FERNANDO.md`.
+- **Lote UX do relatorio de 12/11** (P0 shell mobile da gestao, P1 rotulos,
+  alvos, TabBar, placeholder) — proximo, em PR proprio, antes da I5.
 
 - **Plano mestre (04/11/2026)** — `docs/superpowers/plans/2026-11-04-plano-mestre-pacotezap.md`
   e o plano de execucao do resto do sistema: Parte 1 (migracao de UI, abaixo) →
