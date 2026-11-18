@@ -68,3 +68,6 @@ debug.log
 public/sw.js
 public/sw.js.map
 public/swe-worker-*.js
+
+# Fotos reais de etiqueta (benchmark D4): nunca no git
+tests/evals/etiquetas/
