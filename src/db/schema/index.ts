@@ -8,3 +8,4 @@ export * from "./importacao";
 export * from "./pessoas-vinculos";
 export * from "./tenancy";
 export * from "./custodia";
+export * from "./recebimento";
