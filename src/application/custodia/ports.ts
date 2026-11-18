@@ -53,6 +53,7 @@ export type NovaEncomenda = {
   volumes?: number;
   porte?: string | null;
   excepcional?: string | null;
+  observacao?: string | null;
   origem: "online" | "offline";
   ocorridoEm: Date;
   recebidoPor: string;
@@ -93,6 +94,30 @@ export interface CustodiaTx {
   /** Usada pelo recebimento (I5). */
   criarEncomenda(e: NovaEncomenda): Promise<void>;
   inserirEvento(e: EventoParaGravar): Promise<void>;
+  /** Código da unidade se ela é ativa e deste empreendimento. */
+  unidadeAtiva(id: string): Promise<{ codigo: string } | null>;
+  /** Nome da pessoa se ela tem vínculo ativo com a unidade. */
+  pessoaDaUnidade(
+    pessoaId: string,
+    unidadeId: string,
+  ): Promise<{ nome: string } | null>;
+  /** Linha de `fotos_etiqueta` (I5); ignora se a encomenda já tem foto. */
+  gravarFoto(
+    encomendaId: string,
+    f: { caminho: string; sha256: string; bytes: number; mime: string },
+  ): Promise<void>;
+  /** Liga a leitura à encomenda e marca se a sugestão foi aceita. */
+  vincularLeitura(
+    leituraId: string,
+    encomendaId: string,
+    aceita: boolean,
+  ): Promise<void>;
+  /** Pessoa fora do cadastro vira sugestão para o gestor (invariante 6). */
+  sugerirCadastro(s: {
+    unidadeId: string;
+    nome: string;
+    encomendaId: string;
+  }): Promise<void>;
   /** Mesma transação do evento: sem auditoria, sem evento. */
   auditar(e: EntradaAuditoria): Promise<void>;
 }
