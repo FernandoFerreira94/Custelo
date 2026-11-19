@@ -41,7 +41,7 @@ banco local). Conferido em 18/11 no remoto:
 
 - [x] 0013 e 0014 (fase IP, PR #33): tabelas presentes
 - [x] 0015 (I4 custódia, PR #35): aplicada em 18/11 às 21:09 UTC
-- [ ] 0016 (I5 recebimento, PR #38): bucket `etiquetas` e policies do Storage nascem junto; conferir no painel do Storage depois de aplicar
+- [x] 0016 (I5 recebimento, PR #38): aplicada em 19/11 às 17:55 UTC; 3 tabelas com RLS e bucket privado `etiquetas` com 2 policies conferidos por SQL
 
 ## Itens abertos durante a execução
 
