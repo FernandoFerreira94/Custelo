@@ -18,6 +18,14 @@ type Dados = {
   encomendas: EncomendaFake[];
   eventos: EventoParaGravar[];
   auditoria: EntradaAuditoria[];
+  fotos: { encomendaId: string; caminho: string; sha256: string }[];
+  leiturasVinculadas: {
+    leituraId: string;
+    encomendaId: string;
+    aceita: boolean;
+  }[];
+  sugestoes: { unidadeId: string; nome: string; encomendaId: string }[];
+  novas: (NovaEncomenda & { empreendimentoId: string })[];
 };
 
 const PROJECAO: Partial<Record<string, keyof EncomendaTravada>> = {
@@ -31,6 +39,10 @@ const copiar = (d: Dados): Dados => ({
   encomendas: d.encomendas.map((e) => ({ ...e })),
   eventos: [...d.eventos],
   auditoria: [...d.auditoria],
+  fotos: [...d.fotos],
+  leiturasVinculadas: [...d.leiturasVinculadas],
+  sugestoes: [...d.sugestoes],
+  novas: [...d.novas],
 });
 
 /**
@@ -38,7 +50,33 @@ const copiar = (d: Dados): Dados => ({
  * por encomenda, projeção de `estado`/`versao` e rollback quando `fn` falha ou lança.
  */
 export function criarCustodiaRepoFake() {
-  let dados: Dados = { encomendas: [], eventos: [], auditoria: [] };
+  let dados: Dados = {
+    encomendas: [],
+    eventos: [],
+    auditoria: [],
+    fotos: [],
+    leiturasVinculadas: [],
+    sugestoes: [],
+    novas: [],
+  };
+  const unidades: {
+    id: string;
+    codigo: string;
+    ativo: boolean;
+    empreendimentoId: string;
+  }[] = [];
+  const vinculos: { pessoaId: string; unidadeId: string; nome: string }[] = [];
+  const semearUnidade = (u: {
+    id: string;
+    codigo: string;
+    ativo?: boolean;
+    empreendimentoId?: string;
+  }) => unidades.push({ ativo: true, empreendimentoId: "e1", ...u });
+  const semearMorador = (v: {
+    pessoaId: string;
+    unidadeId: string;
+    nome: string;
+  }) => vinculos.push(v);
   const locais: (Omit<LocalGuarda, "usado"> & { empreendimentoId: string })[] =
     [];
 
@@ -105,6 +143,7 @@ export function criarCustodiaRepoFake() {
           return { ...local, usado };
         },
         async criarEncomenda(e: NovaEncomenda) {
+          rascunho.novas.push({ ...e, empreendimentoId: ctx.empreendimentoId });
           rascunho.encomendas.push({
             id: e.id,
             empreendimentoId: ctx.empreendimentoId,
@@ -131,6 +170,35 @@ export function criarCustodiaRepoFake() {
         async auditar(entrada) {
           rascunho.auditoria.push(entrada);
         },
+        async unidadeAtiva(id) {
+          const u = unidades.find(
+            (x) =>
+              x.id === id &&
+              x.ativo &&
+              x.empreendimentoId === ctx.empreendimentoId,
+          );
+          return u ? { codigo: u.codigo } : null;
+        },
+        async pessoaDaUnidade(pessoaId, unidadeId) {
+          const v = vinculos.find(
+            (x) => x.pessoaId === pessoaId && x.unidadeId === unidadeId,
+          );
+          return v ? { nome: v.nome } : null;
+        },
+        async gravarFoto(encomendaId, f) {
+          if (!rascunho.fotos.some((x) => x.encomendaId === encomendaId))
+            rascunho.fotos.push({
+              encomendaId,
+              caminho: f.caminho,
+              sha256: f.sha256,
+            });
+        },
+        async vincularLeitura(leituraId, encomendaId, aceita) {
+          rascunho.leiturasVinculadas.push({ leituraId, encomendaId, aceita });
+        },
+        async sugerirCadastro(s) {
+          rascunho.sugestoes.push(s);
+        },
       };
 
       const r = await fn(tx);
@@ -143,6 +211,20 @@ export function criarCustodiaRepoFake() {
     repo,
     semear,
     semearLocal,
+    semearUnidade,
+    semearMorador,
+    get fotos() {
+      return dados.fotos;
+    },
+    get leiturasVinculadas() {
+      return dados.leiturasVinculadas;
+    },
+    get sugestoes() {
+      return dados.sugestoes;
+    },
+    get novas() {
+      return dados.novas;
+    },
     get encomendas() {
       return dados.encomendas;
     },

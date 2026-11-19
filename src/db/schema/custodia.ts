@@ -49,6 +49,10 @@ export const empreendimentoConfig = pgTable("empreendimento_config", {
   prazoDevolucaoLigado: boolean("prazo_devolucao_ligado")
     .notNull()
     .default(true),
+  /** CFG-006 (I11). Kill switch da leitura por empreendimento (I5). */
+  leituraAutomatica: boolean("leitura_automatica").notNull().default(true),
+  fotoObrigatoria: boolean("foto_obrigatoria").notNull().default(true),
+  leiturasPorDia: smallint("leituras_por_dia").notNull().default(600),
   createdAt: ts("created_at").notNull().defaultNow(),
   updatedAt: ts("updated_at").notNull().defaultNow(),
 });
@@ -88,6 +92,7 @@ export const encomendas = pgTable(
     volumes: smallint("volumes").notNull().default(1),
     porte: text("porte"),
     excepcional: text("excepcional"),
+    observacao: text("observacao"),
     origem: text("origem").notNull(),
     ocorridoEm: ts("ocorrido_em").notNull(),
     registradoEm: ts("registrado_em").notNull().defaultNow(),

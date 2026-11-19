@@ -63,3 +63,11 @@ Thumbs.db
 .vercel
 .screens/
 debug.log
+
+# Service worker gerado pelo build (Serwist)
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
+
+# Fotos reais de etiqueta (benchmark D4): nunca no git
+tests/evals/etiquetas/

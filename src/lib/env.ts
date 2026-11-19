@@ -35,8 +35,11 @@ export const env = createEnv({
     WHATSAPP_APP_SECRET: z.string().min(1).optional(),
     WHATSAPP_WEBHOOK_VERIFY_TOKEN: z.string().min(1).optional(),
 
-    // OCR (ADR-014) — fornecedor ainda e OPEN QUESTION; a porta ja existe.
-    LABEL_EXTRACTOR_API_KEY: z.string().min(1).optional(),
+    // Leitura da etiqueta (ADR-014, D4). Kill switch: desligada ate o benchmark.
+    // Chaves so no servidor, nunca NEXT_PUBLIC_*.
+    LEITURA_ETIQUETA: z.enum(["desligada", "ocr", "llm"]).default("desligada"),
+    LEITURA_OCR_CHAVE: z.string().min(1).optional(),
+    LEITURA_LLM_CHAVE: z.string().min(1).optional(),
 
     // Observabilidade (ADR-016)
     SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
@@ -69,7 +72,9 @@ export const env = createEnv({
     INNGEST_SIGNING_KEY: process.env.INNGEST_SIGNING_KEY,
     WHATSAPP_APP_SECRET: process.env.WHATSAPP_APP_SECRET,
     WHATSAPP_WEBHOOK_VERIFY_TOKEN: process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN,
-    LABEL_EXTRACTOR_API_KEY: process.env.LABEL_EXTRACTOR_API_KEY,
+    LEITURA_ETIQUETA: process.env.LEITURA_ETIQUETA,
+    LEITURA_OCR_CHAVE: process.env.LEITURA_OCR_CHAVE,
+    LEITURA_LLM_CHAVE: process.env.LEITURA_LLM_CHAVE,
     MANUTENCAO: process.env.MANUTENCAO,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_ORG: process.env.SENTRY_ORG,

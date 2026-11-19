@@ -170,11 +170,11 @@ function criarTx(db: TenantDb, ctx: Contexto): CustodiaTx {
     async criarEncomenda(e) {
       await db.execute(sql`
         insert into encomendas (id, org_id, empreendimento_id, codigo_curto, ponto_id,
-          transportadora, rastreio, volumes, porte, excepcional, origem, ocorrido_em, recebido_por)
+          transportadora, rastreio, volumes, porte, excepcional, observacao, origem, ocorrido_em, recebido_por)
         values (${e.id}::uuid, ${ctx.orgId}::uuid, ${ctx.empreendimentoId}::uuid, ${e.codigoCurto},
           ${e.pontoId}::uuid, ${e.transportadora ?? null}, ${e.rastreio ?? null}, ${e.volumes ?? 1},
-          ${e.porte ?? null}, ${e.excepcional ?? null}, ${e.origem}, ${e.ocorridoEm.toISOString()}::timestamptz,
-          ${e.recebidoPor}::uuid)`);
+          ${e.porte ?? null}, ${e.excepcional ?? null}, ${e.observacao ?? null}, ${e.origem},
+          ${e.ocorridoEm.toISOString()}::timestamptz, ${e.recebidoPor}::uuid)`);
     },
 
     async inserirEvento(e) {
@@ -196,6 +196,51 @@ function criarTx(db: TenantDb, ctx: Contexto): CustodiaTx {
         values (${ctx.orgId}::uuid, ${ctx.empreendimentoId}::uuid, ${ctx.usuarioId}::uuid, ${a.acao},
           ${a.alvoTipo}, ${a.alvoId ?? null}, ${a.antes ? JSON.stringify(a.antes) : null}::jsonb,
           ${a.depois ? JSON.stringify(a.depois) : null}::jsonb, ${a.motivo ?? null}, ${a.origem})`);
+    },
+
+    async unidadeAtiva(id) {
+      if (!ehUuid(id)) return null;
+      const [r] = linhas<{ codigo: string }>(
+        await db.execute(sql`
+          select codigo from unidades
+          where id = ${id}::uuid and empreendimento_id = ${ctx.empreendimentoId}::uuid and ativo`),
+      );
+      return r ?? null;
+    },
+
+    async pessoaDaUnidade(pessoaId, unidadeId) {
+      if (!ehUuid(pessoaId) || !ehUuid(unidadeId)) return null;
+      const [r] = linhas<{ nome: string }>(
+        await db.execute(sql`
+          select p.nome from vinculos v join pessoas p on p.id = v.pessoa_id
+          where v.pessoa_id = ${pessoaId}::uuid and v.unidade_id = ${unidadeId}::uuid
+            and v.empreendimento_id = ${ctx.empreendimentoId}::uuid and v.status = 'ativo'
+          limit 1`),
+      );
+      return r ?? null;
+    },
+
+    async gravarFoto(encomendaId, f) {
+      await db.execute(sql`
+        insert into fotos_etiqueta (org_id, empreendimento_id, encomenda_id, caminho, sha256, bytes, mime)
+        values (${ctx.orgId}::uuid, ${ctx.empreendimentoId}::uuid, ${encomendaId}::uuid, ${f.caminho},
+          ${f.sha256}, ${f.bytes}, ${f.mime})
+        on conflict (encomenda_id) do nothing`);
+    },
+
+    async vincularLeitura(leituraId, encomendaId, aceita) {
+      if (!ehUuid(leituraId)) return;
+      await db.execute(sql`
+        update leituras_etiqueta set encomenda_id = ${encomendaId}::uuid, aceita = ${aceita}
+        where id = ${leituraId}::uuid and empreendimento_id = ${ctx.empreendimentoId}::uuid
+          and encomenda_id is null`);
+    },
+
+    async sugerirCadastro(s) {
+      await db.execute(sql`
+        insert into sugestoes_cadastro (org_id, empreendimento_id, unidade_id, nome, origem, encomenda_id, criado_por)
+        values (${ctx.orgId}::uuid, ${ctx.empreendimentoId}::uuid, ${s.unidadeId}::uuid, ${s.nome},
+          'recebimento', ${s.encomendaId}::uuid, ${ctx.usuarioId}::uuid)`);
     },
   };
 }

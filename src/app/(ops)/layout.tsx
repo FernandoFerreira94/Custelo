@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { RegistrarSw } from "@/components/ops/registrar-sw";
 import { ProvedorDeConsultas } from "@/components/providers/consultas";
 import { NavPortaria } from "@/components/shell/nav-portaria";
 import { exigirSuperficie } from "@/infrastructure/auth/guard-superficie";
@@ -14,6 +15,7 @@ export default async function LayoutOps({ children }: { children: ReactNode }) {
       <div className="min-h-dvh bg-muted pb-28">
         {children}
         <NavPortaria />
+        <RegistrarSw />
       </div>
     </ProvedorDeConsultas>
   );

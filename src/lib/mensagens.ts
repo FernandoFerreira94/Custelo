@@ -111,3 +111,27 @@ export const MSG_CORRECAO = {
   motivoObrigatorio:
     "Escreva o motivo com pelo menos 10 caracteres. Ele fica na auditoria.",
 } as const;
+
+/** Recebimento (I5). Texto que o porteiro lê no meio do lote: curto e com o próximo passo. */
+export const MSG_RECEBIMENTO = {
+  salvo: (codigo: string) => `Salva para a ${codigo}.`,
+  salvoSemPessoa: (nome: string, codigo: string) =>
+    `${nome} fica na ${codigo}. A administração recebe a sugestão de cadastro.`,
+  naoIdentificada: "Guardada como não identificada. Ninguém foi avisado.",
+  leituraIndisponivel:
+    "Não deu para ler a etiqueta agora. Escolha a unidade na lista.",
+  leituraPausada:
+    "Leitura automática pausada hoje (limite do plano). Siga escolhendo a unidade.",
+  unidadeInativa: "Esta unidade não está ativa. Escolha outra.",
+  fotoNaoSubiu: "A foto não subiu agora. Ela fica no aparelho e sobe sozinha.",
+  fotoFormato: "Envie a foto em JPG ou WebP.",
+  fotoGrande:
+    "A foto ficou grande demais. Tire de novo, mais perto da etiqueta.",
+  loteConcluido: (n: number) =>
+    `${n} ${n === 1 ? "encomenda registrada" : "encomendas registradas"}.`,
+  exMorador: (nome: string, data: string) =>
+    `${nome} saiu da unidade em ${data}. Confira antes de salvar.`,
+  nomeNaoBate: (codigo: string) =>
+    `O nome da etiqueta não está na ${codigo}. Escolha a pessoa ou avise a unidade toda.`,
+  identificada: (codigo: string) => `Destino identificado: ${codigo}.`,
+} as const;

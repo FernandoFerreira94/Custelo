@@ -15,7 +15,8 @@ O plano segue a recomendação de cada uma até a resposta. O piloto (Task 13.2)
 
 - [ ] Nuvem de produção (13.1)
 - [ ] Meta/WABA e modelos de mensagem aprovados (I7)
-- [ ] Conta e chave do provedor de IA para a leitura da etiqueta (D4, I5)
+- [ ] Conta e chave do provedor de IA para a leitura da etiqueta (D4, I5): `LEITURA_OCR_CHAVE` (Google Cloud Vision) e `LEITURA_LLM_CHAVE` (Gemini). Ao criar, ponha limite de gasto no painel do provedor, confira modelo, preço, região e retenção na doc oficial do dia e preencha `CONFERIDO_EM` em `src/infrastructure/leitura/config.ts`
+- [ ] Benchmark D4 com 40 fotos reais do piloto (`docs/benchmarks/leitura-etiqueta.md`). Até lá `LEITURA_ETIQUETA=desligada` e o recebimento é manual
 - [ ] Asaas para a cobrança do excedente (D9, 11.11)
 - [ ] Canal de suporte (D12)
 - [ ] Custo do PITR e do backup dos arquivos (D19)
@@ -40,6 +41,7 @@ banco local). Conferido em 18/11 no remoto:
 
 - [x] 0013 e 0014 (fase IP, PR #33): tabelas presentes
 - [x] 0015 (I4 custódia, PR #35): aplicada em 18/11 às 21:09 UTC
+- [x] 0016 (I5 recebimento, PR #38): aplicada em 19/11 às 17:55 UTC; 3 tabelas com RLS e bucket privado `etiquetas` com 2 policies conferidos por SQL
 
 ## Itens abertos durante a execução
 
