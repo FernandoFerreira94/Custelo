@@ -15,6 +15,7 @@ Este arquivo e um **roteador**. Detalhe vive em `.ai/` e `docs/`.
   React Native/Expo nem monorepo multi-app.
 
 <!-- BEGIN:webcode-regras (bloco padrão WebCode; não editar aqui, editar na fonte e propagar) -->
+
 ## Regras da casa WebCode (valem para Claude Code, Cursor, Codex e humano)
 
 Em conflito com qualquer outra seção deste arquivo, este bloco vence, salvo pedido explícito e registrado do Fernando.
@@ -31,6 +32,7 @@ Em conflito com qualquer outra seção deste arquivo, este bloco vence, salvo pe
 9. **CI:** nenhum merge com check vermelho, pendente ou pulado. CI sem minutos conta como vermelho.
 10. **Só com OK do Fernando, a cada vez:** merge, deploy, migration aplicada em qualquer banco remoto, rollback, secrets e `.env`, mudança de visibilidade do repo. PR sempre em rascunho até esse OK. Sem auto-merge.
 11. **Skills:** não copie skills do box, do `webcode-design` ou de plugins (Superpowers e outros) para `.claude/` deste repo. Aponte para a fonte. Skill **própria do módulo deste repo** em `.claude/skills/<modulo>/` continua permitida.
+
 <!-- END:webcode-regras -->
 
 ## Locked stack
@@ -52,21 +54,21 @@ pnpm db:generate    # migration a partir do schema Drizzle
 
 ## Context router
 
-| Preciso de                       | Leia                                        |
-| -------------------------------- | ------------------------------------------- |
-| Produto, atores, nao-objetivos   | `.ai/scope.md` e `.ai/modules/<modulo>.md`  |
-| ADR / Freeze                     | `.ai/architecture.md`                       |
-| Done / now / next / blocked      | `.ai/roadmap.md`                            |
-| Telas, rotas, estados            | `.ai/page-map.md`                           |
-| Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)               |
-| Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente) |
-| Pranchas aprovadas (visual)      | `docs/pranchas/README.md` (fonte + fotos)   |
-| Plano de execucao (superpowers)  | `docs/superpowers/plans/`                   |
-| Regra de stack                   | `.ai/rules/`                                |
-| Feature complexa                 | `.ai/specs/<feature>.md`                    |
+| Preciso de                       | Leia                                          |
+| -------------------------------- | --------------------------------------------- |
+| Produto, atores, nao-objetivos   | `.ai/scope.md` e `.ai/modules/<modulo>.md`    |
+| ADR / Freeze                     | `.ai/architecture.md`                         |
+| Done / now / next / blocked      | `.ai/roadmap.md`                              |
+| Telas, rotas, estados            | `.ai/page-map.md`                             |
+| Linguagem visual aprovada        | `DESIGN.md` (so tarefa de UI)                 |
+| Biblioteca de UI (@webcode)      | `WEBCODE-DS.md` (antes de criar componente)   |
+| Pranchas aprovadas (visual)      | `docs/pranchas/README.md` (fonte + fotos)     |
+| Plano de execucao (superpowers)  | `docs/superpowers/plans/`                     |
+| Regra de stack                   | `.ai/rules/`                                  |
+| Feature complexa                 | `.ai/specs/<feature>.md`                      |
 | Decisao que evolui               | `.ai/memory.md` (leitura; escrita so na main) |
-| Erro ja diagnosticado 2x         | `.ai/gotchas.md`                            |
-| Spec tela a tela / ADR estendido | `docs/` — nunca a pagina Notion inteira     |
+| Erro ja diagnosticado 2x         | `.ai/gotchas.md`                              |
+| Spec tela a tela / ADR estendido | `docs/` — nunca a pagina Notion inteira       |
 
 ## Invariantes (stop-ship)
 
